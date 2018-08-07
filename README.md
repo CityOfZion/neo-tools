@@ -1,5 +1,10 @@
 # neotools
 
+## Summary
+
+The aim is to have all Neo Smart Economy API or project implementation primitives to be part of a unix-style command line chainable toolset. With this in place one would have easy lookup of various operations and functions, reference implementation, and clear calling syntax and usage examples. A common problem for me, working in c#, nodejs, and python, is that I'm always having to go back to one of those projects, navigate their specific layout, then locate a piece or example to be sure I'm doing something right. Instead of trying to get everyone to agree on a standard I thought why not implement a bunch of their primitives in a standard way to unify that reference. Besides, being able to call a lot of those directly from command line would be really useful for all kinds of stuff.(edited)
+So for example, you might have a file structure like src/ and under it you'd have nodejs, python, and c#. Then under each of those you might have modules demonstrating how to use things like neon-js, neo, or boa. Those modules would also facilitate a stdio cli mechanism.
+
 ## Project Version and Status
 
 Version: 0.0.1
