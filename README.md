@@ -1,0 +1,64 @@
+# neotools
+
+## Project Version and Status
+
+Version: 0.0.1
+
+Status: Documenting goals and defining standards
+
+Next: Write implementation example template
+
+## Primary Goals
+This project has two major goals:
+
+1. Provide a command line tool for each Neo Smart Economy system function primitive. In example,
+each function useful for an account, a wallet, a transaction, etc should be contained in its own module with
+the ability to call it directly from the command line, by itself, and retrieve a result. Each CLI invocation should
+enable stdio behavior so commands may be chained together to form command line scripts.
+
+2. Provide simple and clear examples of each Neo Smart Economy system function primitive to offer reusable, standard
+reference implementations for each language or API. This will accelerate community understanding and implementation adoption.
+
+## Requirements
+
+1. Source hierarchy *must* be organized by language/implementation/function in adherence with familiar and relevant project naming conventions.
+
+2. Modules *must* be composable, where applicable.
+
+3. A registry of implementations names *must* be maintained and consistent with community.
+
+4. A standard format for argument passing and return values *must* be maintained across *all* modules. Composability between
+implementations is ideal to facilitate complimentary capabilities where necessary and possible.
+
+5. Each module *must* be callable from command line with the capability to read argument input from its standard input and the ability to write operation results to its standard output. Use of standard error would be ideal.
+
+6. Each module *must* provide a description including its registered parent project name, purpose, and calling convention (arguments and return value).
+
+## Operating System Support
+1. Linux
+
+## Features
+
+
+## Roadmap
+
+* Create versions for each programming language that supports Neo, i.e.:
+  - Python
+  - C#
+  - golang
+
+## Setup
+
+`npm install`
+
+## Calling Convention
+
+```
+neotools <registered api or implementation name>> <relevant function> <function arguments>
+```
+
+Example:
+
+```
+neotools neonjs getScriptHashFromAddress AddZkjqPoPyhDhWoA8f9CXQeHQRDr8HbPo
+```

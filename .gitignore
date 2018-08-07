@@ -1,0 +1,9 @@
+node_modules
+build
+secrets.*.js
+.DS_Store
+.vscode/
+/coverage
+yarn.lock
+.idea/
+package-lock.json
