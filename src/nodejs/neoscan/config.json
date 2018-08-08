@@ -1,0 +1,49 @@
+"networks": [
+  "MainNet": {
+    "rootUrl": "https://neoscan-testnet.io/api/test_net/"
+    "v1": {
+    }
+  },
+  "TestNet": {
+    "rootUrl": "https://neoscan-testnet.io/api/test_net/"
+  }
+],
+"api": {
+  "v1": {
+    "get_balance": {
+      "description": "Returns the balance for an address including NEP5 Tokens.",
+      "parms": {
+        "address": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
+        }
+      }
+    },
+    "get_last_transactions_by_address": {
+      "description": "Returns the last 15 transaction models in the chain for the selected address from its hash, paginated.",
+      "parms": {
+        "address": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
+        },
+        "page": {
+          "type": "integer",
+          "required": false,
+          "description": "page index"
+        }
+      }
+    },
+    "get_transaction": {
+      "description": "Returns the transaction model from its hash.",
+      "parms": {
+        "transaction_hash": {
+          "type": "string",
+          "required": true,
+          "description": "base 16 hash"
+        }
+      }
+    }
+  }
+}
