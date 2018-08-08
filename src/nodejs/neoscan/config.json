@@ -1,13 +1,11 @@
-"networks": [
+"networks": {
   "MainNet": {
     "rootUrl": "https://neoscan-testnet.io/api/test_net/"
-    "v1": {
-    }
   },
   "TestNet": {
     "rootUrl": "https://neoscan-testnet.io/api/test_net/"
   }
-],
+},
 "api": {
   "v1": {
     "get_balance": {
