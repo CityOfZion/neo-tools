@@ -8,6 +8,44 @@
 },
 "api": {
   "v1": {
+    "get_address_abstracts": {
+      "description": "Returns transaction summary an address from its hash, paginated.",
+      "parms": {
+        "address": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
+        },
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "page index"
+        }
+      }
+    },
+    "get_address_to_address_abstracts": {
+      "description": "Returns transaction summary between two address from their hash, paginated.",
+      "parms": {
+        "address1": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
+        },
+        "address2": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
+        },
+        "page": {
+          "type": "integer",
+          "required": true,
+          "description": "page index"
+        }
+      }
+    },
+    "get_all_nodes": {
+      "description": "Returns all working nodes and their respective heights. Information is updated each minute."
+    },
     "get_balance": {
       "description": "Returns the balance for an address including NEP5 Tokens.",
       "parms": {
@@ -15,6 +53,41 @@
           "type": "string",
           "required": true,
           "description": "base 58 address"
+        }
+      }
+    },
+    "get_block": {
+      "description": "Returns the block model from its hash or index.",
+      "parms": {
+        "hash": {
+          "type": "string",
+          "required": true,
+          "description": "base 16 block hash"
+        }
+    },
+    "get_claimable": {
+      "description": "Returns the AVAILABLE claimable transactions for an address, from its hash.",
+      "parms": {
+        "address": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
+        }
+      }
+    },
+    "get_claimed": {
+      "description": "Returns the claimed transactions for an address, from its hash.",
+      "parms": {
+        "address": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
+        }
+      }
+    },
+    "get_height": {
+      "description": "Returns latest block index of the neoscan db.",
+      "parms": {
         }
       }
     },
@@ -40,6 +113,16 @@
           "type": "string",
           "required": true,
           "description": "base 16 hash"
+        }
+      }
+    },
+    "get_unclaimed": {
+      "description": "Returns the unclaimed gas for an address from its hash.",
+      "parms": {
+        "address": {
+          "type": "string",
+          "required": true,
+          "description": "base 58 address"
         }
       }
     }
