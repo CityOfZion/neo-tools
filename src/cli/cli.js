@@ -1,6 +1,6 @@
-// neotools main system file
+// neotools command line interface module
 
-
+// This module converts all api functionality to unix-style composable command line utilities
 
 
 // PSEUDO:

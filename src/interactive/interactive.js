@@ -1,4 +1,6 @@
-// neotools main system file
+// neotools command line interface module
+
+// This module is the foundation for an interactive wallet / neo system api function interactive interface
 
 
 
@@ -6,5 +8,3 @@
 // PSEUDO:
 
 // Parse command line using commander
-
-// Convert respective module io to stdio. I.e., take arguments from stdin or cli and pass retturn values to stdout
