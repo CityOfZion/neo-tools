@@ -21,10 +21,6 @@ program
   .option('-a, --address <address>', 'Specify the address for balance inquiry')
   .parse(process.argv);
 
-// dbg.logDeep('program: ', program)
-
-// if(program.rawArgs.length <= 2) program.help()
-
 if (!program.net) {
   // print('network: ' + program.net);
 }

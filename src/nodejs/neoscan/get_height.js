@@ -20,10 +20,6 @@ program
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .parse(process.argv);
 
-// dbg.logDeep('program: ', program)
-
-// if(program.rawArgs.length <= 2) program.help()
-
 if (!program.net) {
   // print('network: ' + program.net);
 }

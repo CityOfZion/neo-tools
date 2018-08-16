@@ -168,8 +168,8 @@ exports.getTxByIdUrl = txid => {
 // I.e., 'https://neoscan.io/api/main_net/v1/get_last_transactions_by_address/'
 // TODO add page argument format = address + '/' + page
 
-exports.getTxsByAddressUrl = address => {
-  if (address) return validateUrl(curState.config.neoscan.active.txsByAddressUrl + '/' + address + '/')
+exports.get_last_transactions_by_address_url = (address, page) => {
+  if (address) return validateUrl(curState.config.neoscan.active.txsByAddressUrl + '/' + address + '/' + page)
   else return validateUrl(curState.config.neoscan.active.txsByAddressUrl)
 }
 
@@ -177,9 +177,11 @@ exports.getTxsByAddressUrl = address => {
 
 // Get all transactions for an address
 
-exports.getTxsByAddress = address => {
+exports.get_last_transactions_by_address = (address, page) => {
+  let pageArg = ''
+  if(page) pageArg = page
   return new Promise((resolve, reject) => {
-    getTxsByAddressUrl(address).then(url => {
+    this.get_last_transactions_by_address_url(address, pageArg).then(url => {
       console.log(url)
       return axios
         .get(url)
