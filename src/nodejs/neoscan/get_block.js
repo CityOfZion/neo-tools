@@ -1,4 +1,4 @@
-// neoscan get_last_transactions_by_address
+// neoscan get_block
 
 const neoscan = require('./neoscan.js')
 const dbg   = require('../debug')
@@ -11,36 +11,28 @@ function print(msg) {
   console.log(msg);
 }
 
-let pageArg = ''
-
 program
   .version('0.1.0')
-  .usage('<address> [page]')
+  .usage('<hash>')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --address <address>', 'Specify the address for balance inquiry')
-  .option('-p, --page [page]', 'Show last stransactions for <address> starting at [page]')
+  .option('-h, --hash <block hash>', 'Specify the block by hash for block inquiry')
   .parse(process.argv);
 
 if (!program.net) {
   // print('network: ' + program.net);
 }
 
-if (!program.address) {
+if (!program.hash) {
   program.help()
-}
-
-if (program.page)  {
-  pageArg = program.page
 }
 
 if (program.debug) {
   print('DEBUGGING');
 }
 
-
 neoscan.set_net(program.net)
- neoscan.get_last_transactions_by_address(program.address, pageArg).then(result => {
+ neoscan.get_block(program.hash).then(result => {
    print(result)
  })
 

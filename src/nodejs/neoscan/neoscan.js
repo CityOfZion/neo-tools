@@ -153,16 +153,6 @@ exports.getRootUrl = () => {
   return validateUrl(curState.config.neoscan.active.rootUrl)
 }
 
-// Returns the full URL all the way up to the args.
-// I.e., 'https://neoscan.io/api/main_net/v1/get_transaction/'
-
-exports.getTxByIdUrl = txid => {
-  if (txid) {
-    return validateUrl(curState.config.neoscan.active.txByIdUrl + '/' + txid + '/')
-  } else {
-    return validateUrl(curState.config.neoscan.active.txByIdUrl)
-  }
-}
 
 // Returns the full URL all the way up to the args.
 // I.e., 'https://neoscan.io/api/main_net/v1/get_last_transactions_by_address/'
@@ -172,7 +162,6 @@ exports.get_last_transactions_by_address_url = (address, page) => {
   if (address) return validateUrl(curState.config.neoscan.active.txsByAddressUrl + '/' + address + '/' + page)
   else return validateUrl(curState.config.neoscan.active.txsByAddressUrl)
 }
-
 
 
 // Get all transactions for an address
@@ -197,11 +186,23 @@ exports.get_last_transactions_by_address = (address, page) => {
   })
 }
 
-// Get a single transaction
 
-exports.getTxById = txid => {
+// Returns the full URL all the way up to the args.
+// I.e., 'https://neoscan.io/api/main_net/v1/get_transaction/'
+
+exports.get_transaction_url = txid => {
+  if (txid) {
+    return validateUrl(curState.config.neoscan.active.txByIdUrl + '/' + txid + '/')
+  } else {
+    return validateUrl(curState.config.neoscan.active.txByIdUrl)
+  }
+}
+
+// Get a single transaction by it's hash
+
+exports.get_transaction = txid => {
   return new Promise((resolve, reject) => {
-    getTxByIdUrl(txid).then(url => {
+    this.get_transaction_url(txid).then(url => {
       console.log(`Retrieving ${txid} History from neoscan ${url}`)
       return axios
         .get(url)
@@ -214,6 +215,7 @@ exports.getTxById = txid => {
     })
   })
 }
+
 
 // Returns the full URL all the way up to the args.
 // I.e., 'https://neoscan.io/api/main_net/v1/get_transaction/'
@@ -312,6 +314,30 @@ exports.get_height = () => {
     })
   })
 }
+
+
+exports.get_block_url = hash => {
+  return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_block/' + hash)
+}
+
+// Get block block_height
+
+exports.get_block = (hash) => {
+  return new Promise((resolve, reject) => {
+    this.get_block_url(hash).then(url => {
+      console.log(`Retrieving node list`)
+      return axios
+        .get(url)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  })
+}
+
 
 exports.get_all_nodes_url = () => {
   return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_all_nodes')

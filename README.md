@@ -75,7 +75,10 @@ node get_height
 node get_all_nodes -n MainNet
 
 // List all transactions for address on Main net
-node get_last_transactions_by_address -n MainNet -a address 
+node get_last_transactions_by_address -n MainNet -a address
+
+// Get a block by its hash on testnet
+node get_block -h hash
 
 ```
 
