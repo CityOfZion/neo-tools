@@ -1,4 +1,4 @@
-// Main neoscan CLI invocation module
+// neoscan get_all_nodes
 
 const neoscan = require('./neoscan.js')
 const dbg   = require('../debug')
@@ -33,7 +33,7 @@ if (program.debug) {
 }
 
 neoscan.set_net(program.net)
- neoscan.get_height().then(result => {
+ neoscan.get_all_nodes().then(result => {
    print(result)
  })
 

@@ -1,4 +1,4 @@
-// Main neoscan CLI invocation module
+// neoscan get_height
 
 const neoscan = require('./neoscan.js')
 const dbg   = require('../debug')

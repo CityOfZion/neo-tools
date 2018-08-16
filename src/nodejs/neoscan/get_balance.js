@@ -1,4 +1,4 @@
-// Main neoscan CLI invocation module
+// neoscan get_balance
 
 const neoscan = require('./neoscan.js')
 const dbg   = require('../debug')
@@ -15,9 +15,10 @@ function print(msg) {
 
 program
   .version('0.1.0')
-  .usage('')
+  .usage('<address>')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
+  .option('-a, --address <address>', 'Specify the address for balance inquiry')
   .parse(process.argv);
 
 // dbg.logDeep('program: ', program)
@@ -28,12 +29,16 @@ if (!program.net) {
   // print('network: ' + program.net);
 }
 
+if (!program.address) {
+  program.help()
+}
+
 if (program.debug) {
   print('DEBUGGING');
 }
 
 neoscan.set_net(program.net)
- neoscan.get_height().then(result => {
+ neoscan.get_balance(program.address).then(result => {
    print(result)
  })
 
