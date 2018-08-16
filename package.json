@@ -11,15 +11,12 @@
     "lint": "eslint ./",
     "lintFix": "eslint ./ --fix",
     "start": "",
-    "test": "jest",
-    "test-ci": "jest --coverage && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "prepush": "echo 'running lint...' && npm run lint && echo 'running tests...' && npm test"
+    "test": "jest"
   },
   "devDependencies": {
     "axios": "^0.18.0",
     "babel-eslint": "^8.2.1",
     "babel-jest": "^22.0.4",
-    "babel-loader": "^7.1.2",
     "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-transform-decorators-legacy": "^1.2.0",
     "babel-plugin-transform-runtime": "^6.5.2",
@@ -40,13 +37,13 @@
     "eslint-plugin-prettier": "^2.6.0",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
-    "file-loader": "^1.1.6",
     "fs-extra": "^0.30.0",
     "html-loader": "^0.5.1",
     "husky": "^0.14.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^22.0.4",
-    "jest-cli": "^22.4.4"
+    "jest-cli": "^22.4.4",
+    "prettier": "^0.11.0"
   },
   "dependencies": {
     "@cityofzion/neon-js": "git+https://github.com/cityofzion/neon-js.git#3.8.1",
@@ -54,8 +51,9 @@
     "bluebird": "^3.3.4",
     "bs58": "^4.0.1",
     "classnames": "^2.1.3",
+    "commander": "^2.17.1",
     "eslint-cli": "^1.1.1",
-    "history": "^4.7.2",
+    "history": "^4.7.2"
   },
   "jest": {
     "transform": {

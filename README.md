@@ -56,7 +56,26 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 `npm install`
 
-## Calling Convention
+
+## Current Calling convention
+
+```
+cd src/nodejs/neoscan
+
+// Get balance for an address on MainNet
+node get_balance -n MainNet -a youraddress
+
+// Get current block height on TestNet
+node get_height
+
+// List all nodes on Main Net
+node get_all_nodes -n MainNet
+```
+
+
+
+
+## Planned Future Calling Convention
 
 ```
 neotools <registered api or implementation name>> <relevant function> <function arguments>
@@ -66,4 +85,8 @@ Example:
 
 ```
 neotools neonjs getScriptHashFromAddress AddZkjqPoPyhDhWoA8f9CXQeHQRDr8HbPo
+
+
+
+
 ```
