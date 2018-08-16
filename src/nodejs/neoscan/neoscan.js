@@ -83,6 +83,7 @@ exports.switchNetwork = networkId => {
   let net
   switch (networkId) {
     case 'main_net':
+    case 'mainnet':
     case 'MainNet':
       if (curState && curState.config && curState.config.neoscan) {
         net = curState.config.neoscan.active = curState.config.neoscan.mainNet
@@ -98,6 +99,7 @@ exports.switchNetwork = networkId => {
       }
       break
     case 'test_net':
+    case 'testnet':
     case 'TestNet':
       if (curState && curState.config && curState.config.neoscan) {
         net = curState.config.neoscan.active = curState.config.neoscan.testNet
