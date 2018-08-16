@@ -52,6 +52,9 @@ implementations is ideal to facilitate complimentary capabilities where necessar
   - C#
   - golang
 
+* Needs error handling and feedback
+* Implement full modularity
+
 ## Setup
 
 `npm install`
