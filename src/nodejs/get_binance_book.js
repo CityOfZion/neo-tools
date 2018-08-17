@@ -1,4 +1,5 @@
-// neoscan get_worth
+// neoscan get_binance_book
+// Best price/qty on the order book for a symbol or symbols.
 
 const dbg     = require('./debug')
 const program = require('commander')
@@ -20,30 +21,21 @@ program
   .usage('<address>')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
   .option('-s, --symbol <symbol>', 'Specify the symbol to look its value')
-  .option('-x, --exchange [exchange]', 'Specify exchange or api to use to query prices - defaults to coinmarketcap', 'cmc')
   .parse(process.argv);
 
 if (!program.net) {
   // print('network: ' + program.net);
 }
 
-if (!program.symbol || !program.amount) {
+if (!program.symbol) {
   program.help()
-}
-
-if (program.exchange) {
-  exchange = program.exchange
-  if(exchange === 'binance') get_price = binance.get_price
-  else get_price = cmc.get_price
 }
 
 if (program.debug) {
   print('DEBUGGING');
 }
 
-
-get_price(program.symbol).then(result => {
-  print('usd value: '+ result + '\n' + 'net worth for amount: ' + result * program.amount)
+binance.get_book(program.symbol).then(result => {
+  dbg.logDeep('binance book: ', result)
 })

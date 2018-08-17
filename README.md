@@ -46,6 +46,9 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 * Default address support via accounts config in config.json
 * Basic neonscan api command line is functional (see neoscan calling convention below)
+* Query coinmakertcap.com tickers
+* Query binance.com tickers
+* binance module now supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md (partially implemented right now)
 
 ## Roadmap
 
@@ -133,7 +136,7 @@ node get_unclaimed -a address
 
 ```
 
-For nodejs utility:
+For nodejs price lookup utilities:
 
 ```
 // list the price of neo and total net worth for 10 shares by coinmarketcap valuation
@@ -142,6 +145,9 @@ node get_worth -s neo -a 10
 // list the price of neousdt and total net worth for 3 shares by binance valuation
 // ticker names found at https://api.binance.com/api/v3/ticker/price
 node get_worth -s neousdt -a 3
+
+// list the best prices on the book at binance
+node get_binance_book -s neousdt
 ```
 
 
