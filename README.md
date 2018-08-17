@@ -145,12 +145,16 @@ node get_worth -s neo -a 10
 
 // list the price of neousdt and total net worth for 3 shares by binance valuation
 // ticker names found at https://api.binance.com/api/v3/ticker/price
-node get_worth -s neousdt -a 3
+// weight 1 for binance
+node get_worth -s neousdt -a 3 -x binance
 
 // list the best prices on the book at binance
+// weight 1
 node get_binance_book -s neousdt
 ```
 
+NOTE: Be careful with binance requests, DO NOT HAMMER, the weights can add up. If you get a 429 you should stop for a while.
+If you get a 418 you've been banned.
 
 
 ## Planned Future Calling Convention
