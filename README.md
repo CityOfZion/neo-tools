@@ -133,6 +133,12 @@ node get_unclaimed -a address
 
 ```
 
+For nodejs utility:
+
+```
+// list the price of neo and total net worth for 10 shares
+node get_worth -s neo -a 10
+```
 
 
 

@@ -46,7 +46,7 @@
     "prettier": "^0.11.0"
   },
   "dependencies": {
-    "@cityofzion/neon-js": "git+https://github.com/cityofzion/neon-js.git#3.8.1",
+    "neon-js": "^1.1.2",
     "bignumber.js": "5.0.0",
     "bluebird": "^3.3.4",
     "bs58": "^4.0.1",

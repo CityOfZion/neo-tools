@@ -1,11 +1,13 @@
-// neoscan get_unclaimed
+// neoscan get_worth
 
-const neoscan = require('./neoscan.js')
-const dbg     = require('../debug')
+const neoscan = require('./neoscan/neoscan.js')
+const dbg     = require('./debug')
 const program = require('commander')
-var cfg       = require('./config.js')
+var cfg       = require('./neoscan/config.js')
 const _       = require('underscore')
 var config    = cfg.load('./config.json')
+const cmc     = require('./get_cmc_price.js')
+
 
 function print(msg) {
   console.log(msg);
@@ -18,22 +20,16 @@ program
   .usage('<address>')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --address <address>', 'Specify the address for for unclaimed gas inquiry')
+  .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
+  .option('-s, --symbol <symbol>', 'Specify the symbol to look its value')
   .parse(process.argv);
 
 if (!program.net) {
   // print('network: ' + program.net);
 }
 
-if (!program.address) {
-  // check for a default address in config, if not pressent show help
-  var default_account = cfg.get_default_account()
-
-  if(default_account) address = default_account.address
-
-  else program.help()
-} else {
-  address = program.address
+if (!program.symbol || !program.amount) {
+  program.help()
 }
 
 if (program.debug) {
@@ -41,6 +37,6 @@ if (program.debug) {
 }
 
 neoscan.set_net(program.net)
- cmc.get_unclaimed(address).then(result => {
-   print(result)
+ cmc.get_price(program.symbol).then(result => {
+   print('usd value: '+ result + '\n' + 'net worth for amount:' + result * program.amount)
  })
