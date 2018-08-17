@@ -108,6 +108,8 @@ This will likely be reorganized to have wallet/accounts configured somewhere els
 
 ## Current Calling convention
 
+NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
+
 ```
 cd src/nodejs/neoscan
 
