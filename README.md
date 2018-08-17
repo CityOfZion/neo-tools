@@ -49,7 +49,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 * Query coinmakertcap.com tickers
 * Query binance.com price and book tickers
 * Binance module now supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md (partially implemented right now)
-* shacli support added for SHA256
+* shacli support added for SHA256 and HMAC SHA256
 
 ## Roadmap
 
@@ -109,6 +109,37 @@ The path item can be set to the pathname of a json config file that is in anothe
 
 ```
 
+## Exchange Configuration
+
+See src/nodejs/nodejs.config.json for how to setup exchange api and secret keys.
+You'll need to configure the path to point to a file with a json blob like this:
+```
+{
+  "accounts": {
+    "one": {
+      "address": "",
+      "default": true
+    },
+    "two": {
+      "address": "",
+      "default": false
+    },
+    "three": {
+      "address": "",
+      "default": false
+    }
+  },
+  "exchanges": {
+    "binance": {
+      "apiKey": "",
+      "secret": ""
+    }
+  }
+}
+
+```
+
+
 This will likely be reorganized to have wallet/accounts configured somewhere else.
 
 ## Current Calling convention
@@ -151,11 +182,17 @@ node get_worth -s neousdt -a 3 -x binance
 
 // list the best prices on the book at binance
 // weight 1
-node get_binance_book -s neousdt
+node binance_get_book -s neousdt
+
+// list the asset details (requires api key and secret) for NEO (or all no -s NEO)
+// weight 1
+node binance_get_asset_detail -s NEO
 ```
 
 NOTE: Be careful with binance requests, DO NOT HAMMER, the weights can add up. If you get a 429 you should stop for a while.
 If you get a 418 you've been banned.
+
+
 
 ### crypto
 ```

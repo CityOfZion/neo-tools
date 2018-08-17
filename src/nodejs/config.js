@@ -21,3 +21,13 @@ exports.get_default_account = () => {
     return _.findWhere(pathAccounts, {default: true})
   }
 }
+
+// Load neotools config file outside of the repo path
+exports.get_exchanges = () => {
+  var exchanges = cfg.exchanges
+
+  if(exchanges && exchanges.path !== null) {
+    var extCfg = require(exchanges.path)
+    return extCfg
+  }
+}

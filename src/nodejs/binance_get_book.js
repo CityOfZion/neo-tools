@@ -5,7 +5,6 @@ const dbg     = require('./debug')
 const program = require('commander')
 var cfg       = require('./config.js')
 const _       = require('underscore')
-var config    = cfg.load('./neoscan/neoscan.config.json')
 const cmc     = require('./get_cmc_price.js')
 const binance = require('./binance.js')
 
@@ -13,8 +12,6 @@ const binance = require('./binance.js')
 function print(msg) {
   console.log(msg);
 }
-
-var address, exchange, get_price
 
 program
   .version('0.1.0')

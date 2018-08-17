@@ -9,5 +9,8 @@
       "default": false,
       "path": ""
     }
+  },
+  "exchanges": {
+    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
   }
 }

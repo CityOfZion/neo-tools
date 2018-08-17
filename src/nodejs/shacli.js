@@ -1,8 +1,9 @@
 // neoscan shacli
 
-const dbg     = require('./debug')
-const program = require('commander');
-const SHA256  = require("crypto-js/sha256");
+const dbg         = require('./debug')
+const program     = require('commander');
+const SHA256      = require("crypto-js/sha256");
+const hmacSHA256  = require("crypto-js/hmac-sha256");
 
 function print(msg) {
   console.log(msg);
@@ -16,6 +17,7 @@ program
   .option('-d, --debug', 'Debug')
   .option('-b, --bits [bits]', 'Select the SHA algorithm to use', '256')
   .option('-m, --message <message>', 'Message to hash with SHA')
+  .option('-s, --secret [secret]', 'Use hmac with <secret>')
   .parse(process.argv);
 
 if (!program.net) {
@@ -30,4 +32,8 @@ if (program.debug) {
   print('DEBUGGING');
 }
 
-console.log(SHA256(program.message).toString())
+if (program.secret) {
+  console.log('hmac256: ' + hmacSHA256(program.message, program.secret).toString())
+} else {
+  console.log('sha256: ' + SHA256(program.message).toString())
+}
