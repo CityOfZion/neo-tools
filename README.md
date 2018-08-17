@@ -47,8 +47,9 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 * Default address support via accounts config in config.json
 * Basic neonscan api command line is functional (see neoscan calling convention below)
 * Query coinmakertcap.com tickers
-* Query binance.com tickers
+* Query binance.com price and book tickers
 * binance module now supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md (partially implemented right now)
+
 
 ## Roadmap
 
