@@ -9,7 +9,7 @@ So for example, you might have a file structure like src/ and under it you'd hav
 
 Version: 0.0.1
 
-Status: Documenting goals and defining standards
+Status: Writing alpha code, documenting goals, and defining standards
 
 Next: Write implementation example template
 
