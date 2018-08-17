@@ -37,8 +37,6 @@ exports.get_worth = (symbol, amount, currency) => {
   return this.get_price(symbol, amount, currency)
 }
 
-
-
 // query binance.com for est price/qty on the order book for a symbol or symbols.
 // Weight 1
 

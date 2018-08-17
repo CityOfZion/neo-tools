@@ -49,7 +49,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 * Query coinmakertcap.com tickers
 * Query binance.com price and book tickers
 * Binance module now supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md (partially implemented right now)
-
+* shacli support added for SHA256
 
 ## Roadmap
 
@@ -137,7 +137,7 @@ node get_block -h hash
 node get_unclaimed -a address
 
 ```
-
+### Exchanges
 For nodejs price lookup utilities:
 
 ```
@@ -156,6 +156,12 @@ node get_binance_book -s neousdt
 
 NOTE: Be careful with binance requests, DO NOT HAMMER, the weights can add up. If you get a 429 you should stop for a while.
 If you get a 418 you've been banned.
+
+### crypto
+```
+// Create SHA256 hash of message 'test'
+node shacli.js --message 'test'
+```
 
 
 ## Planned Future Calling Convention
