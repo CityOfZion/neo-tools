@@ -69,7 +69,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 ## Wallet Configuration
 
-The following section of src/neoscan/config.json can be configured to use your wallet:
+The following section of src/nodejs.config.json can be configured to use your wallet:
 
 ```
 {
