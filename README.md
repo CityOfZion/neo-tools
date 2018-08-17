@@ -136,8 +136,12 @@ node get_unclaimed -a address
 For nodejs utility:
 
 ```
-// list the price of neo and total net worth for 10 shares
+// list the price of neo and total net worth for 10 shares by coinmarketcap valuation
 node get_worth -s neo -a 10
+
+// list the price of neousdt and total net worth for 3 shares by binance valuation
+// ticker names found at https://api.binance.com/api/v3/ticker/price
+node get_worth -s neousdt -a 3
 ```
 
 

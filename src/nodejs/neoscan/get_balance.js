@@ -41,6 +41,7 @@ if (program.debug) {
 }
 
 neoscan.set_net(program.net)
- neoscan.get_balance(address).then(result => {
-   print(result)
- })
+
+neoscan.get_balance(address).then(result => {
+ print(result)
+})

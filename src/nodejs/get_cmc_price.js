@@ -1,3 +1,4 @@
+// query coinmakertcap.com for price info
 const axios = require('axios')
 const dbg = require('./debug')
 
