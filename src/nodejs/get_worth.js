@@ -17,7 +17,7 @@ var address, exchange, get_price
 
 program
   .version('0.1.0')
-  .usage('<address>')
+  .usage('-s <symbol> -a <amount> -x [exchange]')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
