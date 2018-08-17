@@ -1,0 +1,13 @@
+{
+  "accounts": {
+    "external": {
+      "default": true,
+      "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+    },
+    "account_name2": {
+      "address": "",
+      "default": false,
+      "path": ""
+    }
+  }
+}

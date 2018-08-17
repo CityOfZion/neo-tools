@@ -3,8 +3,6 @@
 const neoscan = require('./neoscan.js')
 const dbg     = require('../debug')
 const program = require('commander');
-var cfg       = require('./config.json')
-
 
 function print(msg) {
   console.log(msg);

@@ -3,9 +3,9 @@
 
 const dbg     = require('./debug')
 const program = require('commander')
-var cfg       = require('./neoscan/config.js')
+var cfg       = require('./config.js')
 const _       = require('underscore')
-var config    = cfg.load('./config.json')
+var config    = cfg.load('./neoscan/neoscan.config.json')
 const cmc     = require('./get_cmc_price.js')
 const binance = require('./binance.js')
 

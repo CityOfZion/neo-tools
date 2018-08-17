@@ -24,7 +24,8 @@ exports.get_price = (coin = 'neousdt', currency = 'usd') => {
       // dbg.logDeep('map: ', res)
 
       if (res && res.price) return res.price
-      else return mapping.data
+      else console.log('Please provide a valid Binance symbol.')
+      return null
     })
     .catch(err => {
       console.log(err.message)
@@ -55,10 +56,12 @@ exports.get_book = (coin = 'neousdt', currency = 'usd') => {
     })
 }
 
-// get account information (USER_DATA: Requires signed endpoint security)
+// get asset_detail (USER_DATA: Requires signed endpoint security)
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
 // SIGNED endpoints require an additional parameter, signature, to be sent in the query string or request body.
 // Endpoints use HMAC SHA256 signatures. The HMAC SHA256 signature is a keyed HMAC SHA256 operation. Use your secretKey as the key and totalParams as the value for the HMAC operation.
 // The signature is not case sensitive.
 // totalParams is defined as the query string concatenated with the request body.
- // exports.get_account_info =
+ exports.get_asset_detail = () => {
+
+ }

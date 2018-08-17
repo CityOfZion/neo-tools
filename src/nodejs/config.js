@@ -14,7 +14,7 @@ exports.get_default_account = () => {
 
   var account = _.findWhere(accounts, {default: true})
 
-  if(account.path !== null) {
+  if(account && account.path !== null) {
     cfg = require(account.path)
 
     var pathAccounts = cfg.accounts

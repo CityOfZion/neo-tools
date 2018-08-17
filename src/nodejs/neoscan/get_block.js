@@ -3,9 +3,6 @@
 const neoscan = require('./neoscan.js')
 const dbg   = require('../debug')
 const program = require('commander');
-var cfg     = require('./config.json')
-
-var apiv1 = cfg.api.v1;
 
 function print(msg) {
   console.log(msg);
@@ -20,7 +17,6 @@ program
   .parse(process.argv);
 
 if (!program.net) {
-  // print('network: ' + program.net);
 }
 
 if (!program.hash) {

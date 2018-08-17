@@ -3,9 +3,9 @@
 const neoscan = require('./neoscan.js')
 const dbg     = require('../debug')
 const program = require('commander')
-var cfg       = require('./config.js')
+var cfg       = require('../config.js')
 const _       = require('underscore')
-var config    = cfg.load('./config.json')
+var config    = cfg.load('./nodejs.config.json')
 
 function print(msg) {
   console.log(msg);
@@ -41,6 +41,7 @@ if (program.debug) {
 }
 
 neoscan.set_net(program.net)
- cmc.get_unclaimed(address).then(result => {
-   print(result)
- })
+
+neoscan.get_unclaimed(address).then(result => {
+ print(result)
+})

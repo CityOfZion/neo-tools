@@ -45,112 +45,112 @@ let curState = {}
 // I'm not sure this is the right approach as we still can't sync state yet.
 // TODO figure out how to sync state and do this whole bit properly
 exports.syncState = state => {
-  curState = state
+curState = state
 }
 
 // Check if our url is properly formed. If url can't construct it in try, it isn't.
 const validateUrl = url => {
-  return new Promise((resolve, reject) => {
-    try {
-      const u = new URL(url)
-      console.log('host: ' + u)
-      resolve(url)
-    } catch (error) {
-      console.log('neoscan: validateUrl: ' + error.message)
-      reject(error)
-    }
-  })
+return new Promise((resolve, reject) => {
+  try {
+    const u = new URL(url)
+    console.log('host: ' + u)
+    resolve(url)
+  } catch (error) {
+    console.log('neoscan: validateUrl: ' + error.message)
+    reject(error)
+  }
+})
 }
 
 exports.set_net = networkId => {
-  return this.switchNetwork(networkId)
+return this.switchNetwork(networkId)
 }
 
 // MAKE GAS PERDY
 
 exports.formatGas = gasArray => {
-  let gas
-  if (gasArray.length === 1) {
-    gas = gasArray[0] / 100000000000000
-  } else {
-    gas = gasArray[1] > 0 ? Number(gasArray.join('.')).toFixed(5) : Number(gasArray.join('.'))
-  }
+let gas
+if (gasArray.length === 1) {
+  gas = gasArray[0] / 100000000000000
+} else {
+  gas = gasArray[1] > 0 ? Number(gasArray.join('.')).toFixed(5) : Number(gasArray.join('.'))
+}
 
-  return gas
+return gas
 }
 
 exports.switchNetwork = networkId => {
-  let net
-  switch (networkId) {
-    case 'main_net':
-    case 'mainnet':
-    case 'MainNet':
-      if (curState && curState.config && curState.config.neoscan) {
-        net = curState.config.neoscan.active = curState.config.neoscan.mainNet
-      } else {
-        curState = {
-          config: {
-            neoscan: {
-              active: neoscanIni.mainNet,
-            },
+let net
+switch (networkId) {
+  case 'main_net':
+  case 'mainnet':
+  case 'MainNet':
+    if (curState && curState.config && curState.config.neoscan) {
+      net = curState.config.neoscan.active = curState.config.neoscan.mainNet
+    } else {
+      curState = {
+        config: {
+          neoscan: {
+            active: neoscanIni.mainNet,
           },
-        }
-        net = curState.config.neoscan.active
+        },
       }
-      break
-    case 'test_net':
-    case 'testnet':
-    case 'TestNet':
-      if (curState && curState.config && curState.config.neoscan) {
-        net = curState.config.neoscan.active = curState.config.neoscan.testNet
-      } else {
-        curState = {
-          config: {
-            neoscan: {
-              active: neoscanIni.testNet,
-            },
+      net = curState.config.neoscan.active
+    }
+    break
+  case 'test_net':
+  case 'testnet':
+  case 'TestNet':
+    if (curState && curState.config && curState.config.neoscan) {
+      net = curState.config.neoscan.active = curState.config.neoscan.testNet
+    } else {
+      curState = {
+        config: {
+          neoscan: {
+            active: neoscanIni.testNet,
           },
-        }
-        net = curState.config.neoscan.active
+        },
       }
-      break
-    default:
-      if (!networkId) return undefined
+      net = curState.config.neoscan.active
+    }
+    break
+  default:
+    if (!networkId) return undefined
 
-      if (curState && curState.config && curState.config.neoscan && curState.config.networks && curState.config.networks[networkId]) {
-        net = curState.config.neoscan.active = curState.config.networks[networkId]
-      } else {
-        // if (curState.config.neoscan[networkId].apiType !== 'neoscan') return undefined
-        console.log('networkId: ' + networkId)
-        let u = curState.config.neoscan[networkId].url
-        let custom = {}
-        custom.name = curState.config.neoscan[networkId].name
-        custom.rootUrl = u + '/api/test_net/'
-        custom.txByIdUrl = u + '/api/test_net/v1/get_transaction/'
-        custom.txsByAddressUrl = u + '/api/test_net/v1/get_last_transactions_by_address/'
-        custom.balanceUrl = u + '/api/test_net/v1/get_balance/'
-        custom.canDelete = true
-        custom.apiType = 'neoscan'
-        curState = {
-          config: {
-            neoscan: {
-              active: custom,
-            },
+    if (curState && curState.config && curState.config.neoscan && curState.config.networks && curState.config.networks[networkId]) {
+      net = curState.config.neoscan.active = curState.config.networks[networkId]
+    } else {
+      // if (curState.config.neoscan[networkId].apiType !== 'neoscan') return undefined
+      console.log('networkId: ' + networkId)
+      let u = curState.config.neoscan[networkId].url
+      let custom = {}
+      custom.name = curState.config.neoscan[networkId].name
+      custom.rootUrl = u + '/api/test_net/'
+      custom.txByIdUrl = u + '/api/test_net/v1/get_transaction/'
+      custom.txsByAddressUrl = u + '/api/test_net/v1/get_last_transactions_by_address/'
+      custom.balanceUrl = u + '/api/test_net/v1/get_balance/'
+      custom.canDelete = true
+      custom.apiType = 'neoscan'
+      curState = {
+        config: {
+          neoscan: {
+            active: custom,
           },
-        }
-        net = curState.config.neoscan.active
-        logDeep('net', net)
+        },
       }
-      break
-  }
-  return net
+      net = curState.config.neoscan.active
+      logDeep('net', net)
+    }
+    break
+}
+return net
 }
 
 // Returns the full URL all the way up to the version.
 // I.e., 'https://neoscan.io/api/main_net/'
 
 exports.getRootUrl = () => {
-  return validateUrl(curState.config.neoscan.active.rootUrl)
+return validateUrl(curState.config.neoscan.active.rootUrl)
 }
 
 
@@ -159,31 +159,31 @@ exports.getRootUrl = () => {
 // TODO add page argument format = address + '/' + page
 
 exports.get_last_transactions_by_address_url = (address, page) => {
-  if (address) return validateUrl(curState.config.neoscan.active.txsByAddressUrl + '/' + address + '/' + page)
-  else return validateUrl(curState.config.neoscan.active.txsByAddressUrl)
+if (address) return validateUrl(curState.config.neoscan.active.txsByAddressUrl + '/' + address + '/' + page)
+else return validateUrl(curState.config.neoscan.active.txsByAddressUrl)
 }
 
 
 // Get all transactions for an address
 
 exports.get_last_transactions_by_address = (address, page) => {
-  let pageArg = ''
-  if(page) pageArg = page
-  return new Promise((resolve, reject) => {
-    this.get_last_transactions_by_address_url(address, pageArg).then(url => {
-      console.log(url)
-      return axios
-        .get(url)
-        .then(response => {
-          console.log(`Retrieved History for ${address} from neoscan ${url}`)
-          response.data.address = address
-          resolve({ data: response.data, address: address })
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+let pageArg = ''
+if(page) pageArg = page
+return new Promise((resolve, reject) => {
+  this.get_last_transactions_by_address_url(address, pageArg).then(url => {
+    console.log(url)
+    return axios
+      .get(url)
+      .then(response => {
+        console.log(`Retrieved History for ${address} from neoscan ${url}`)
+        response.data.address = address
+        resolve({ data: response.data, address: address })
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
+})
 }
 
 
@@ -191,29 +191,29 @@ exports.get_last_transactions_by_address = (address, page) => {
 // I.e., 'https://neoscan.io/api/main_net/v1/get_transaction/'
 
 exports.get_transaction_url = txid => {
-  if (txid) {
-    return validateUrl(curState.config.neoscan.active.txByIdUrl + '/' + txid + '/')
-  } else {
-    return validateUrl(curState.config.neoscan.active.txByIdUrl)
-  }
+if (txid) {
+  return validateUrl(curState.config.neoscan.active.txByIdUrl + '/' + txid + '/')
+} else {
+  return validateUrl(curState.config.neoscan.active.txByIdUrl)
+}
 }
 
 // Get a single transaction by it's hash
 
 exports.get_transaction = txid => {
-  return new Promise((resolve, reject) => {
-    this.get_transaction_url(txid).then(url => {
-      console.log(`Retrieving ${txid} History from neoscan ${url}`)
-      return axios
-        .get(url)
-        .then(response => {
-          resolve(response.data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+return new Promise((resolve, reject) => {
+  this.get_transaction_url(txid).then(url => {
+    console.log(`Retrieving ${txid} History from neoscan ${url}`)
+    return axios
+      .get(url)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject('neoscan.js/get_transaction(): ' + error + '\nIf this is a 404 it is likely because there are no transactions to be found.')
+      })
   })
+})
 }
 
 
@@ -221,166 +221,166 @@ exports.get_transaction = txid => {
 // I.e., 'https://neoscan.io/api/main_net/v1/get_transaction/'
 
 exports.get_balance_url = address => {
-  console.log(curState.config.neoscan.active.balanceUrl, address)
-  if (address) {
-    return validateUrl(curState.config.neoscan.active.balanceUrl + '/' + address + '/')
-  } else return validateUrl(curState.config.neoscan.active.balanceUrl)
+console.log(curState.config.neoscan.active.balanceUrl, address)
+if (address) {
+  return validateUrl(curState.config.neoscan.active.balanceUrl + '/' + address + '/')
+} else return validateUrl(curState.config.neoscan.active.balanceUrl)
 }
 
 exports.get_balance = address => {
-  return new Promise((resolve, reject) => {
-    this.get_balance_url(address).then(url => {
-      console.log(`Retrieving balance for ${address} from neoscan ${url}`)
-      return axios
-        .get(url)
-        .then(response => {
-          let assets = {}
-          let data = response.data
-          if (data.address === 'not found') {
-            assets = {
-              neo: 0,
-              gas: 0,
-            }
-          } else {
-            // TODO rewrite to dynamically populate assets
-            data.balance.map(b => {
-              // switch (b.asset) {
-              //   case 'NEO':
-              //     neo = b.amount
-              //     break
-              //   case 'GAS':
-              //     gas = '' + b.amount
-              //     break
-              //   case 'Redeemable HashPuppy Token':
-              //     rht = '' + b.amount
-              //     console.log('rht: '+ rht)
-              //     break
-              //   case 'Master Contract Token':
-              //     mct = '' + b.amount
-              //     console.log('mct: '+ mct)
-              //     break
-              // }
-
-              let ast = {}
-              ast[b.asset] = b.amount
-
-              if (b.asset === 'NEO') {
-                assets['neo'] = b.amount
-              } else if (b.asset === 'GAS') {
-                assets['gas'] = b.amount
-              } else if (b.amount) {
-                assets[b.asset] = b.amount
-              }
-            })
+return new Promise((resolve, reject) => {
+  this.get_balance_url(address).then(url => {
+    console.log(`Retrieving balance for ${address} from neoscan ${url}`)
+    return axios
+      .get(url)
+      .then(response => {
+        let assets = {}
+        let data = response.data
+        if (data.address === 'not found') {
+          assets = {
+            neo: 0,
+            gas: 0,
           }
-          resolve(assets)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+        } else {
+          // TODO rewrite to dynamically populate assets
+          data.balance.map(b => {
+            // switch (b.asset) {
+            //   case 'NEO':
+            //     neo = b.amount
+            //     break
+            //   case 'GAS':
+            //     gas = '' + b.amount
+            //     break
+            //   case 'Redeemable HashPuppy Token':
+            //     rht = '' + b.amount
+            //     console.log('rht: '+ rht)
+            //     break
+            //   case 'Master Contract Token':
+            //     mct = '' + b.amount
+            //     console.log('mct: '+ mct)
+            //     break
+            // }
+
+            let ast = {}
+            ast[b.asset] = b.amount
+
+            if (b.asset === 'NEO') {
+              assets['neo'] = b.amount
+            } else if (b.asset === 'GAS') {
+              assets['gas'] = b.amount
+            } else if (b.amount) {
+              assets[b.asset] = b.amount
+            }
+          })
+        }
+        resolve(assets)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
+})
 }
 
 exports.parseUnspent = unspentArr => {
-  return unspentArr.map(coin => {
-    return {
-      index: coin.n,
-      txid: coin.txid,
-      value: coin.value,
-    }
-  })
+return unspentArr.map(coin => {
+  return {
+    index: coin.n,
+    txid: coin.txid,
+    value: coin.value,
+  }
+})
 }
 
 exports.get_unclaimed_url = address => {
-  return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_unclaimed/' + address)
+return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_unclaimed/' + address)
 }
 
 // Get block block_height
 
 exports.get_unclaimed = address => {
-  return new Promise((resolve, reject) => {
-    this.get_unclaimed_url(address).then(url => {
-      console.log(`querying unclaimed gas`)
-      return axios
-        .get(url)
-        .then(response => {
-          resolve(response.data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+return new Promise((resolve, reject) => {
+  this.get_unclaimed_url(address).then(url => {
+    console.log(`querying unclaimed gas`)
+    return axios
+      .get(url)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
+})
 }
 
 
 exports.get_height_url = () => {
-  return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_height')
+return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_height')
 }
 
 // Get block block_height
 
 exports.get_height = () => {
-  return new Promise((resolve, reject) => {
-    this.get_height_url().then(url => {
-      console.log(`Retrieving block height`)
-      return axios
-        .get(url)
-        .then(response => {
-          resolve(response.data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+return new Promise((resolve, reject) => {
+  this.get_height_url().then(url => {
+    console.log(`Retrieving block height`)
+    return axios
+      .get(url)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
+})
 }
 
 
 exports.get_block_url = hash => {
-  return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_block/' + hash)
+return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_block/' + hash)
 }
 
 // Get block block_height
 
 exports.get_block = (hash) => {
-  return new Promise((resolve, reject) => {
-    this.get_block_url(hash).then(url => {
-      console.log(`Retrieving block by hash`)
-      return axios
-        .get(url)
-        .then(response => {
-          resolve(response.data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+return new Promise((resolve, reject) => {
+  this.get_block_url(hash).then(url => {
+    console.log(`Retrieving block by hash`)
+    return axios
+      .get(url)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject('neoscan.js/get_block(): ' + error + 'If this is a 404 it is likely because the block does not exist.')
+      })
   })
+})
 }
 
 
 exports.get_all_nodes_url = () => {
-  return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_all_nodes')
+return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_all_nodes')
 }
 
 // Get block block_height
 
 exports.get_all_nodes = () => {
-  return new Promise((resolve, reject) => {
-    this.get_all_nodes_url().then(url => {
-      console.log(`Retrieving node list`)
-      return axios
-        .get(url)
-        .then(response => {
-          resolve(response.data)
-        })
-        .catch(error => {
-          reject(error)
-        })
-    })
+return new Promise((resolve, reject) => {
+  this.get_all_nodes_url().then(url => {
+    console.log(`Retrieving node list`)
+    return axios
+      .get(url)
+      .then(response => {
+        resolve(response.data)
+      })
+      .catch(error => {
+        reject(error)
+      })
   })
+})
 }
 
 // TODO: implement change code from TransactionList/index.js here to hide business from pres

@@ -60,6 +60,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 * Needs error handling and feedback
 * Implement full modularity
+* Add tests
 
 ## Setup
 

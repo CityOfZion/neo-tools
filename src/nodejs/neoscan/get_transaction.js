@@ -3,9 +3,6 @@
 const neoscan = require('./neoscan.js')
 const dbg   = require('../debug')
 const program = require('commander');
-var cfg     = require('./config.json')
-
-var apiv1 = cfg.api.v1;
 
 function print(msg) {
   console.log(msg);
@@ -32,6 +29,7 @@ if (program.debug) {
 }
 
 neoscan.set_net(program.net)
- neoscan.get_transaction(program.hash).then(result => {
-   print(result)
- })
+
+neoscan.get_transaction(program.hash).then(result => {
+ print(result)
+})
