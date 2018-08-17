@@ -44,7 +44,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 ## Features
 
-* Default address support via accounts config in config.json
+* Default address support via accounts config in src/nodejs/nodejs.config.json
 * Basic neonscan api command line is functional (see neoscan calling convention below)
 * Query coinmakertcap.com tickers
 * Query binance.com price and book tickers
