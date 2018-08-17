@@ -1,17 +1,18 @@
 // neoscan get_last_transactions_by_address
 
 const neoscan = require('./neoscan.js')
-const dbg   = require('../debug')
+const dbg     = require('../debug')
 const program = require('commander');
-var cfg     = require('./config.json')
-
-var apiv1 = cfg.api.v1;
+var cfg       = require('./config.js')
+const _       = require('underscore')
+var config    = cfg.load('./config.json')
 
 function print(msg) {
   console.log(msg);
 }
 
 let pageArg = ''
+var address
 
 program
   .version('0.1.0')
@@ -27,7 +28,14 @@ if (!program.net) {
 }
 
 if (!program.address) {
-  program.help()
+  // check for a default address in config, if not pressent show help
+  var default_account = cfg.get_default_account()
+
+  if(default_account) address = default_account.address
+
+  else program.help()
+} else {
+  address = program.address
 }
 
 if (program.page)  {
@@ -40,11 +48,6 @@ if (program.debug) {
 
 
 neoscan.set_net(program.net)
- neoscan.get_last_transactions_by_address(program.address, pageArg).then(result => {
+ neoscan.get_last_transactions_by_address(address, pageArg).then(result => {
    print(result)
  })
-
-// get port name from the command line:
-// portName  = process.argv[2];
-// code      = process.argv[3];
-// duration  = process.argv[4] * 1000;

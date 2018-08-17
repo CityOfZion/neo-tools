@@ -1,4 +1,15 @@
 {
+  "accounts": {
+    "external": {
+      "default": true,
+      "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+    },
+    "account_name2": {
+      "address": "",
+      "default": false,
+      "path": ""
+    }
+  },
   "networks": {
     "MainNet": {
       "rootUrl": "https://neoscan-testnet.io/api/test_net/"
@@ -10,7 +21,7 @@
   "api": {
     "v1": {
       "get_address_abstracts": {
-        "description": "Returns transaction summary an address from its hash, paginated.",
+        "description": "Returns transaction summary of an address from its hash, paginated.",
         "parms": {
           "address": {
             "type": "string",

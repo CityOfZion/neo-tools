@@ -1,8 +1,8 @@
-// neoscan get_balance
+// neoscan get_unclaimed
 
 const neoscan = require('./neoscan.js')
 const dbg     = require('../debug')
-const program = require('commander');
+const program = require('commander')
 var cfg       = require('./config.js')
 const _       = require('underscore')
 var config    = cfg.load('./config.json')
@@ -18,7 +18,7 @@ program
   .usage('<address>')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --address <address>', 'Specify the address for balance inquiry')
+  .option('-a, --address <address>', 'Specify the address for for unclaimed gas inquiry')
   .parse(process.argv);
 
 if (!program.net) {
@@ -41,6 +41,6 @@ if (program.debug) {
 }
 
 neoscan.set_net(program.net)
- neoscan.get_balance(address).then(result => {
+ neoscan.get_unclaimed(address).then(result => {
    print(result)
  })

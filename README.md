@@ -44,6 +44,8 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 ## Features
 
+* Default address support via accounts config in config.json
+* Basic neonscan api command line is functional (see neoscan calling convention below)
 
 ## Roadmap
 
@@ -59,6 +61,50 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 `npm install`
 
+
+## Wallet Configuration
+
+The following section of src/neoscan/config.json can be configured to use your wallet:
+
+```
+{
+  "accounts": {
+    "account_name1": {
+      "address": "",
+      "default": false,
+      "path": ""
+    },
+    "account_name2": {
+      "address": "",
+      "default": false,
+      "path": ""
+    }
+  }
+}
+```
+
+The path item can be set to the pathname of a json config file that is in another location but follows the same format, i.e.,:
+
+```
+{
+  "accounts": {
+    "one": {
+      "address": "address",
+      "default": true
+    },  
+    "two": {
+      "address": "address two",
+      "default": false
+    },  
+    "three": {
+      "address": "address three",
+      "default": false
+    }   
+  }
+
+```
+
+This will likely be reorganized to have wallet/accounts configured somewhere else.
 
 ## Current Calling convention
 
@@ -79,6 +125,9 @@ node get_last_transactions_by_address -n MainNet -a address
 
 // Get a block by its hash on testnet
 node get_block -h hash
+
+// Get the unclaimed gas for address on testnet
+node get_unclaimed -a address
 
 ```
 

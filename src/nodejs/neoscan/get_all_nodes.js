@@ -1,13 +1,10 @@
 // neoscan get_all_nodes
 
 const neoscan = require('./neoscan.js')
-const dbg   = require('../debug')
+const dbg     = require('../debug')
 const program = require('commander');
-var cfg     = require('./config.json')
+var cfg       = require('./config.json')
 
-var apiv1 = cfg.api.v1;
-
-// dbg.logDeep('apiv1', apiv1)
 
 function print(msg) {
   console.log(msg);
@@ -32,8 +29,3 @@ neoscan.set_net(program.net)
  neoscan.get_all_nodes().then(result => {
    print(result)
  })
-
-// get port name from the command line:
-// portName  = process.argv[2];
-// code      = process.argv[3];
-// duration  = process.argv[4] * 1000;

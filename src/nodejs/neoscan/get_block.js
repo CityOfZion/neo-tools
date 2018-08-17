@@ -35,8 +35,3 @@ neoscan.set_net(program.net)
  neoscan.get_block(program.hash).then(result => {
    print(result)
  })
-
-// get port name from the command line:
-// portName  = process.argv[2];
-// code      = process.argv[3];
-// duration  = process.argv[4] * 1000;

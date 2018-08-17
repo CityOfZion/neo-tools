@@ -292,6 +292,28 @@ exports.parseUnspent = unspentArr => {
   })
 }
 
+exports.get_unclaimed_url = address => {
+  return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_unclaimed/' + address)
+}
+
+// Get block block_height
+
+exports.get_unclaimed = address => {
+  return new Promise((resolve, reject) => {
+    this.get_unclaimed_url(address).then(url => {
+      console.log(`querying unclaimed gas`)
+      return axios
+        .get(url)
+        .then(response => {
+          resolve(response.data)
+        })
+        .catch(error => {
+          reject(error)
+        })
+    })
+  })
+}
+
 
 exports.get_height_url = () => {
   return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_height')
@@ -325,7 +347,7 @@ exports.get_block_url = hash => {
 exports.get_block = (hash) => {
   return new Promise((resolve, reject) => {
     this.get_block_url(hash).then(url => {
-      console.log(`Retrieving node list`)
+      console.log(`Retrieving block by hash`)
       return axios
         .get(url)
         .then(response => {
