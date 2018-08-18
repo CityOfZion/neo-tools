@@ -1,9 +1,13 @@
 // neoscan shacli
 
-const dbg         = require('./debug')
+require('module-alias/register')
+
 const program     = require('commander');
 const SHA256      = require("crypto-js/sha256");
 const hmacSHA256  = require("crypto-js/hmac-sha256");
+
+const dbg         = require('nodejs_util/debug')
+
 
 function print(msg) {
   console.log(msg);

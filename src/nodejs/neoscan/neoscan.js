@@ -4,12 +4,15 @@
 // TODO abstract api choice into an api config option and dynamically map to selected at runtime
 // TODO composable url retrieval
 
-const axios = require('axios')
-const logDeep = require('../debug')
+require('module-alias/register')
+
+
+const axios   = require('axios')
 const Promise = require('bluebird')
-
-
 const { URL } = require('url');
+
+const logDeep = require('nodejs_util/debug')
+
 
 // TODO Reintegrate this (neoscanIni bits) with state tree
 

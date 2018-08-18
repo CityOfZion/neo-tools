@@ -1,11 +1,14 @@
-// neoscan get_unclaimed
+// neoscan get_balance
 
-const neoscan = require('./neoscan.js')
-const dbg     = require('../debug')
-const program = require('commander')
-var cfg       = require('../config.js')
+require('module-alias/register')
+
+const program = require('commander');
 const _       = require('underscore')
-var config    = cfg.load('./nodejs.config.json')
+
+const dbg     = require('nodejs_util/debug')
+const neoscan = require('nodejs_neoscan/neoscan')
+var cfg       = require('nodejs_config/config.js')
+var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 function print(msg) {
   console.log(msg);
@@ -18,7 +21,7 @@ program
   .usage('<address>')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --address <address>', 'Specify the address for for unclaimed gas inquiry')
+  .option('-a, --address <address>', 'Specify the address for balance inquiry')
   .parse(process.argv);
 
 if (!program.net) {
@@ -42,6 +45,6 @@ if (program.debug) {
 
 neoscan.set_net(program.net)
 
-neoscan.get_unclaimed(address).then(result => {
+neoscan.get_balance(address).then(result => {
  print(result)
 })

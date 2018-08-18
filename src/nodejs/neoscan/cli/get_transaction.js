@@ -1,8 +1,11 @@
 // neoscan get_transaction
 
-const neoscan = require('./neoscan.js')
-const dbg   = require('../debug')
+require('module-alias/register')
+
 const program = require('commander');
+
+const dbg     = require('nodejs_util/debug')
+const neoscan = require('nodejs_neoscan/neoscan')
 
 function print(msg) {
   console.log(msg);

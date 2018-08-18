@@ -1,6 +1,9 @@
 // query coinmakertcap.com for price info
+require('module-alias/register')
+
 const axios = require('axios')
-const dbg = require('./debug')
+
+const dbg = require('nodejs_util/debug')
 
 
 exports.get_price = (coin = 'NEO', currency = 'usd') => {

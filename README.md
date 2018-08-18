@@ -69,7 +69,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 ## Wallet Configuration
 
-The following section of src/nodejs.config.json can be configured to use your wallet:
+The following section of src/nodejs/config/nodejs.config.json can be configured to use your wallet:
 
 ```
 {
@@ -111,7 +111,7 @@ The path item can be set to the pathname of a json config file that is in anothe
 
 ## Exchange Configuration
 
-See src/nodejs/nodejs.config.json for how to setup exchange api and secret keys.
+See src/nodejs/config/nodejs.config.json for how to setup exchange api and secret keys.
 You'll need to configure the path to point to a file with a json blob like this:
 ```
 {
@@ -147,7 +147,7 @@ This will likely be reorganized to have wallet/accounts configured somewhere els
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
 ```
-cd src/nodejs/neoscan
+cd src/nodejs/neoscan/cli/
 
 // Get balance for an address on MainNet
 node get_balance -n MainNet -a youraddress
@@ -172,21 +172,33 @@ node get_unclaimed -a address
 For nodejs price lookup utilities:
 
 ```
+cd src/nodejs/
+
 // list the price of neo and total net worth for 10 shares by coinmarketcap valuation
+
 node get_worth -s neo -a 10
+
 
 // list the price of neousdt and total net worth for 3 shares by binance valuation
 // ticker names found at https://api.binance.com/api/v3/ticker/price
 // weight 1 for binance
+
 node get_worth -s neousdt -a 3 -x binance
+
+
+cd src/nodejs/exchange/binance/cli/
+
 
 // list the best prices on the book at binance
 // weight 1
-node binance_get_book -s neousdt
+
+node get_book -s neousdt
+
 
 // list the asset details (requires api key and secret) for NEO (or all no -s NEO)
 // weight 1
-node binance_get_asset_detail -s NEO
+
+node get_asset_detail -s NEO
 ```
 
 NOTE: Be careful with binance requests, DO NOT HAMMER, the weights can add up. If you get a 429 you should stop for a while.
@@ -196,7 +208,10 @@ If you get a 418 you've been banned.
 
 ### crypto
 ```
+cd src/nodejs/
+
 // Create SHA256 hash of message 'test'
+
 node shacli.js --message 'test'
 ```
 

@@ -1,8 +1,11 @@
 // neoscan get_all_nodes
 
-const neoscan = require('./neoscan.js')
-const dbg     = require('../debug')
+require('module-alias/register')
+
 const program = require('commander');
+
+const neoscan = require('nodejs_neoscan/neoscan')
+const dbg     = require('nodejs_util/debug')
 
 function print(msg) {
   console.log(msg);

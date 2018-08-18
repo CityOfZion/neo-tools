@@ -1,13 +1,17 @@
-// neoscan get_worth
+// Get the price of a symbol at a given amount on either binance or cmc
 
-const dbg     = require('./debug')
+require('module-alias/register')
+
+
 const program = require('commander')
-var cfg       = require('./config.js')
 const _       = require('underscore')
-var config    = cfg.load('./neoscan/neoscan.config.json')
-const cmc     = require('./get_cmc_price.js')
-const binance = require('./binance.js')
 
+const dbg     = require('nodejs_util/debug')
+const cmc     = require('nodejs_market/coinmarketcap/get_price')
+const binance = require('nodejs_exchange/binance/binance-api.js')
+var cfg       = require('nodejs_config/config')
+
+var config    = cfg.load('nodejs_config/neoscan.config.json')
 
 function print(msg) {
   console.log(msg);

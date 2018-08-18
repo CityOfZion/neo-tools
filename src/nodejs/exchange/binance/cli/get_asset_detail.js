@@ -1,15 +1,18 @@
 // neoscan get_binance_book
 // Best price/qty on the order book for a symbol or symbols.
 
-const dbg     = require('./debug')
+require('module-alias/register')
+
 const program = require('commander')
-var cfg       = require('./config.js')
 const _       = require('underscore')
-const cmc     = require('./get_cmc_price.js')
-const binance = require('./binance.js')
+
+const dbg     = require('nodejs_util/debug')
+var cfg       = require('nodejs_config/config.js')
+const cmc     = require('nodejs_market/coinmarketcap/get_price.js')
+const binance = require('nodejs_exchange/binance/binance-api.js')
 
 
-var config = cfg.load('./nodejs.config.json')
+var config = cfg.load('nodejs_config/nodejs.config.json')
 var extCfg = cfg.get_exchanges()
 // dbg.logDeep('external config: ', extCfg);
 

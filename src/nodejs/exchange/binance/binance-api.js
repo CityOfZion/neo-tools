@@ -1,13 +1,15 @@
-// binance.com support module
+// binance.com api module
 
 // be sure to watch for weight response
 // https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
 
+require('module-alias/register')
+
 const axios       = require('axios')
-const dbg         = require('./debug')
 const _           = require('underscore')
 const hmacSHA256  = require("crypto-js/hmac-sha256");
 
+const dbg         = require('nodejs_util/debug')
 
 // query binance.com for price info
 // Weight 1

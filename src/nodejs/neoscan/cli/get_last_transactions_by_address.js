@@ -1,11 +1,14 @@
 // neoscan get_last_transactions_by_address
 
-const neoscan = require('./neoscan.js')
-const dbg     = require('../debug')
+require('module-alias/register')
+
 const program = require('commander');
-var cfg       = require('../config.js')
 const _       = require('underscore')
-var config    = cfg.load('./nodejs.config.json')
+
+const dbg     = require('nodejs_util/debug')
+const neoscan = require('nodejs_neoscan/neoscan')
+var cfg       = require('nodejs_config/config.js')
+var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 function print(msg) {
   console.log(msg);
