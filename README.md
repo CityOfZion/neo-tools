@@ -2,14 +2,16 @@
 
 ## Summary
 
-The aim is to have all Neo Smart Economy API or project implementation primitives to be part of a unix-style command line chainable toolset. With this in place one would have easy lookup of various operations and functions, reference implementation, and clear calling syntax and usage examples. A common problem for me, working in c#, nodejs, and python, is that I'm always having to go back to one of those projects, navigate their specific layout, then locate a piece or example to be sure I'm doing something right. Instead of trying to get everyone to agree on a standard I thought why not implement a bunch of their primitives in a standard way to unify that reference. Besides, being able to call a lot of those directly from command line would be really useful for all kinds of stuff.(edited)
-So for example, you might have a file structure like src/ and under it you'd have nodejs, python, and c#. Then under each of those you might have modules demonstrating how to use things like neon-js, neo, or boa. Those modules would also facilitate a stdio cli mechanism.
+The goal is to have all Neo Smart Economy API or project implementation primitives as a part of a unix-style command line chainable toolset.
+
+With neotools in place, one would have easy lookup of various operations and functions, reference implementation, clear calling syntax and usage examples. A common problem for me, working in c#, nodejs, and python, is that I'm always having to go back to one of those projects, navigate their specific layout, then locate a piece or example to be sure I'm doing something right. Instead of trying to get everyone to agree on a standard I thought why not implement a bunch of those projects' primitives in a standard way to unify that reference. Besides, being able to call a lot of those directly from command line would be really useful.
+
 
 ## Project Version and Status
 
-Version: 0.0.1
+Version: 0.31.0
 
-Status: Writing alpha code, documenting goals, and defining standards
+Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
 Next: Write implementation example template
 
@@ -45,10 +47,15 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 ## Features
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
-* Basic neonscan api command line is functional (see neoscan calling convention below)
+* Basic wallet support
+  * address
+  * default account
+  * NEP-2 and NEP-6 coming soon!
+* Basic Neoscan API command line is functional (see neoscan calling convention below)
 * Query coinmakertcap.com tickers
 * Query binance.com price and book tickers
-* Binance module now supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md (partially implemented right now)
+* Binance API module supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
+* Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
 * shacli support added for SHA256 and HMAC SHA256
 
 ## Roadmap
@@ -111,7 +118,7 @@ The path item can be set to the pathname of a json config file that is in anothe
 
 ## Exchange Configuration
 
-See src/nodejs/config/nodejs.config.json for how to setup exchange api and secret keys.
+See src/nodejs/config/nodejs.config.json for how to setup exchange API and secret keys.
 You'll need to configure the path to point to a file with a json blob like this:
 ```
 {
@@ -195,7 +202,7 @@ cd src/nodejs/exchange/binance/cli/
 node get_book -s neousdt
 
 
-// list the asset details (requires api key and secret) for NEO (or all no -s NEO)
+// list the asset details (requires API key and secret) for NEO (or all no -s NEO)
 // weight 1
 
 node get_asset_detail -s NEO
@@ -219,7 +226,7 @@ node shacli.js --message 'test'
 ## Planned Future Calling Convention
 
 ```
-neotools <registered api or implementation name>> <relevant function> <function arguments>
+neotools <registered API or implementation name>> <relevant function> <function arguments>
 ```
 
 Example:
