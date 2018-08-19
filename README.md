@@ -65,7 +65,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
     * Binance API module supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
     * Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
     * Rest:
-      - Order Book Ticker: get_book (need to rename to get_book_ticker)
+      - Order Book Ticker: get_book_ticker
     * WAPI:
       - Asset Detail: get_asset_detail
 * Crypto
