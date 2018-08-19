@@ -47,16 +47,29 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 ## Features
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
-* Basic wallet support
+* Wallet support
   * address
   * default account
   * NEP-2 and NEP-6 coming soon!
-* Basic Neoscan API command line is functional (see neoscan calling convention below)
-* Query coinmakertcap.com tickers
-* Query binance.com price and book tickers
-* Binance API module supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
-* Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
-* shacli support added for SHA256 and HMAC SHA256
+* Neoscan API command line is functional (see neoscan calling convention below)
+  - get_all_nodes
+  - get_balance
+  - get_block
+  - get_height
+  - get_last_transactions_by_address
+  - get_transaction
+  - get_unclaimed
+* Exchange
+  * Query coinmakertcap.com tickers
+  * Binance
+    * Binance API module supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
+    * Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
+    * Rest:
+      - Order Book Ticker: get_book (need to rename to get_book_ticker)
+    * WAPI:
+      - Asset Detail: get_asset_detail
+* Crypto
+  * shacli support added for SHA256 and HMAC SHA256
 
 ## Roadmap
 
@@ -153,30 +166,39 @@ This will likely be reorganized to have wallet/accounts configured somewhere els
 
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
+
+### Neoscan for test and main
+https://neoscan.io/docs/index.html#api-v1-get
+
 ```
 cd src/nodejs/neoscan/cli/
-
-// Get balance for an address on MainNet
-node get_balance -n MainNet -a youraddress
-
-// Get current block height on TestNet
-node get_height
 
 // List all nodes on Main Net
 node get_all_nodes -n MainNet
 
-// List all transactions for address on Main net
-node get_last_transactions_by_address -n MainNet -a address
+// Get balance for an address on MainNet
+node get_balance -n MainNet -a youraddress
 
 // Get a block by its hash on testnet
 node get_block -h hash
+
+// Get current block height on TestNet
+node get_height
+
+// List all transactions for address on Main net
+node get_last_transactions_by_address -n MainNet -a address
+
+// transaction for a  hash on MainNet
+node get_transaction.js -n mainnet -h txid
 
 // Get the unclaimed gas for address on testnet
 node get_unclaimed -a address
 
 ```
-### Exchanges
-For nodejs price lookup utilities:
+### Exchange and Market APIs
+https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
+
+https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
 
 ```
 cd src/nodejs/
