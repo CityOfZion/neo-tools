@@ -40,7 +40,7 @@ exports.get_worth = (symbol, amount, currency) => {
 // query binance.com for est price/qty on the order book for a symbol or symbols.
 // Weight 1
 
-exports.get_book = (coin = 'neousdt', currency = 'usd') => {
+exports.get_book_ticker = (coin = 'neousdt', currency = 'usd') => {
   console.log('retrieving: ' + 'https://api.binance.com/api/v3/ticker/bookTicker')
   return axios.get('https://api.binance.com/api/v3/ticker/bookTicker')
     .then((mapping) => {
