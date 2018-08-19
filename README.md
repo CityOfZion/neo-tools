@@ -67,6 +67,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
     * Rest:
       - Order Book Ticker: get_book_ticker
       - Get Server Timer: get_server_time
+      - Ping: ping
     * WAPI:
       - Asset Detail: get_asset_detail
 * Crypto
