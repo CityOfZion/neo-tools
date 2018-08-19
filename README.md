@@ -66,6 +66,8 @@ implementations is ideal to facilitate complimentary capabilities where necessar
     * Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
     * Rest:
       - Order Book Ticker: get_book_ticker
+      - Get Server Timer: get_server_time
+      - Ping: ping
     * WAPI:
       - Asset Detail: get_asset_detail
 * Crypto
@@ -228,6 +230,16 @@ node get_book -s neousdt
 // weight 1
 
 node get_asset_detail -s NEO
+
+
+// Test connectivity and get the exchange server time. It's up to the caller to convert to something other than milliseconds
+
+node get_server_time
+
+
+// Test connectivity of the server
+
+node ping
 ```
 
 NOTE: Be careful with binance requests, DO NOT HAMMER, the weights can add up. If you get a 429 you should stop for a while.
