@@ -247,22 +247,6 @@ return new Promise((resolve, reject) => {
         } else {
           // TODO rewrite to dynamically populate assets
           data.balance.map(b => {
-            // switch (b.asset) {
-            //   case 'NEO':
-            //     neo = b.amount
-            //     break
-            //   case 'GAS':
-            //     gas = '' + b.amount
-            //     break
-            //   case 'Redeemable HashPuppy Token':
-            //     rht = '' + b.amount
-            //     console.log('rht: '+ rht)
-            //     break
-            //   case 'Master Contract Token':
-            //     mct = '' + b.amount
-            //     console.log('mct: '+ mct)
-            //     break
-            // }
 
             let ast = {}
             ast[b.asset] = b.amount
