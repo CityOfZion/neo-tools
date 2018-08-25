@@ -1,6 +1,6 @@
-// rpc getconnection count in neon-js
-// Gets the current number of connections for the node
-//
+// rpc getVersion in neon-js
+// Gets version information of this node
+
 require('module-alias/register')
 
 
@@ -21,6 +21,7 @@ program
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use')
+
   .parse(process.argv);
 
 if (!program.node) {
@@ -33,6 +34,6 @@ if (program.debug) {
 
 const client = neon.default.create.rpcClient(program.node)
 
-client.getConnectionCount().then(response => {
-  dbg.logDeep('result\n:', response)
+client.getVersion().then(response => {
+  dbg.logDeep('result:\n', response)
 })
