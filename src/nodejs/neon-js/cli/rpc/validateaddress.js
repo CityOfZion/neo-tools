@@ -1,6 +1,7 @@
-// rpc getconnection count in neon-js
-// Gets the current number of connections for the node
-//
+// rpc validateAddress in neon-js
+// Verify that the address is a correct NEO address
+// boolean return
+
 require('module-alias/register')
 
 
@@ -21,9 +22,11 @@ program
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use')
+  .option('-a, --address <address>', 'address to validate')
+
   .parse(process.argv);
 
-if (!program.node) {
+if (!program.node || !program.address) {
   program.help()
 }
 
@@ -33,6 +36,6 @@ if (program.debug) {
 
 const client = neon.default.create.rpcClient(program.node)
 
-client.getConnectionCount().then(response => {
-  dbg.logDeep('result\n:', response)
+client.validateAddress(program.address).then(response => {
+  dbg.logDeep('result:\n', response)
 })
