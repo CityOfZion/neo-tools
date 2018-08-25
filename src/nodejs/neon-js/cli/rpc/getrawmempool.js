@@ -1,5 +1,5 @@
-// rpc getconnection count in neon-js
-// Gets the current number of connections for the node
+// rpc getrawmempool in neon-js
+// Gets a list of unconfirmed transactions in memory
 //
 require('module-alias/register')
 
@@ -21,6 +21,8 @@ program
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use')
+  .option('-s, --summary', 'summarizes details to integer count of items in the list usually returned')
+
   .parse(process.argv);
 
 if (!program.node) {
@@ -33,6 +35,8 @@ if (program.debug) {
 
 const client = neon.default.create.rpcClient(program.node)
 
-client.getConnectionCount().then(response => {
-  dbg.logDeep('result\n:', response)
+client.getRawMemPool().then(response => {
+  if (program.summary) {
+    print('getRawMemPool\nresult:\n' + response.length)
+  } else dbg.logDeep('getRawMemPool\nresult:\n', response)
 })

@@ -1,5 +1,5 @@
-// node vitals module
-// this queries a node and generates a report
+// rpc getpeers in neon-js
+// Gets a list of nodes that are currently connected/disconnected/bad by this node
 //
 require('module-alias/register')
 
@@ -12,19 +12,17 @@ var neon      = require('@cityofzion/neon-js')
 const neoscan = require('nodejs_neoscan/neoscan')
 const dbg     = require('nodejs_util/debug')
 
-
 function print(msg) {
   console.log(msg);
 }
-
-
 
 program
   .version('0.1.0')
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use')
-  .option('-s, --summary', 'summarizes details like getrawmempool and getpeers to integers instead of lists')
+  .option('-s, --summary', 'summarizes details to integer count of items in the list usually returned')
+
   .parse(process.argv);
 
 if (!program.node) {
@@ -37,30 +35,10 @@ if (program.debug) {
 
 const client = neon.default.create.rpcClient(program.node)
 
-print('node: ' + program.node)
-
-client.getVersion().then(response => {
-  dbg.logDeep('getVersion:\nresult:\n', response)
-})
-
 client.getPeers().then(response => {
   if (program.summary) {
     print('getPeers connected\nresult:\n' + response.connected.length)
     print('getPeers unconnected\nresult:\n' + response.unconnected.length)
     print('getPeers bad\nresult:\n' + response.bad.length)
   } else dbg.logDeep('getPeers\nresult:\n', response)
-})
-
-client.getConnectionCount().then(response => {
-  dbg.logDeep('getConnectionCount:\nresult:\n', response)
-})
-
-client.getBlockCount().then(response => {
-  dbg.logDeep('getBlockCount\nresult:\n', response)
-})
-
-client.getRawMemPool().then(response => {
-  if (program.summary) {
-    print('getRawMemPool\nresult:\n' + response.length)
-  } else dbg.logDeep('getRawMemPool\nresult\n', response)
 })

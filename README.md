@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.33.0
+Version: 0.34.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -74,6 +74,13 @@ implementations is ideal to facilitate complimentary capabilities where necessar
       - Asset Detail: get_asset_detail
 * Crypto
   * shacli support added for SHA256 and HMAC SHA256
+* Neon-js RPC Implementation
+  * neon-js/cli/rpc/query.js - dynamic query construction
+  * neon-js/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
+  * neon-js/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
+  * neon-js/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
+  * neon-js/cli/rpc/getVersion - Gets version information of this node
+  * neon-js/cli/rpc/validateAddress - Verify that the address is a correct NEO address
 * Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
   * Vitals included:
     * version

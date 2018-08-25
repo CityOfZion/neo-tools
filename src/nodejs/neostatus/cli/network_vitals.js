@@ -12,14 +12,6 @@ var neon      = require('@cityofzion/neon-js')
 const neoscan = require('nodejs_neoscan/neoscan')
 const dbg     = require('nodejs_util/debug')
 
-
-// const dbg     = require('nodejs_util/debug')
-// const cmc     = require('nodejs_market/coinmarketcap/get_price')
-// const binance = require('nodejs_exchange/binance/binance-api.js')
-// var cfg       = require('nodejs_config/config')
-//
-// var config    = cfg.load('nodejs_config/neoscan.config.json')
-
 function print(msg) {
   console.log(msg);
 }
@@ -69,7 +61,7 @@ function get_node_health(node) {
       print('getPeers connected\nresult:\n' + response.connected.length)
       print('getPeers unconnected\nresult:\n' + response.unconnected.length)
       print('getPeers bad\nresult:\n' + response.bad.length)
-    } else dbg.logDeep('getRawMemPool\nresult:\n', response)
+    } else dbg.logDeep('getPeers\nresult:\n', response)
     print('\n\n')
   })
 
