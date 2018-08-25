@@ -12,32 +12,21 @@ const cmc     = require('nodejs_market/coinmarketcap/get_price.js')
 const binance = require('nodejs_exchange/binance/binance-api.js')
 
 
-var config = cfg.load('nodejs_config/nodejs.config.json')
-var extCfg = cfg.get_exchanges()
-// dbg.logDeep('external config: ', extCfg);
-
 function print(msg) {
   console.log(msg);
 }
 
-var symbol
-
 program
   .version('0.1.0')
-  .usage('-s <symbol>')
+  .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-s, --symbol [symbol]', 'Specify the symbol to look its value')
   .parse(process.argv);
 
-if (program.symbol) {
-  // program.help()
-  symbol = program.symbol
-}
 
 if (program.debug) {
   print('DEBUGGING');
 }
 
-binance.get_asset_detail(extCfg.exchanges.binance.apiKey, extCfg.exchanges.binance.secret, symbol).then(result => {
-  dbg.logDeep('asset details: \nresult:\n', result)
+binance.ping().then(result => {
+  dbg.logDeep('ping: \nresult:\n', result)
 })

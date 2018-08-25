@@ -8,7 +8,12 @@ exports.load = path => {
   return cfg
 }
 
+exports.save = path => {
 
+  return cfg
+}
+
+// returns account in user config that has "default:" true"
 exports.get_default_account = () => {
   var accounts = cfg.accounts
 

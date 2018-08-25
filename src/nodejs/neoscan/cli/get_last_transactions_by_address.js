@@ -52,5 +52,5 @@ if (program.debug) {
 
 neoscan.set_net(program.net)
  neoscan.get_last_transactions_by_address(address, pageArg).then(result => {
-   print(result)
+   print('\nresult:\n' + result)
  })

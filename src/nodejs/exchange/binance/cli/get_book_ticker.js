@@ -20,13 +20,8 @@ program
   .version('0.1.0')
   .usage('-s <symbol>')
   .option('-d, --debug', 'Debug')
-  .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-s, --symbol <symbol>', 'Specify the symbol to look its value')
   .parse(process.argv);
-
-if (!program.net) {
-  // print('network: ' + program.net);
-}
 
 if (!program.symbol) {
   program.help()
@@ -36,6 +31,6 @@ if (program.debug) {
   print('DEBUGGING');
 }
 
-binance.get_book(program.symbol).then(result => {
-  dbg.logDeep('binance book: ', result)
+binance.get_book_ticker(program.symbol).then(result => {
+  dbg.logDeep('binance book: \nresult:\n', result)
 })

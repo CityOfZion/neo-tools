@@ -18,7 +18,7 @@ var address
 
 program
   .version('0.1.0')
-  .usage('<address>')
+  .usage('-a <address>')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --address <address>', 'Specify the address for balance inquiry')
@@ -46,5 +46,5 @@ if (program.debug) {
 neoscan.set_net(program.net)
 
 neoscan.get_balance(address).then(result => {
- print(result)
+ print('\nresult:\n' + result)
 })
