@@ -34,5 +34,5 @@ if (program.debug) {
 neoscan.set_net(program.net)
 
 neoscan.get_transaction(program.hash).then(result => {
-  print('\nresult:\n' + result)
+  dbg.logDeep('\nresult:\n', result)
 })
