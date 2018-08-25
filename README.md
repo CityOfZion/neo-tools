@@ -80,7 +80,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
     * peers
     * connection count
     * block count
-    * raw mempool
+    * raw mem pool
   * Network Vitals - get the vitals for all nodes on a given net
   * Node Vitals - get the vitals for a node
 
