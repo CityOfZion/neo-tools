@@ -39,4 +39,4 @@ if (program.debug) {
 
 var result = account.list(configData)
 
-if(result) dbg.logDeep('accounts: ', result)
+if(result) dbg.logDeep('accounts: \nresult:\n', result)

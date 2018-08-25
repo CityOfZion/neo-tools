@@ -47,9 +47,11 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 ## Features
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
-* Wallet support
+* Wallet/Account support
   * address
   * default account
+  * list addresses
+  * get and set watch addresses
   * NEP-2 and NEP-6 coming soon!
 * Neoscan API command line is functional (see neoscan calling convention below)
   - get_all_nodes
@@ -72,6 +74,15 @@ implementations is ideal to facilitate complimentary capabilities where necessar
       - Asset Detail: get_asset_detail
 * Crypto
   * shacli support added for SHA256 and HMAC SHA256
+* Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
+  * Vitals included:
+    * version
+    * peers
+    * connection count
+    * block count
+    * raw mem pool
+  * Network Vitals - get the vitals for all nodes on a given net
+  * Node Vitals - get the vitals for a node
 
 ## Roadmap
 
@@ -88,6 +99,11 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 
 `npm install`
 
+## neotools APIs
+
+For now there is no official API but features are still available. neotools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
+To leverage any module for a specific language, simple enter the src folder for that language and locate the folder/folder.js file for the relevant feature. F.e., to use the Node.js config module
+require src/nodejs/config/config.js.
 
 ## Wallet Configuration
 
@@ -254,6 +270,17 @@ cd src/nodejs/
 // Create SHA256 hash of message 'test'
 
 node shacli.js --message 'test'
+```
+
+
+### Neo Status
+```
+cd src/nodejs/
+
+// Generate a report of vitals for mainnet and testnet
+node neostatus/network_health.js -n mainnet --summary > network_health_mainnet.txt
+node neostatus/network_health.js -n testnet --summary > network_health_testnet.txt
+
 ```
 
 
