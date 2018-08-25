@@ -28,5 +28,5 @@ if (program.debug) {
 }
 
 binance.get_server_time().then(result => {
-  dbg.logDeep('server time: ', result)
+  dbg.logDeep('server time: \nresult:\n', result)
 })

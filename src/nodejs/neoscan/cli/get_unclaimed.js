@@ -46,5 +46,5 @@ if (program.debug) {
 neoscan.set_net(program.net)
 
 neoscan.get_unclaimed(address).then(result => {
- print(result)
+  print('\nresult:\n' + result)
 })

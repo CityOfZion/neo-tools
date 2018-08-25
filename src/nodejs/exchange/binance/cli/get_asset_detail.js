@@ -39,5 +39,5 @@ if (program.debug) {
 }
 
 binance.get_asset_detail(extCfg.exchanges.binance.apiKey, extCfg.exchanges.binance.secret, symbol).then(result => {
-  dbg.logDeep('asset details: ', result)
+  dbg.logDeep('asset details: \nresult:\n', result)
 })
