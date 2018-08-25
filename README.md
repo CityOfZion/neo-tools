@@ -75,6 +75,12 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 * Crypto
   * shacli support added for SHA256 and HMAC SHA256
 * Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
+  * Vitals included:
+    * version
+    * peers
+    * connection count
+    * block count
+    * raw mempool
   * Network Vitals - get the vitals for all nodes on a given net
   * Node Vitals - get the vitals for a node
 
