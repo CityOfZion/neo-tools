@@ -329,12 +329,13 @@ exports.get_block_url = hash => {
 return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_block/' + hash)
 }
 
+
 // Get block block_height
 
 exports.get_block = (hash) => {
 return new Promise((resolve, reject) => {
   this.get_block_url(hash).then(url => {
-    console.log(`Retrieving block by hash`)
+    console.log(`Retrieving block by hash or index`)
     return axios
       .get(url)
       .then(response => {
