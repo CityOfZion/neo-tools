@@ -31,26 +31,6 @@ if (program.debug) {
 
 neoscan.set_net(program.net)
 
-async function testing() {
-  var result = await request('https://neoscan.io/api/main_net/v1/get_height');
-
-  dbg.logDeep('res: ', JSON.parse(result.body).height)
-
-  const neoscanBlockHeight = JSON.parse(result.body).height;
-
-  result = await request('https://neoscan.io/api/main_net/v1/get_block/' + neoscanBlockHeight);
-
-  const neoscanBlock = JSON.parse(result.body)
-
-  const neoscanBlockTime = new Date(neoscanBlock.time * 1000).toLocaleString()
-
-  // dbg.logDeep('block: ', neoscanBlock)
-  dbg.logDeep('block: ', neoscanBlockTime)
-}
-
-testing()
-
-
 neoscan.get_height().then(result => {
   dbg.logDeep('\nheight:\n', result)
 
