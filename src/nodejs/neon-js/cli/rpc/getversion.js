@@ -20,7 +20,7 @@ program
   .version('0.1.0')
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node <node>', 'set RPC node to use')
+  .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
 
   .parse(process.argv);
 
