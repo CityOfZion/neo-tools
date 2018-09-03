@@ -2,6 +2,8 @@
 
 require('module-alias/register')
 
+const request = require('async-request');
+
 const program = require('commander');
 const _       = require('underscore')
 

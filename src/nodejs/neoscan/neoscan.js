@@ -84,10 +84,12 @@ return gas
 
 exports.switchNetwork = networkId => {
 let net
-switch (networkId) {
+if (!networkId) return undefined
+
+switch (networkId.toLowerCase()) {
   case 'main_net':
   case 'mainnet':
-  case 'MainNet':
+  case 'main':
     if (curState && curState.config && curState.config.neoscan) {
       net = curState.config.neoscan.active = curState.config.neoscan.mainNet
     } else {
@@ -103,7 +105,7 @@ switch (networkId) {
     break
   case 'test_net':
   case 'testnet':
-  case 'TestNet':
+  case 'test':
     if (curState && curState.config && curState.config.neoscan) {
       net = curState.config.neoscan.active = curState.config.neoscan.testNet
     } else {
@@ -118,8 +120,6 @@ switch (networkId) {
     }
     break
   default:
-    if (!networkId) return undefined
-
     if (curState && curState.config && curState.config.neoscan && curState.config.networks && curState.config.networks[networkId]) {
       net = curState.config.neoscan.active = curState.config.networks[networkId]
     } else {
