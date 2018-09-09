@@ -21,7 +21,7 @@ program
   .version('0.1.0')
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node <node>', 'set RPC node to use')
+  .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
   .option('-a, --address <address>', 'address to validate')
 
   .parse(process.argv);

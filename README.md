@@ -58,6 +58,8 @@ implementations is ideal to facilitate complimentary capabilities where necessar
   - get_balance
   - get_block
   - get_height
+  - get_last_block
+  - get_last_block_time
   - get_last_transactions_by_address
   - get_transaction
   - get_unclaimed
@@ -209,6 +211,12 @@ node get_block -h hash
 
 // Get current block height on TestNet
 node get_height
+
+// Get the latest block data from neoscan Main Net
+node get_last_block -n mainnet
+
+// Get the latest block time from neoscan Main Net
+node get_last_block_time -n mainnet
 
 // List all transactions for address on Main net
 node get_last_transactions_by_address -n MainNet -a address

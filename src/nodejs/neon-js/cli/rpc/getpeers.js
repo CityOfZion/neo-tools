@@ -20,7 +20,7 @@ program
   .version('0.1.0')
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node <node>', 'set RPC node to use')
+  .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
   .option('-s, --summary', 'summarizes details to integer count of items in the list usually returned')
 
   .parse(process.argv);
