@@ -54,9 +54,12 @@ implementations is ideal to facilitate complimentary capabilities where necessar
   * get and set watch addresses
   * NEP-2 and NEP-6 coming soon!
 * Neoscan API command line is functional (see neoscan calling convention below)
+  - get_address_abstracts
   - get_all_nodes
   - get_balance
   - get_block
+  - get_claimable
+  - get_claimed
   - get_height
   - get_last_block
   - get_last_block_time
@@ -200,6 +203,9 @@ https://neoscan.io/docs/index.html#api-v1-get
 ```
 cd src/nodejs/neoscan/cli/
 
+//Returns page 1 of transaction summary for default address from its hash, paginated
+node get_address_abstracts -n main -p 1
+
 // List all nodes on Main Net
 node get_all_nodes -n MainNet
 
@@ -208,6 +214,12 @@ node get_balance -n MainNet -a youraddress
 
 // Get a block by its hash on testnet
 node get_block -h hash
+
+// Get claimable transactions for default address on testNet
+node get_claimable
+
+// Get claimed transactions for default address on testNet
+node get_claimed
 
 // Get current block height on TestNet
 node get_height
