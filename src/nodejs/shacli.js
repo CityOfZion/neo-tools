@@ -1,4 +1,5 @@
 // neoscan shacli
+// generate a sha256  hash of a message using hmac with a secret or vanilla sha256
 
 require('module-alias/register')
 
