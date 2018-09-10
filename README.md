@@ -75,6 +75,9 @@ implementations is ideal to facilitate complimentary capabilities where necessar
       - Order Book Ticker: get_book_ticker
       - Get Server Timer: get_server_time
       - Ping: ping
+      - get_recent_trades: /api/v1/trades (incomplete)
+      - get_all_symbols: (get_price wrapper with no symbol spec)
+      - search symbols cli with exchange/binance/cli/get_all_symbols.js
     * WAPI:
       - Asset Detail: get_asset_detail
 * Crypto
@@ -248,8 +251,8 @@ https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-a
 ```
 cd src/nodejs/
 
-// list the price of neo and total net worth for 10 shares by coinmarketcap valuation
-
+// List the price of neo and total net worth for 10 shares by coinmarketcap valuation.
+// Note: in this version you cannot list all symbols for cmc as you can with binance
 node get_worth -s neo -a 10
 
 
@@ -260,7 +263,26 @@ node get_worth -s neo -a 10
 node get_worth -s neousdt -a 3 -x binance
 
 
+// list the price of all symbols that have "NEO" in the name and multiply their value by 2
+node get_worth.js -a 2 -x binance | grep NEO -A 1
+
+
+// list the price of all symbols on binance times 2 units
+node get_worth.js -a 2 -x binance
+
+
 cd src/nodejs/exchange/binance/cli/
+
+
+// list the price of all symbols on binance times 2 units
+// NOTE: this is not an alias for get worth, this ONLY does binance
+// weight 1
+node get_all_symbols.js -a 2
+
+
+// list the price of all symbols that have "NEO" in the name and multiply their value by 2
+// weight 1
+node get_all_symbols.js -a 2 | grep NEO -A 1
 
 
 // list the best prices on the book at binance
