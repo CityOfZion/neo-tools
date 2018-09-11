@@ -336,7 +336,7 @@ node neostatus/network_health.js -n testnet --summary > network_health_testnet.t
 ## Planned Future Calling Convention
 
 ```
-neotools <registered API or implementation name>> <relevant function> <function arguments>
+neotools <registered API or implementation name> <relevant function> <function arguments>
 ```
 
 Example:
