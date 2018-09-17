@@ -18,7 +18,7 @@ function print(msg) {
 
 var addresses = [], address = []
 
-function collect(val, memo) {
+function collect(val) {
   address.push(val);
   return address;
 }
