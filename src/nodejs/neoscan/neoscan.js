@@ -90,7 +90,7 @@ exports.switchNetwork = networkId => {
     case 'main_net':
     case 'mainnet':
     case 'main':
-      if (curState && curState.config && curState.config.neoscan) {
+      if (curState && curState.config && curState.config.neoscan && curState.config.neoscan.active) {
         net = curState.config.neoscan.active = curState.config.neoscan.mainNet
       } else {
         curState = {
@@ -106,7 +106,7 @@ exports.switchNetwork = networkId => {
     case 'test_net':
     case 'testnet':
     case 'test':
-      if (curState && curState.config && curState.config.neoscan) {
+      if (curState && curState.config && curState.config.neoscan && curState.config.neoscan.active) {
         net = curState.config.neoscan.active = curState.config.neoscan.testNet
       } else {
         curState = {
@@ -120,7 +120,7 @@ exports.switchNetwork = networkId => {
       }
       break
     default:
-      if (curState && curState.config && curState.config.neoscan && curState.config.networks && curState.config.networks[networkId]) {
+      if (curState && curState.config && curState.config.neoscan && curState.config.networks && curState.config.networks[networkId] && curState.config.neoscan.active) {
         net = curState.config.neoscan.active = curState.config.networks[networkId]
       } else {
         // if (curState.config.neoscan[networkId].apiType !== 'neoscan') return undefined
@@ -201,7 +201,7 @@ exports.get_last_transactions_by_address_url = (address, page) => {
 
 exports.get_last_transactions_by_address = (address, page) => {
   let pageArg = ''
-  if(page) pageArg = page
+  if (page) pageArg = page
   return new Promise((resolve, reject) => {
     this.get_last_transactions_by_address_url(address, pageArg).then(url => {
       console.log(url)

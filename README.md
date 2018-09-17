@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.34.0
+Version: 0.35.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -329,6 +329,21 @@ cd src/nodejs/
 // Generate a report of vitals for mainnet and testnet
 node neostatus/network_health.js -n mainnet --summary > network_health_mainnet.txt
 node neostatus/network_health.js -n testnet --summary > network_health_testnet.txt
+
+```
+
+
+### CLI Chaining examples
+Only those listed below are currently chainable with stdin.
+
+```
+cd src/nodejs/
+
+
+// List all balances for all accounts
+// -r / --readstdin indicates to read stdin as json
+node account/cli/list.js | node neoscan/cli/get_balance.js -r
+
 
 ```
 
