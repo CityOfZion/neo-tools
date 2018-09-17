@@ -41,4 +41,4 @@ if (program.debug) {
 
 var result = account.list(configData)
 
-if(result) console.log('result:\n' + json.quoteJSON(JSON.stringify(result)))
+if(result) print('result:\n' + json.quoteJSON(JSON.stringify(result)))

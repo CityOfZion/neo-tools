@@ -3,6 +3,7 @@
 
 // TODO abstract api choice into an api config option and dynamically map to selected at runtime
 // TODO composable url retrieval
+// TODO Clean up this whole file
 
 require('module-alias/register')
 

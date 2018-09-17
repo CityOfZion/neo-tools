@@ -16,14 +16,19 @@ function print(msg) {
   console.log(msg)
 }
 
-var addresses = []
+var addresses = [], address = []
+
+function collect(val, memo) {
+  address.push(val);
+  return address;
+}
 
 program
   .version('0.1.0')
   .usage('-a [address] -n [net]')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --address [address]', 'Specify the address for balance inquiry')
+  .option('-a, --address [address]', 'Specify the address for balance inquiry', collect, [])
   .option('-r, --readstdin', 'Tell the program to read addresses as JSON from stdin. By default, matches json key "address"')
     // TODO add option to modifiy the pattern used for the key to match addresses when using -r for json
   .parse(process.argv)
@@ -41,7 +46,11 @@ if (program.readstdin) {
     fetchBalances()
   })
 } else if (program.address) {
-  addresses.push(program.address)
+  if (address.length) {
+    address.forEach((addy) => {
+      addresses.push(addy)
+    })
+  }
 
   fetchBalances()
 

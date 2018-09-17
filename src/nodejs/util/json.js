@@ -46,6 +46,7 @@ exports.findDeep = (items, attrs) => {
 }
 
 
+// Convert json string without quotes to one with quotes
 
 exports.quoteJSON = (string) => {
   string = string.replace(/ /g, '')                   // strip all spaces

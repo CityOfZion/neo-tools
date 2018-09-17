@@ -32,8 +32,6 @@ exports.parseJsonFromStdin = () => {
         ready = true
       }
       if (ready) jsonstr += line
-
-
     })
 
     rl.on('close', () => {
