@@ -12,6 +12,8 @@ const binance = require('nodejs_exchange/binance/binance-api.js')
 var cfg       = require('nodejs_config/config')
 var account   = require('nodejs_account/account')
 
+const json    = require('nodejs_util/json')
+
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 function print(msg) {
@@ -39,4 +41,4 @@ if (program.debug) {
 
 var result = account.list(configData)
 
-if(result) dbg.logDeep('accounts: \nresult:\n', result)
+if(result) print('result:\n' + json.quoteJSON(JSON.stringify(result)))

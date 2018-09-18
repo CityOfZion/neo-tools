@@ -7,6 +7,7 @@ const _ = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
 var cfg       = require('nodejs_config/config')
+const json    = require('nodejs_util/json')
 
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
