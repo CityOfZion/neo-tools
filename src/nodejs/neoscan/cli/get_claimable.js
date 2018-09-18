@@ -26,7 +26,7 @@ function collect(val) {
 
 program
   .version('0.1.0')
-  .usage('<address>')
+  .usage('-a [address] -n [net]')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --address [address]', 'Specify the address for claimable transactions inquiry. Multiple -a arguments result in multiple iterations of the command.', collect, [])
