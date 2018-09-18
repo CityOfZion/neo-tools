@@ -1,4 +1,7 @@
 // set an acocunt to be watched and return watched accounts
+// watching an account will show latest n transactions for an account
+// and optionally its valuation at a configurable interfval
+
 
 require('module-alias/register')
 
@@ -7,6 +10,8 @@ const program = require('commander')
 const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
+const stdin   = require('nodejs_util/stdin')
+const json    = require('nodejs_util/json')
 const cmc     = require('nodejs_market/coinmarketcap/get_price')
 const binance = require('nodejs_exchange/binance/binance-api.js')
 var cfg       = require('nodejs_config/config')
@@ -23,7 +28,14 @@ program
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-c, --config [config]', 'Specify a config file to use')
+  .option('-w, --watch', 'Only watch addresses marked watch: true in config')
+  .option('-i, --interval', 'Set watch interval in seconds', 300) // default 5 mins
+  .option('-s, --summary', 'Only print a summary of transactions')
+  .option('-n, --number', 'View at most last n transactions')
+  .option('-a, --address [address]', 'Specify the address or addresses to watch. Multiple -a arguments result in multiple iterations of the command.', collect, [])
+  .option('-r, --readstdin', 'Tell the program to read addresses as JSON from stdin. By default, matches json key "address"')
   // TODO add num recent transactions option to list per addresses
+  // TODO add num recent transactions option to liss persummary
   // TODO add specific address option instead of defaults in config
   // TODO add multiple exchange value lookup
 
