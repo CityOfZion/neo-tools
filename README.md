@@ -206,8 +206,11 @@ https://neoscan.io/docs/index.html#api-v1-get
 ```
 cd src/nodejs/neoscan/cli/
 
-//Returns page 1 of transaction summary for default address from its hash, paginated
+// Returns page 1 of transaction summary for default address from its hash, paginated
 node get_address_abstracts -n main -p 1
+
+// Get all transactions for address marked default on default net (test) and export to csv
+node neoscan/cli/get_address_abstracts.js --everything -c
 
 // List all nodes on Main Net
 node get_all_nodes -n MainNet
@@ -264,6 +267,7 @@ node get_worth -s neousdt -a 3 -x binance
 
 
 // list the price of all symbols that have "NEO" in the name and multiply their value by 2
+
 node get_worth.js -a 2 -x binance | grep NEO -A 1
 
 
