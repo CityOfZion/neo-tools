@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.35.0
+Version: 0.36.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -54,7 +54,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
   * get and set watch addresses
   * NEP-2 and NEP-6 coming soon!
 * Neoscan API command line is functional (see neoscan calling convention below)
-  - get_address_abstracts
+  - get_address_abstracts, now with JSON and CSV export option
   - get_all_nodes
   - get_balance
   - get_block
