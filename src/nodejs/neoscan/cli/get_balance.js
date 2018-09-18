@@ -28,7 +28,7 @@ program
   .usage('-a [address] -n [net]')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --address [address]', 'Specify the address for balance inquiry', collect, [])
+  .option('-a, --address [address]', 'Specify the address for balance inquiry. Multiple -a arguments result in multiple iterations of the command.', collect, [])
   .option('-r, --readstdin', 'Tell the program to read addresses as JSON from stdin. By default, matches json key "address"')
     // TODO add option to modifiy the pattern used for the key to match addresses when using -r for json
   .parse(process.argv)
@@ -43,7 +43,7 @@ if (program.readstdin) {
     json.findAllKeysWhere(r, 'address', (k, v) => {
       addresses.push(v)
     })
-    fetchBalances()
+    fetch()
   })
 } else if (program.address) {
   if (address.length) {
@@ -51,21 +51,20 @@ if (program.readstdin) {
       addresses.push(addy)
     })
   }
-
-  fetchBalances()
+  fetch()
 
   // check for a default address in config, if not pressent show help
 } else {
   var default_account = cfg.get_default_account()
   if (default_account) {
     addresses.push(default_account.address)
-    fetchBalances()
+    fetch()
   }
   else program.help()
 }
 
 
-function fetchBalances() {
+function fetch() {
   neoscan.set_net(program.net)
 
   if (addresses.length){
