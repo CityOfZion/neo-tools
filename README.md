@@ -200,6 +200,18 @@ This will likely be reorganized to have wallet/accounts configured somewhere els
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
 
+### accountSelected
+
+```
+cd src/nodejs/account/CLI
+
+
+// List account with name test
+node account/cli/list.js -n test
+
+```
+
+
 ### Neoscan for test and main
 https://neoscan.io/docs/index.html#api-v1-get
 
