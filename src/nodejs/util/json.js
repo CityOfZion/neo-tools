@@ -63,9 +63,15 @@ exports.quoteJSON = (string) => {
 
 exports.findAllKeysWhere = (obj, pattern, callback) => {
   _.each(obj, (value, key) => {
+
     if (_.isObject(value) && !_.isFunction(value)) {
+      // console.log("key: "+key)
       this.findAllKeysWhere(value, pattern, callback)
-    } else if (key === pattern)  {
+    }
+
+    if (key === pattern)  {
+      console.log("key: "+key)
+
       callback(key, value)
     }
   })

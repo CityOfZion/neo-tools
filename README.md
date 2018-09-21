@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.35.0
+Version: 0.36.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -54,7 +54,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
   * get and set watch addresses
   * NEP-2 and NEP-6 coming soon!
 * Neoscan API command line is functional (see neoscan calling convention below)
-  - get_address_abstracts
+  - get_address_abstracts, now with JSON and CSV export option
   - get_all_nodes
   - get_balance
   - get_block
@@ -200,14 +200,29 @@ This will likely be reorganized to have wallet/accounts configured somewhere els
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
 
+### accountSelected
+
+```
+cd src/nodejs/account/CLI
+
+
+// List account with name test
+node account/cli/list.js -n test
+
+```
+
+
 ### Neoscan for test and main
 https://neoscan.io/docs/index.html#api-v1-get
 
 ```
 cd src/nodejs/neoscan/cli/
 
-//Returns page 1 of transaction summary for default address from its hash, paginated
+// Returns page 1 of transaction summary for default address from its hash, paginated
 node get_address_abstracts -n main -p 1
+
+// Get all transactions for address marked default on default net (test) and export to csv
+node neoscan/cli/get_address_abstracts.js --everything -c
 
 // List all nodes on Main Net
 node get_all_nodes -n MainNet
@@ -264,6 +279,7 @@ node get_worth -s neousdt -a 3 -x binance
 
 
 // list the price of all symbols that have "NEO" in the name and multiply their value by 2
+
 node get_worth.js -a 2 -x binance | grep NEO -A 1
 
 

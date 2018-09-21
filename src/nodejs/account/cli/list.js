@@ -28,6 +28,7 @@ program
   .option('-d, --debug', 'Debug')
   .option('-c, --config [config]', 'Specify a config file to use')
   .option('-w, --watch', 'Only list watch addresses i.e., marked watch: true in config')
+  .option('-n, --name [name]', 'Find account with name')
   .parse(process.argv);
 
 if (program.config) {
@@ -43,7 +44,7 @@ if (program.debug) {
 if (program.watch) {
   var result = account.get_watch_addresses(configData)
 
-  if(result && result.length)
+  if (result && result.length)
   print('result:')
   result.forEach((r) => {
     dbg.logDeep('', r)
@@ -51,5 +52,15 @@ if (program.watch) {
 } else {
   var result = account.list(configData)
 
-  if(result) print('result:\n' + json.quoteJSON(JSON.stringify(result)))
+
+  if (result) {
+
+    if (program.name) {
+      json.findAllKeysWhere(result, "test", (key, val) => {
+        result = val
+      })
+    }
+
+    print('result:\n' + json.quoteJSON(JSON.stringify(result)))
+  }
 }
