@@ -56,7 +56,7 @@ if (program.watch) {
   if (result) {
 
     if (program.name) {
-      json.findAllKeysWhere(result, "test", (key, val) => {
+      json.findAllKeysWhere(result, program.name, (key, val) => {
         result = val
       })
     }
