@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.36.0
+Version: 0.37.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -200,7 +200,7 @@ This will likely be reorganized to have wallet/accounts configured somewhere els
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
 
-### accountSelected
+### Accounts
 
 ```
 cd src/nodejs/account/CLI
@@ -360,6 +360,39 @@ cd src/nodejs/
 // -r / --readstdin indicates to read stdin as json
 node account/cli/list.js | node neoscan/cli/get_balance.js -r
 
+
+```
+
+### Shell Script Example
+The following shell script will loop a number of cli modules to monitor.
+
+```
+#!/bin/bash
+
+loc="/home/fet/nwd/phetter/neotools/src/nodejs/"
+
+while true;
+  do
+    node ${loc}neoscan/cli/get_balance.js -a insert_address -n mainnet;
+    node ${loc}neoscan/cli/get_balance.js -n mainnet -a insert_address;
+    node ${loc}neoscan/cli/get_balance.js -n mainnet -a insert_address;
+    node ${loc}neoscan/cli/get_last_block_time.js -n mainnet;
+    node ${loc}exchange/binance/cli/get_asset_detail.js -s neo;
+
+    echo -e "\n";
+    node ${loc}get_worth.js -s neo -a 1 -d -x binance;
+    echo -e "";
+    node ${loc}get_worth.js -s gas -a 1;
+    echo -e "\n";
+    node ${loc}get_worth.js -s bitcoin -a 1;
+    echo -e "\n";
+    node ${loc}get_worth.js -s cardano -a 1;
+    echo -e "\n";
+    node ${loc}get_worth.js -a 1 -s bobs-repair;
+    echo -e "\n";
+
+    sleep 500;
+  done
 
 ```
 

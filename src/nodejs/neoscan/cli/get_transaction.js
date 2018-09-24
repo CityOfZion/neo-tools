@@ -29,6 +29,7 @@ if (!program.hash) {
 
 if (program.debug) {
   print('DEBUGGING');
+  neoscan.debug(true)
 }
 
 neoscan.set_net(program.net)

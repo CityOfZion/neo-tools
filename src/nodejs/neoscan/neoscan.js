@@ -52,12 +52,26 @@ exports.syncState = state => {
 curState = state
 }
 
+
+var defly = false
+
+// Run this to configure API
+// debug = true | turns on verbose activity console printing
+
+exports.debug = (debug) => {
+  if (debug !== undefined) defly = debug
+  else defly = !defly
+  if (defly) console.log('neoscan api debugging enabled')
+  else console.log('This is your last debugging message! neoscan api debugging disabled')
+}
+
+
 // Check if our url is properly formed. If url can't construct it in try, it isn't.
 const validateUrl = url => {
   return new Promise((resolve, reject) => {
     try {
       const u = new URL(url)
-      console.log('host: ' + u)
+      if (defly) console.log('host: ' + u)
       resolve(url)
     } catch (error) {
       console.log('neoscan: validateUrl: ' + error.message)
@@ -125,7 +139,7 @@ exports.switchNetwork = networkId => {
         net = curState.config.neoscan.active = curState.config.networks[networkId]
       } else {
         // if (curState.config.neoscan[networkId].apiType !== 'neoscan') return undefined
-        console.log('networkId: ' + networkId)
+        if (defly) console.log('networkId: ' + networkId)
         let u = curState.config.neoscan[networkId].url
         let custom = {}
         custom.name = curState.config.neoscan[networkId].name
@@ -170,7 +184,7 @@ exports.getRootUrl = () => {
 exports.get_address_abstracts = (address, page) => {
   return new Promise((resolve, reject) => {
     this.getRootUrl(address).then(url => {
-      console.log('url: ' + url + '/v1/get_address_abstracts/' + address + '/' + page)
+      if (defly) console.log('url: ' + url + '/v1/get_address_abstracts/' + address + '/' + page)
       return axios
         .get(url + '/v1/get_address_abstracts/' + address + '/' + page)
         .then(response => {
@@ -205,11 +219,11 @@ exports.get_last_transactions_by_address = (address, page) => {
   if (page) pageArg = page
   return new Promise((resolve, reject) => {
     this.get_last_transactions_by_address_url(address, pageArg).then(url => {
-      console.log(url)
+      if (defly) console.log(url)
       return axios
         .get(url)
         .then(response => {
-          console.log(`Retrieved History for ${address} from neoscan ${url}`)
+          if (defly) console.log(`Retrieved History for ${address} from neoscan ${url}`)
           response.data.address = address
           resolve({ data: response.data, address: address })
         })
@@ -237,7 +251,7 @@ exports.get_transaction_url = txid => {
 exports.get_transaction = txid => {
   return new Promise((resolve, reject) => {
     this.get_transaction_url(txid).then(url => {
-      console.log(`Retrieving ${txid} History from neoscan ${url}`)
+      if (defly) console.log(`Retrieving ${txid} History from neoscan ${url}`)
       return axios
         .get(url)
         .then(response => {
@@ -255,7 +269,7 @@ exports.get_transaction = txid => {
 // I.e., 'https://neoscan.io/api/main_net/v1/get_transaction/'
 
 exports.get_balance_url = address => {
-  console.log(curState.config.neoscan.active.balanceUrl, address)
+  if (defly) console.log(curState.config.neoscan.active.balanceUrl, address)
   if (address) {
     return validateUrl(curState.config.neoscan.active.balanceUrl + '/' + address + '/')
   } else return validateUrl(curState.config.neoscan.active.balanceUrl)
@@ -264,7 +278,7 @@ exports.get_balance_url = address => {
 exports.get_balance = address => {
   return new Promise((resolve, reject) => {
     this.get_balance_url(address).then(url => {
-      console.log(`Retrieving balance for ${address} from neoscan ${url}`)
+      if (defly) console.log(`Retrieving balance for ${address} from neoscan ${url}`)
       return axios
         .get(url)
         .then(response => {
@@ -319,7 +333,7 @@ exports.get_unclaimed_url = address => {
 exports.get_unclaimed = address => {
   return new Promise((resolve, reject) => {
     this.get_unclaimed_url(address).then(url => {
-      console.log(`querying unclaimed gas`)
+      if (defly) console.log(`querying unclaimed gas`)
       return axios
         .get(url)
         .then(response => {
@@ -342,7 +356,7 @@ exports.get_claimable_url = address => {
 exports.get_claimable = address => {
   return new Promise((resolve, reject) => {
     this.get_claimable_url(address).then(url => {
-      console.log(`querying claimable transactions`)
+      if (defly) console.log(`querying claimable transactions`)
       return axios
         .get(url)
         .then(response => {
@@ -366,7 +380,7 @@ exports.get_claimed_url = address => {
 exports.get_claimed = address => {
   return new Promise((resolve, reject) => {
     this.get_claimed_url(address).then(url => {
-      console.log(`querying claimed transactions`)
+      if (defly) console.log(`querying claimed transactions`)
       return axios
         .get(url)
         .then(response => {
@@ -389,7 +403,7 @@ exports.get_height_url = () => {
 exports.get_height = () => {
   return new Promise((resolve, reject) => {
     this.get_height_url().then(url => {
-      console.log(`Retrieving block height`)
+      if (defly) console.log(`Retrieving block height`)
       return axios
         .get(url)
         .then(response => {
@@ -413,7 +427,7 @@ exports.get_block_url = hash => {
 exports.get_block = (hash) => {
   return new Promise((resolve, reject) => {
     this.get_block_url(hash).then(url => {
-      console.log(`Retrieving block by hash or index`)
+      if (defly) console.log(`Retrieving block by hash or index`)
       return axios
         .get(url)
         .then(response => {
@@ -436,7 +450,7 @@ return validateUrl(curState.config.neoscan.active.rootUrl + '/v1/get_all_nodes')
 exports.get_all_nodes = () => {
   return new Promise((resolve, reject) => {
     this.get_all_nodes_url().then(url => {
-      console.log(`Retrieving node list`)
+      if (defly) console.log(`Retrieving node list`)
       return axios
         .get(url)
         .then(response => {

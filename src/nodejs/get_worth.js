@@ -24,15 +24,11 @@ program
   .version('0.1.0')
   .usage('-s [symbol] -a <amount> -x [exchange]')
   .option('-d, --debug', 'Debug')
-  .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
   .option('-s, --symbol [symbol]', 'Specify the symbol to look up its value')
   .option('-x, --exchange [exchange]', 'Specify exchange or api to use to query prices - defaults to coinmarketcap', 'cmc')
   .parse(process.argv);
 
-if (!program.net) {
-  // print('network: ' + program.net);
-}
 
 if (!program.amount) {
   program.help()
@@ -46,6 +42,8 @@ if (program.exchange) {
 
 if (program.debug) {
   print('DEBUGGING');
+  if(exchange === 'binance') binance.debug(true)
+  else cmc.debug(true)
 }
 
 switch(exchange) {

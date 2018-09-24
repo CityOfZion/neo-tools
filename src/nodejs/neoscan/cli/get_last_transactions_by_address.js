@@ -47,6 +47,7 @@ if (program.page)  {
 
 if (program.debug) {
   print('DEBUGGING');
+  neoscan.debug(true)
 }
 
 
