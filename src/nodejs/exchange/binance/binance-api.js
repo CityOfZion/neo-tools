@@ -14,6 +14,19 @@ const dbg         = require('nodejs_util/debug')
 
 
 
+var defly = false
+
+// Run this to configure API
+// debug = true | turns on verbose activity console printing
+
+exports.debug = (debug) => {
+  if (debug !== undefined) defly = debug
+  else defly = !defly
+  if (defly) console.log('binance api debugging enabled')
+  else console.log('This is your last debugging message! binance api debugging disabled')
+}
+
+
 // query binance for all symobls
 // weight 1
 
@@ -30,7 +43,8 @@ exports.get_price = (coin, currency) => {
 
   if (coin) url += '?symbol=' + coin.toUpperCase()
 
-  console.log('retrieving: ' + url)
+  if (defly) console.log('retrieving: ' + url)
+
   return axios.get(url)
     .then((mapping) => {
       // dbg.logDeep('map: ', mapping)
@@ -44,6 +58,7 @@ exports.get_price = (coin, currency) => {
       }
     })
     .catch(err => {
+      console.log('\nIf you are seeing 400 error, you may want to make sure you are using the right symbol. Try "get_all_symbols -a 1"\n')
       console.log(err.message)
       throw err
     })
@@ -58,7 +73,9 @@ exports.get_worth = (symbol, amount, currency) => {
 
 exports.get_book_ticker = (coin = 'neousdt', currency = 'usd') => {
   let url = 'https://api.binance.com/api/v3/ticker/bookTicker'
-  console.log('retrieving: ' + url)
+
+  if (defly) console.log('retrieving: ' + url)
+
   return axios.get(url)
     .then((mapping) => {
       const res = _.findWhere(mapping.data, {'symbol': coin.toUpperCase()})
@@ -86,7 +103,7 @@ exports.get_book_ticker = (coin = 'neousdt', currency = 'usd') => {
 
   var tsHash = hmacSHA256(ts, api_secret).toString()
 
-  // console.log('retrieving: ' + 'https://api.binance.com//wapi/v3/assetDetail.html?' + ts + '&signature=' + tsHash)
+  if (defly) console.log('retrieving: ' + 'https://api.binance.com//wapi/v3/assetDetail.html?' + ts + '&signature=' + tsHash)
 
   let url = 'https://api.binance.com//wapi/v3/assetDetail.html?' + ts + '&signature=' + tsHash
 
@@ -133,6 +150,8 @@ exports.get_book_ticker = (coin = 'neousdt', currency = 'usd') => {
      headers: {'X-MBX-APIKEY': api_key}
    }
 
+   if (defly) console.log('retrieving: ' + url)
+
    return axios.get(url, config)
      .then((mapping) => {
 
@@ -167,7 +186,9 @@ exports.get_book_ticker = (coin = 'neousdt', currency = 'usd') => {
 
 exports.ping = () => {
   let url = 'https://api.binance.com/api/v1/ping'
-  console.log('retrieving: ' + url)
+
+  if (defly) console.log('retrieving: ' + url)
+
   return axios.get(url)
     .then((mapping) => {
       return mapping.data
@@ -195,7 +216,9 @@ exports.ping = () => {
 // It is left to the caller to convert the date!
 exports.get_server_time = () => {
   let url = 'https://api.binance.com/api/v1/time'
-  console.log('retrieving: ' + url)
+
+  if (defly) console.log('retrieving: ' + url)
+
   return axios.get(url)
     .then((mapping) => {
       return mapping.data

@@ -35,6 +35,7 @@ program
 
 if (program.debug) {
   print('DEBUGGING')
+  neoscan.debug(true)
 }
 
 // read address from json on stdin using pattern provided at cli arg, if present

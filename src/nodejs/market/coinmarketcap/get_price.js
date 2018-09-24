@@ -6,8 +6,21 @@ const axios = require('axios')
 const dbg = require('nodejs_util/debug')
 
 
+var defly = false
+
+// Run this to configure API
+// debug = true | turns on verbose activity console printing
+
+exports.debug = (debug) => {
+  if (debug !== undefined) defly = debug
+  else defly = !defly
+  if (defly) console.log('coinmarketcap api debugging enabled')
+  else console.log('This is your last debugging message! coinmarketcap api debugging disabled')
+}
+
+
 exports.get_price = (coin = 'NEO', currency = 'usd') => {
-  console.log('retrieving: ' + `https://api.coinmarketcap.com/v1/ticker/${coin.toLowerCase()}/`)
+  if (defly) console.log('retrieving: ' + `https://api.coinmarketcap.com/v1/ticker/${coin.toLowerCase()}/`)
   return axios.get('https://api.coinmarketcap.com/v1/ticker/'+ coin.toLowerCase())
     .then((mapping) => {
       const price = mapping.data[0].price_usd

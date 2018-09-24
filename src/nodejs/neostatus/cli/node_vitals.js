@@ -33,6 +33,7 @@ if (!program.node) {
 
 if (program.debug) {
   print('DEBUGGING');
+  neoscan.debug(true)
 }
 
 const client = neon.default.create.rpcClient(program.node)

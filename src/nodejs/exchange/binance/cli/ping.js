@@ -25,6 +25,7 @@ program
 
 if (program.debug) {
   print('DEBUGGING');
+  binance.debug(true)
 }
 
 binance.ping().then(result => {

@@ -36,6 +36,7 @@ if (program.symbol) {
 
 if (program.debug) {
   print('DEBUGGING');
+  binance.debug(true)
 }
 
 binance.get_asset_detail(extCfg.exchanges.binance.apiKey, extCfg.exchanges.binance.secret, symbol).then(result => {

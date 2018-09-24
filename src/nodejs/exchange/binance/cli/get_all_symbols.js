@@ -22,14 +22,9 @@ program
   .version('0.1.0')
   .usage('-s [symbol] -a <amount>')
   .option('-d, --debug', 'Debug')
-  .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
   .option('-s, --symbol [symbol]', 'Specify the symbol to look its value')
   .parse(process.argv);
-
-if (!program.net) {
-  // print('network: ' + program.net);
-}
 
 if (!program.amount) {
   program.help()
@@ -39,6 +34,7 @@ get_price = binance.get_price
 
 if (program.debug) {
   print('DEBUGGING');
+  binance.debug(true)
 }
 
 get_price(program.symbol).then(result => {

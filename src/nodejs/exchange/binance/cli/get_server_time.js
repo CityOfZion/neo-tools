@@ -25,6 +25,7 @@ program
 
 if (program.debug) {
   print('DEBUGGING');
+  binance.debug(true)
 }
 
 binance.get_server_time().then(result => {

@@ -28,6 +28,7 @@ program
 
 if (program.debug) {
   print('DEBUGGING');
+  neoscan.debug(true)
 }
 
 print(program.net)

@@ -29,6 +29,7 @@ if (!program.symbol) {
 
 if (program.debug) {
   print('DEBUGGING');
+  binance.debug(true)
 }
 
 binance.get_book_ticker(program.symbol).then(result => {
