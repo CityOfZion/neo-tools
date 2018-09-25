@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.37.0
+Version: 0.38.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -98,6 +98,12 @@ implementations is ideal to facilitate complimentary capabilities where necessar
     * raw mem pool
   * Network Vitals - get the vitals for all nodes on a given net
   * Node Vitals - get the vitals for a node
+
+
+## Developer's Note
+
+I apologize if the command-line arguments and capabilities aren't consistent across all modules yet. Due to time constraints I've been adding them as needed. I leave it as an exercise to the astute contributor to implement any examples where necessary.
+
 
 ## Roadmap
 
@@ -250,6 +256,12 @@ node get_last_block_time -n mainnet
 
 // List all transactions for address on Main net
 node get_last_transactions_by_address -n MainNet -a address
+
+// Get last 3 transactions for address with human-readable date format from test net
+node get_last_transactions_by_address -a address -i 3 -H
+
+// Only return time field of last 3 transactions in human-readable format from test net
+node get_last_transactions_by_address -a address -i 3 -H -t
 
 // transaction for a  hash on MainNet
 node get_transaction.js -n mainnet -h txid

@@ -12,7 +12,7 @@ const axios   = require('axios')
 const Promise = require('bluebird')
 const { URL } = require('url');
 
-const logDeep = require('nodejs_util/debug')
+const { logDeep } = require('nodejs_util/debug')
 
 
 // TODO Reintegrate this (neoscanIni bits) with state tree
@@ -52,10 +52,15 @@ exports.syncState = state => {
 curState = state
 }
 
+// Behavioral Configuration
 
-var defly = false
+var defly = false             // debugging flag - toggle with debug() or debug(bool)
 
-// Run this to configure API
+
+var transaction_limit = 0     // limits the number of returned transactions
+var human_dates = false       // mutate the date format to human-readable (hardcoded to generic date string for now)
+
+
 // debug = true | turns on verbose activity console printing
 
 exports.debug = (debug) => {
@@ -64,6 +69,15 @@ exports.debug = (debug) => {
   if (defly) console.log('neoscan api debugging enabled')
   else console.log('This is your last debugging message! neoscan api debugging disabled')
 }
+
+
+// Run this to configure API
+// See "Behavioral Configuration" above
+
+exports.configure = (cfgObj) => {
+  ({transaction_limit, human_dates} = cfgObj)
+}
+
 
 
 // Check if our url is properly formed. If url can't construct it in try, it isn't.
@@ -225,7 +239,8 @@ exports.get_last_transactions_by_address = (address, page) => {
         .then(response => {
           if (defly) console.log(`Retrieved History for ${address} from neoscan ${url}`)
           response.data.address = address
-          resolve({ data: response.data, address: address })
+          resolve({ data: transaction_limit ? response.data[transaction_limit] : response.data, address: address })
+          // resolve({ data: response.data[1], address: address })
         })
         .catch(error => {
           reject(error)
