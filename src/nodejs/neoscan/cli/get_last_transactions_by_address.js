@@ -15,7 +15,7 @@ function print(msg) {
 }
 
 let pageArg = ''
-var address
+let address
 
 program
   .version('0.1.0')
@@ -24,6 +24,11 @@ program
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --address <address>', 'Specify the address for balance inquiry')
   .option('-p, --page [page]', 'Show last stransactions for <address> starting at [page]')
+  .option('-t, --time', 'Only return time field of last transactions')
+  .option('-H, --Human', 'I am human so make outputs easy for human')
+  .option('-i, --index [index]', 'Only get last transactions up to i', 0)
+  // TODO reverse sort order
+  // summarize transaction - show amount of last n txs or similar
   .parse(process.argv);
 
 if (!program.net) {
@@ -51,7 +56,12 @@ if (program.debug) {
 }
 
 
+
+neoscan.configure({ transaction_limit: program.index, human_dates: program.Human })
+
 neoscan.set_net(program.net)
  neoscan.get_last_transactions_by_address(address, pageArg).then(result => {
-   dbg.logDeep('\nresult:\n', result)
+   if (program.time && result && result.data && result.data.time) print('\nresult:\n' + new Date(result.data.time * 1000).toLocaleString())
+
+   else dbg.logDeep('\nresult:\n', result)
  })
