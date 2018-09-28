@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.38.0
+Version: 0.39.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -47,6 +47,8 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 ## Features
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
+* Alerts (Notifications)
+  * src/nodejs/email_alert.js
 * Wallet/Account support
   * address
   * default account
@@ -408,6 +410,16 @@ while true;
 
 ```
 
+### Alerts and Notifications
+
+
+```
+// Send an email
+cd src/nodejs/
+
+node email_alert -t you@youradddress.com -f me@myaddress.com -s "subject" -b "body"
+
+```
 
 ## Planned Future Calling Convention
 
