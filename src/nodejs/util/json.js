@@ -70,7 +70,7 @@ exports.findAllKeysWhere = (obj, pattern, callback) => {
     }
 
     if (key === pattern)  {
-      console.log("key: "+key)
+      // console.log("key: "+key)
 
       callback(key, value)
     }

@@ -1,6 +1,6 @@
 {
   "name": "neotools",
-  "version": "0.38.0",
+  "version": "0.39.0",
   "description": "Composable command line tools and reference implementations for Neo Smart Economy function primitives",
   "repository": {
     "type": "git",
@@ -14,7 +14,8 @@
     "nodejs_exchange": "src/nodejs/exchange/",
     "nodejs_market": "src/nodejs/market/",
     "nodejs_neoscan": "src/nodejs/neoscan/",
-    "nodejs_account": "src/nodejs/account/"
+    "nodejs_account": "src/nodejs/account/",
+    "nodejs_alert": "src/nodejs/util/alert/"
   },
   "devDependencies": {
     "axios": "^0.18.0",
@@ -32,6 +33,7 @@
     "history": "^4.7.2",
     "jsonexport": "^2.3.0",
     "module-alias": "^2.1.0",
+    "nodemailer": "^4.6.8",
     "underscore": "^1.9.1"
   },
   "author": "https://github.com/phetter",
