@@ -1,7 +1,7 @@
 {
   "networks": {
     "MainNet": {
-      "rootUrl": "https://neoscan-testnet.io/api/test_net/"
+      "rootUrl": "https://neoscan.io/api/main_net/"
     },
     "TestNet": {
       "rootUrl": "https://neoscan-testnet.io/api/test_net/"

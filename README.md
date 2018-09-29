@@ -4,7 +4,7 @@
 
 The goal is to have all Neo Smart Economy API or project implementation primitives as a part of a unix-style command line chainable toolset.
 
-With neotools in place, one would have easy lookup of various operations and functions, reference implementation, clear calling syntax and usage examples. A common problem for me, working in c#, nodejs, and python, is that I'm always having to go back to one of those projects, navigate their specific layout, then locate a piece or example to be sure I'm doing something right. Instead of trying to get everyone to agree on a standard I thought why not implement a bunch of those projects' primitives in a standard way to unify that reference. Besides, being able to call a lot of those directly from command line would be really useful.
+With neotools in place, one would have easy lookup of various operations and functions, reference implementation, clear calling syntax, and usage examples. A common problem for me, working in c#, nodejs, and python, is that I'm always having to go back to one of those projects, navigate their specific layout, then locate a piece or example to be sure I'm doing something right. Instead of trying to get everyone to agree on a standard I thought why not implement a bunch of those projects' primitives in a standard way to unify that reference. Besides, being able to call a lot of those directly from command line would be really useful.
 
 
 ## Project Version and Status
@@ -69,7 +69,7 @@ implementations is ideal to facilitate complimentary capabilities where necessar
   - get_transaction
   - get_unclaimed
 * Exchange
-  * Query coinmakertcap.com tickers
+  * Query coinmarketcap.com tickers
   * Binance
     * Binance API module supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
     * Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
@@ -125,10 +125,10 @@ I apologize if the command-line arguments and capabilities aren't consistent acr
 ## neotools APIs
 
 For now there is no official API but features are still available. neotools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
-To leverage any module for a specific language, simple enter the src folder for that language and locate the folder/folder.js file for the relevant feature. F.e., to use the Node.js config module
+To leverage any module for a specific language, simple enter the src folder for that language and locate the folder/folder.js file for the relevant feature. For example, to use the Node.js config module
 require src/nodejs/config/config.js.
 
-## Wallet Configuration
+## Configuration
 
 The following section of src/nodejs/config/nodejs.config.json can be configured to use your wallet:
 
@@ -138,42 +138,27 @@ The following section of src/nodejs/config/nodejs.config.json can be configured 
     "account_name1": {
       "address": "",
       "default": false,
-      "path": ""
+      "path": "/home/user/configs/neotools.config.json
     },
     "account_name2": {
       "address": "",
       "default": false,
       "path": ""
     }
+  },
+  "exchanges": {
+    "path": "/home/user/configs/neotools.config.json"
+  },
+  "smtp": {
+    "path": "/home/user/configs/neotools.config.json"
   }
 }
 ```
 
-The path item can be set to the pathname of a json config file that is in another location but follows the same format, i.e.,:
+## All-In-One Configuration File Example
 
-```
-{
-  "accounts": {
-    "one": {
-      "address": "address",
-      "default": true
-    },  
-    "two": {
-      "address": "address two",
-      "default": false
-    },  
-    "three": {
-      "address": "address three",
-      "default": false
-    }   
-  }
+All of the configuration can be in one file or separated into multiple files. The path item of each config entry points to a json config file that adheres to the following format.
 
-```
-
-## Exchange Configuration
-
-See src/nodejs/config/nodejs.config.json for how to setup exchange API and secret keys.
-You'll need to configure the path to point to a file with a json blob like this:
 ```
 {
   "accounts": {
@@ -195,15 +180,19 @@ You'll need to configure the path to point to a file with a json blob like this:
       "apiKey": "",
       "secret": ""
     }
-  }
+  },
+  "smtp": {
+    "host": "mail.com",
+    "port": 25,
+    "user": "user@user.user",
+    "pass": "password",
+    "from": "user@user.user"
+  }  
 }
 
 ```
 
-
-This will likely be reorganized to have wallet/accounts configured somewhere else.
-
-## Current Calling convention
+## Calling Conventions
 
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
@@ -213,62 +202,61 @@ NOTE: If you have an account configured as default: true in config.json you can 
 ```
 cd src/nodejs/account/CLI
 
-
-// List account with name test
+# List account with name test
 node account/cli/list.js -n test
 
 ```
 
 
-### Neoscan for test and main
+### Neoscan for TestNet and MainNet
 https://neoscan.io/docs/index.html#api-v1-get
 
 ```
 cd src/nodejs/neoscan/cli/
 
-// Returns page 1 of transaction summary for default address from its hash, paginated
+# Returns page 1 of transaction summary for default address from its hash, paginated
 node get_address_abstracts -n main -p 1
 
-// Get all transactions for address marked default on default net (test) and export to csv
+# Get all transactions for default address on default net (test) and export to csv
 node neoscan/cli/get_address_abstracts.js --everything -c
 
-// List all nodes on Main Net
+# List all nodes on Main Net
 node get_all_nodes -n MainNet
 
-// Get balance for an address on MainNet
+# Get balance for an address on MainNet
 node get_balance -n MainNet -a youraddress
 
-// Get a block by its hash on testnet
+# Get a block by its hash on testnet
 node get_block -h hash
 
-// Get claimable transactions for default address on testNet
+# Get claimable transactions for default address on testNet
 node get_claimable
 
-// Get claimed transactions for default address on testNet
+# Get claimed transactions for default address on testNet
 node get_claimed
 
-// Get current block height on TestNet
+# Get current block height on TestNet
 node get_height
 
-// Get the latest block data from neoscan Main Net
+# Get the latest block data from neoscan Main Net
 node get_last_block -n mainnet
 
-// Get the latest block time from neoscan Main Net
+# Get the latest block time from neoscan Main Net
 node get_last_block_time -n mainnet
 
-// List all transactions for address on Main net
+# List all transactions for address on Main net
 node get_last_transactions_by_address -n MainNet -a address
 
-// Get last 3 transactions for address with human-readable date format from test net
+# Get last 3 transactions for address with human-readable date format from test net
 node get_last_transactions_by_address -a address -i 3 -H
 
-// Only return time field of last 3 transactions in human-readable format from test net
+# Only return time field of last 3 transactions in human-readable format from test net
 node get_last_transactions_by_address -a address -i 3 -H -t
 
-// transaction for a  hash on MainNet
+# transaction for a  hash on MainNet
 node get_transaction.js -n mainnet -h txid
 
-// Get the unclaimed gas for address on testnet
+# Get the unclaimed gas for address on testnet
 node get_unclaimed -a address
 
 ```
@@ -280,59 +268,60 @@ https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-a
 ```
 cd src/nodejs/
 
-// List the price of neo and total net worth for 10 shares by coinmarketcap valuation.
-// Note: in this version you cannot list all symbols for cmc as you can with binance
+
+# List the price of neo and total net worth for 10 shares by coinmarketcap valuation.
+# Note: in this version you cannot list all symbols for cmc as you can with binance
 node get_worth -s neo -a 10
 
 
-// list the price of neousdt and total net worth for 3 shares by binance valuation
-// ticker names found at https://api.binance.com/api/v3/ticker/price
-// weight 1 for binance
+# list the price of neousdt and total net worth for 3 shares by binance valuation
+# ticker names found at https://api.binance.com/api/v3/ticker/price
+# weight 1 for binance
 
 node get_worth -s neousdt -a 3 -x binance
 
 
-// list the price of all symbols that have "NEO" in the name and multiply their value by 2
+# list the price of all symbols that have "NEO" in the name and multiply their value by 2
 
 node get_worth.js -a 2 -x binance | grep NEO -A 1
 
 
-// list the price of all symbols on binance times 2 units
+# list the price of all symbols on binance times 2 units
 node get_worth.js -a 2 -x binance
 
 
 cd src/nodejs/exchange/binance/cli/
 
 
-// list the price of all symbols on binance times 2 units
-// NOTE: this is not an alias for get worth, this ONLY does binance
-// weight 1
+# list the price of all symbols on binance times 2 units
+# NOTE: this is not an alias for get worth, this ONLY does binance
+# weight 1
 node get_all_symbols.js -a 2
 
 
-// list the price of all symbols that have "NEO" in the name and multiply their value by 2
-// weight 1
+# list the price of all symbols that have "NEO" in the name and multiply their value by 2
+# weight 1
 node get_all_symbols.js -a 2 | grep NEO -A 1
 
 
-// list the best prices on the book at binance
-// weight 1
+# list the best prices on the book at binance
+# weight 1
 
 node get_book -s neousdt
 
 
-// list the asset details (requires API key and secret) for NEO (or all no -s NEO)
-// weight 1
+# list the asset details (requires API key and secret) for NEO (or all no -s NEO)
+# weight 1
 
 node get_asset_detail -s NEO
 
 
-// Test connectivity and get the exchange server time. It's up to the caller to convert to something other than milliseconds
+# Test connectivity and get the exchange server time. It's up to the caller to convert to something other than milliseconds
 
 node get_server_time
 
 
-// Test connectivity of the server
+# Test connectivity of the server
 
 node ping
 ```
@@ -346,7 +335,7 @@ If you get a 418 you've been banned.
 ```
 cd src/nodejs/
 
-// Create SHA256 hash of message 'test'
+# Create SHA256 hash of message 'test'
 
 node shacli.js --message 'test'
 ```
@@ -356,7 +345,7 @@ node shacli.js --message 'test'
 ```
 cd src/nodejs/
 
-// Generate a report of vitals for mainnet and testnet
+# Generate a report of vitals for mainnet and testnet
 node neostatus/network_health.js -n mainnet --summary > network_health_mainnet.txt
 node neostatus/network_health.js -n testnet --summary > network_health_testnet.txt
 
@@ -370,8 +359,8 @@ Only those listed below are currently chainable with stdin.
 cd src/nodejs/
 
 
-// List all balances for all accounts
-// -r / --readstdin indicates to read stdin as json
+# List all balances for all accounts
+# -r / --readstdin indicates to read stdin as json
 node account/cli/list.js | node neoscan/cli/get_balance.js -r
 
 
@@ -414,7 +403,7 @@ while true;
 
 
 ```
-// Send an email
+# Send an email
 cd src/nodejs/
 
 node email_alert -t you@youradddress.com -f me@myaddress.com -s "subject" -b "body"
