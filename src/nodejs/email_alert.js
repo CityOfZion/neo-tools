@@ -8,6 +8,7 @@ const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
 const email   = require('nodejs_alert/email')
+const stdin   = require('nodejs_util/stdin')
 
 function print(msg) {
   console.log(msg);
@@ -23,6 +24,7 @@ program
   .option('-t, --to <to>', 'Set To: address', 'to address')
   .option('-s, --subject [subject]', 'Subject of the email', 'subject test')
   .option('-b, --body [body]', 'Body of the email', 'body test')
+  .option('-r, --readstdin', 'Tell the program to read message body from stdin')
   .parse(process.argv);
 
 
@@ -45,4 +47,11 @@ var message = {
 
 if (program.from) message.from = program.from
 
-email.send(message)
+if (program.readstdin) {
+  stdin.readStdin().then((r) => {
+    message.body = r
+    email.send(message)
+
+  })
+}
+else email.send(message)
