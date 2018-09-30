@@ -12,11 +12,12 @@ var cfg         = require('nodejs_config/config.js')
 var config      = cfg.load('nodejs_config/nodejs.config.json')
 
 function print(msg) {
-  console.log(msg);
+  console.log(msg)
 }
 
+let argus = process.argv
 let pageArg = ''
-var address
+let address
 
 program
   .version('0.1.0')
@@ -30,7 +31,7 @@ program
   .option('-s, --summary', 'Print summary with results', '0')
   // TODO add option to convert currency scripthash to human readable
   // TODO add dump output to file option
-  .parse(process.argv);
+  .parse(argus)
 
 if (!program.net) {
   // print('network: ' + program.net);
@@ -52,7 +53,7 @@ if (program.page)  {
 }
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING')
   neoscan.debug(true)
 }
 

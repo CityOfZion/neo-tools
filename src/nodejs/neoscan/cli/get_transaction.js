@@ -7,8 +7,11 @@ const program = require('commander');
 const dbg     = require('nodejs_util/debug')
 const neoscan = require('nodejs_neoscan/neoscan')
 
+
+let argus = process.argv
+
 function print(msg) {
-  console.log(msg);
+  console.log(msg)
 }
 
 program
@@ -17,7 +20,7 @@ program
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-h, --hash <transaction hash>', 'Specify the tranaction by hash for transaction inquiry')
-  .parse(process.argv);
+  .parse(argus)
 
 if (!program.net) {
   // print('network: ' + program.net);
@@ -28,7 +31,7 @@ if (!program.hash) {
 }
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING')
   neoscan.debug(true)
 }
 
