@@ -37,3 +37,14 @@ exports.get_exchanges = () => {
     return extCfg
   }
 }
+
+// Load neotoosl config file outside of the repo path and get smtp details
+
+exports.get_smtp = () => {
+  var smtp = cfg.smtp
+
+  if(smtp && smtp.path !== null) {
+    var smtpCfg = require(smtp.path)
+    return smtpCfg
+  }
+}

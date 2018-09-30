@@ -16,7 +16,6 @@ const json    = require('nodejs_util/json')
 
 exports.parseJsonFromStdin = () => {
   return new Promise((resolve, reject) => {
-    var obj = {}
     var jsonstr = ''
     var ready = false
 
@@ -37,6 +36,28 @@ exports.parseJsonFromStdin = () => {
     rl.on('close', () => {
       rl.close()
       if (ready) resolve(JSON.parse(json.quoteJSON(jsonstr)))
+    })
+  })
+}
+
+
+exports.readStdin = () => {
+  return new Promise((resolve, reject) => {
+    var str = ''
+
+    var rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      terminal: false
+    })
+
+    rl.on('line', (line) => {
+     str += line
+    })
+
+    rl.on('close', () => {
+      rl.close()
+      resolve(str)
     })
   })
 }
