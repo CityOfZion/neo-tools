@@ -20,6 +20,7 @@ program
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
+  .option('-H, --Human', 'I am human so make outputs easy for human')
   .parse(process.argv);
 
 if (!program.net) {
@@ -37,7 +38,10 @@ neoscan.get_height().then(result => {
 
   if (result && result.height) {
     neoscan.get_block(result.height).then(result => {
-      if (result && result.time) print('\nresult:\n' + new Date(result.time * 1000).toLocaleString())
+      if (result && result.time) {
+        if (program.Human) print('\nresult:\n{ "last_block_time": "' + new Date(result.time * 1000).toLocaleString() + '" }')
+        else print('\nresult:\n{ "last_block_time": ' + result.time + ' }')
+      }
       else print('error')
     })
   }

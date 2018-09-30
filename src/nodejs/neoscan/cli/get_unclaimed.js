@@ -12,15 +12,18 @@ const neoscan = require('nodejs_neoscan/neoscan')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-function print(msg) {
-  console.log(msg);
-}
 
 var addresses = [], address = []
 
+let argus = process.argv
+
+function print(msg) {
+  console.log(msg)
+}
+
 function collect(val) {
-  address.push(val);
-  return address;
+  address.push(val)
+  return address
 }
 
 program
@@ -31,10 +34,10 @@ program
   .option('-a, --address [address]', 'Specify the address for for unclaimed gas inquiry.Multiple -a arguments result in multiple iterations of the command.', collect, [])
   .option('-r, --readstdin', 'Tell the program to read addresses as JSON from stdin. By default, matches json key "address"')
   // TODO add option to modifiy the pattern used for the key to match addresses when using -r for json
-  .parse(process.argv);
+  .parse(argus)
 
   if (program.debug) {
-    print('DEBUGGING');
+    print('DEBUGGING')
     neoscan.debug(true)
   }
 

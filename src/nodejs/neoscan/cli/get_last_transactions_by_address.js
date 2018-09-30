@@ -11,8 +11,10 @@ var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 function print(msg) {
-  console.log(msg);
+  console.log(msg)
 }
+
+let argus = process.argv
 
 let pageArg = ''
 let address
@@ -29,7 +31,7 @@ program
   .option('-i, --index [index]', 'Only get last transactions up to i', 0)
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
-  .parse(process.argv);
+  .parse(argus)
 
 if (!program.net) {
   // print('network: ' + program.net);
@@ -51,7 +53,7 @@ if (program.page)  {
 }
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING')
   neoscan.debug(true)
 }
 
@@ -61,7 +63,10 @@ neoscan.configure({ transaction_limit: program.index, human_dates: program.Human
 
 neoscan.set_net(program.net)
  neoscan.get_last_transactions_by_address(address, pageArg).then(result => {
-   if (program.time && result && result.data && result.data.time) print('\nresult:\n' + new Date(result.data.time * 1000).toLocaleString())
+   if (program.time && result && result.data && result.data.time) {
+     if (program.Human) print('\nresult:\n{ "last_transaction_time": "' + new Date(result.data.time * 1000).toLocaleString() + '" }')
+     else print('\nresult:\n{ "last_transaction_time": ' + result.data.time + ' }')
 
+   }
    else dbg.logDeep('\nresult:\n', result)
  })

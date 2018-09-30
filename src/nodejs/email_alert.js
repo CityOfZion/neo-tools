@@ -51,7 +51,6 @@ if (program.readstdin) {
   stdin.readStdin().then((r) => {
     message.body = r
     email.send(message)
-
   })
 }
 else email.send(message)
