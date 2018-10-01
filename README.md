@@ -1,4 +1,4 @@
-# neotools
+# neo-tools
 
 ## Summary
 
@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.39.0
+Version: 0.40.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -44,7 +44,9 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 ## Operating System Support
 1. Linux
 
-## Features
+## Node.js Features
+
+Node.js is the main implementation platform right now. We are looking for contributions for others. See src/nodejs/, for the following:
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
 * Alerts (Notifications)

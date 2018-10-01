@@ -95,6 +95,7 @@ const validateUrl = url => {
 }
 
 exports.set_net = networkId => {
+  if (defly) console.log('set_net(' + networkId + ')')
   return this.switchNetwork(networkId)
 }
 
@@ -119,7 +120,7 @@ exports.switchNetwork = networkId => {
     case 'main_net':
     case 'mainnet':
     case 'main':
-      if (curState && curState.config && curState.config.neoscan && curState.config.neoscan.active) {
+      if (curState && curState.config && curState.config.neoscan && curState.config.neoscan.mainNet && curState.config.neoscan.active) {
         net = curState.config.neoscan.active = curState.config.neoscan.mainNet
       } else {
         curState = {
@@ -135,7 +136,7 @@ exports.switchNetwork = networkId => {
     case 'test_net':
     case 'testnet':
     case 'test':
-      if (curState && curState.config && curState.config.neoscan && curState.config.neoscan.active) {
+      if (curState && curState.config && curState.config.neoscan && curState.config.neoscan.testNet && curState.config.neoscan.active) {
         net = curState.config.neoscan.active = curState.config.neoscan.testNet
       } else {
         curState = {
@@ -171,7 +172,6 @@ exports.switchNetwork = networkId => {
           },
         }
         net = curState.config.neoscan.active
-        logDeep('net', net)
       }
       break
   }
@@ -229,7 +229,7 @@ exports.get_last_transactions_by_address_url = (address, page) => {
 // Get all transactions for an address
 
 exports.get_last_transactions_by_address = (address, page) => {
-  let pageArg = ''
+  let pageArg = '1'
   if (page) pageArg = page
   return new Promise((resolve, reject) => {
     this.get_last_transactions_by_address_url(address, pageArg).then(url => {
