@@ -1,5 +1,6 @@
 
-const _ = require('underscore')
+const _   = require('underscore')
+const dbg = require('nodejs_util/debug')
 
 var cfg
 
@@ -10,7 +11,6 @@ exports.load = path => {
 }
 
 exports.save = path => {
-
   return cfg
 }
 
@@ -20,10 +20,10 @@ exports.get_default_account = () => {
 
   var account = _.findWhere(accounts, {default: true})
 
-  if(account && account.path !== null) {
-    cfg = require(account.path)
+  if (account && account.path !== null && account.path !== '') {
+    var defcfg = require(account.path)
 
-    var pathAccounts = cfg.accounts
+    var pathAccounts = defcfg.accounts
     return _.findWhere(pathAccounts, {default: true})
   }
 }
@@ -45,6 +45,8 @@ exports.get_smtp = () => {
 
   if(smtp && smtp.path !== null) {
     var smtpCfg = require(smtp.path)
-    return smtpCfg
+    return smtpCfg.smtp
+  } else {
+    return smtp
   }
 }

@@ -1,4 +1,4 @@
-// neoscan get_last_transactions_by_address
+// neoscan get_last_transactions_by_address cli wrapper
 
 require('module-alias/register')
 
@@ -7,34 +7,40 @@ const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
 const neoscan = require('nodejs_neoscan/neoscan')
+const email   = require('nodejs_alert/email')
+
+const get_last_transactions_by_address = require('nodejs_neoscan/modules/get_last_transactions_by_address')
+
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
+
+let defly = false
+let address
 
 function print(msg) {
   console.log(msg)
 }
 
-let argus = process.argv
-
-let pageArg = ''
-let address
-
 program
   .version('0.1.0')
-  .usage('<address> [page]')
+  .usage('[address] [page]')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --address <address>', 'Specify the address for balance inquiry')
-  .option('-p, --page [page]', 'Show last stransactions for <address> starting at [page]')
+  .option('-a, --address [address]', 'Specify the address for transaction inquiry')
+  .option('-p, --page [page]', 'Show last stransactions for [address] starting at [page]', 1)
   .option('-t, --time', 'Only return time field of last transactions')
   .option('-H, --Human', 'I am human so make outputs easy for human')
-  .option('-i, --index [index]', 'Only get last transactions up to i', 0)
+  .option('-i, --index [index]', 'Get transaction at this index, 0 is the most recent transaction', 0)
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
-  .parse(argus)
+  .parse(process.argv)
+
+if (program.debug) {
+  print('DEBUGGING: ' + __filename)
+  defly = true
+}
 
 if (!program.net) {
-  // print('network: ' + program.net);
 }
 
 if (!program.address) {
@@ -48,25 +54,18 @@ if (!program.address) {
   address = program.address
 }
 
-if (program.page)  {
-  pageArg = program.page
+let argz = {
+  'debug': defly,
+  'net': program.net,
+  'address': address,
+  'page': program.page,
+  'time': program.time ? program.time : false,
+  'human': program.Human ? program.Human : false,
+  'index': program.index
 }
 
-if (program.debug) {
-  print('DEBUGGING')
-  neoscan.debug(true)
-}
+if (defly) dbg.logDeep('argz: ', argz)
 
-
-
-neoscan.configure({ transaction_limit: program.index, human_dates: program.Human })
-
-neoscan.set_net(program.net)
- neoscan.get_last_transactions_by_address(address, pageArg).then(result => {
-   if (program.time && result && result.data && result.data.time) {
-     if (program.Human) print('\nresult:\n{ "last_transaction_time": "' + new Date(result.data.time * 1000).toLocaleString() + '" }')
-     else print('\nresult:\n{ "last_transaction_time": ' + result.data.time + ' }')
-
-   }
-   else dbg.logDeep('\nresult:\n', result)
- })
+get_last_transactions_by_address.run(argz).then((r) => {
+  dbg.logDeep('\nresult:\n', r)
+})
