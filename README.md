@@ -51,6 +51,7 @@ Node.js is the main implementation platform right now. We are looking for contri
 * Default address support via accounts config in src/nodejs/nodejs.config.json
 * Alerts (Notifications)
   * src/nodejs/email_alert.js
+  * src/nodejs/monitor/new_transaction_alert_loop
 * Wallet/Account support
   * address
   * default account

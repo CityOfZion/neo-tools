@@ -12,7 +12,7 @@ const dbg     = require('nodejs_util/debug')
 const neoscan = require('nodejs_neoscan/neoscan')
 const email   = require('nodejs_alert/email')
 
-const get_last_transactions_by_address = require('nodejs_neoscan/cli/get_last_transactions_by_address')
+const get_last_transactions_by_address = require('nodejs_neoscan/modules/get_last_transactions_by_address')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
@@ -87,6 +87,7 @@ const intervalObj = setInterval(() => {
   }
 
   if (defly) print('sleeping: ' + program.period + ' s')
+
   get_last_transactions_by_address.run().then((r) => {
     dbg.logDeep('\nresult:\n', r)
   })
