@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.40.0
+Version: 0.41.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -402,14 +402,23 @@ while true;
 
 ```
 
-### Alerts and Notifications
+### Monitoring, Alerts and Notifications
 
 
 ```
-# Send an email
 cd src/nodejs/
 
+# Send an email
 node email_alert -t you@youradddress.com -f me@myaddress.com -s "subject" -b "body"
+
+
+
+cd src/nodejs/monitor/cli/
+
+# Watch the default address on test net for new transactions and send an email
+# when one is found. This will loop forever, return the time field, and present
+# the time in human-readable format.
+node new_transaction_alert_loop.js -i 0 -H -t -w 1
 
 ```
 
