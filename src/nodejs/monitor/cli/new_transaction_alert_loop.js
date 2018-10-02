@@ -115,16 +115,16 @@ const intervalObj = setInterval(() => {
         subject: program.Subject + ' for ' + address,
         body: program.body
       }
-      let rstr
-      message.body = rstr = dbg.lookDeep('\nresult:\n', r)
+
+      let rstr = message.body = dbg.lookDeep('\nresult:\n', r)
 
       if (defly) dbg.logDeep('body: ', message.body)
 
       if (last_run_result && last_run_result !== rstr) {
         print('New Transaction')
-        // email.send(message).then((id) => {
-        //   print('message away: ' + id)
-        // })
+        email.send(message).then((id) => {
+          print('message away: ' + id)
+        })
       }
       last_run_result = rstr
     })
