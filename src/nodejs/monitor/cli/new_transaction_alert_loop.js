@@ -18,11 +18,10 @@ var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 
-
-let isCLI = true
-let argus
 let defly = false
 let address
+let from
+let to
 
 function print(msg) {
   console.log(msg)
@@ -33,20 +32,23 @@ program
   .version('0.1.0')
   .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
+  .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test')
   .option('-a, --address [address]', 'Specify the address for transaction inquiry')
   .option('-t, --time', 'Only return time field of last transactions')
   .option('-H, --Human', 'I am human so make outputs easy for human')
-  .option('-p, --period [period]', 'Period in seconds between successive transaction inquries', 300)
+  .option('-w, --wait [wait]', 'Period in seconds to wait between successive transaction inquries', 300)
+  .option('-p, --page [page]', 'Show last stransactions for [address] starting at [page]', 1)
   .option('-l, --loop [loop]', 'Loop this many times, default is infinite', 0)
   .option('-i, --index [index]', 'Get transaction at this index, 0 is the most recent transaction', 0)
-  .option('-e, --email [email]', 'Send email to this address each time a new transaction is found')
+  .option('-T, --ToEmail [ToEmail]', 'Send email to this address each time a new transaction is found')
+  .option('-F, --FromEmail [FromEmail]', 'Send email from this address each time a new transaction is found, will use defaults in config if not present')
+  .option('-S, --Subject [Subject]', 'Set the subject', 'New Transaction')
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
 
 if (program.debug) {
-    print('DEBUGGING')
+    print('DEBUGGING: ' + __filename)
     defly = true
     email.debug(true)
 }
@@ -66,29 +68,68 @@ if (!program.address) {
   address = program.address
 }
 
+if (program.FromEmail) {
+  from = program.FromEmail
+} else {
+  from = cfg.get_smtp().from
+}
+
+if (defly) dbg.logDeep('from: ', from)
+
+if (program.ToEmail) {
+  to = program.ToEmail
+} else {
+  to = cfg.get_smtp().to
+}
+
+if (defly) dbg.logDeep('to: ', to)
+
 var result
 
-let argz = []
-// argz.concat(process.argv)
-// argz.concat(['-a', address, '-n', program.net, '-t', '-i', 0, '-H', program.debug])
-if (defly) dbg.logDeep('argv: ', process.argv)
-if (defly) dbg.logDeep('argz: ', argz)
+let argz = {
+  'debug': defly,
+  'net': program.net,
+  'address': address,
+  'page': program.page,
+  'time': program.time ? program.time : false,
+  'human': program.Human ? program.Human : false,
+  'index': program.index
+}
 
 let i = 1
 
-if (defly) print('sleeping: ' + program.period + ' s')
+if (defly) print('sleeping: ' + program.wait + ' s')
+
+let last_run_result = ''
 
 const intervalObj = setInterval(() => {
-  if (defly) print('loop #: ' + i + ' of ' + (program.loop ? program.loop : 'infinity'))
-
   if (i > program.loop && program.loop !== 0) {
     clearInterval(intervalObj)
-    if (defly) print('clearing timer')
+    print('clearing timer')
+  } else {
+    print('loop #: ' + i + ' of ' + (program.loop ? program.loop : 'infinity'))
+
+    get_last_transactions_by_address.run(argz).then((r) => {
+      let message = {
+        to: to,
+        subject: program.Subject + ' for ' + address,
+        body: program.body
+      }
+      let rstr
+      message.body = rstr = dbg.lookDeep('\nresult:\n', r)
+
+      if (defly) dbg.logDeep('body: ', message.body)
+
+      if (last_run_result && last_run_result !== rstr) {
+        print('New Transaction')
+        // email.send(message).then((id) => {
+        //   print('message away: ' + id)
+        // })
+      }
+      last_run_result = rstr
+    })
   }
 
-  if (defly) print('sleeping: ' + program.period + ' s')
-
-  get_last_transactions_by_address.run().then((r) => {
-    dbg.logDeep('\nresult:\n', r)
-  })
-}, program.period * 1000)
+  print('sleeping: ' + program.wait + ' s')
+  i++
+}, program.wait * 1000)

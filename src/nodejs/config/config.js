@@ -45,6 +45,8 @@ exports.get_smtp = () => {
 
   if(smtp && smtp.path !== null) {
     var smtpCfg = require(smtp.path)
-    return smtpCfg
+    return smtpCfg.smtp
+  } else {
+    return smtp
   }
 }
