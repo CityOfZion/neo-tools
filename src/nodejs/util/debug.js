@@ -13,7 +13,11 @@ exports.lookDeep = (o) => {
 // TODO implement automatic argument passing option— see below
 // I.e., if !msg, use argument.callee/caller for tracing and argument.name(?) for printing
 exports.logDeep = (msg, o) => {
-  let str = msg + ' ' + this.lookDeep(o)
+  let str
+
+  if (msg) str = msg + ' ' + this.lookDeep(o)
+  else str = str = this.lookDeep(o)
+  
   console.log(str)
   return str
 }

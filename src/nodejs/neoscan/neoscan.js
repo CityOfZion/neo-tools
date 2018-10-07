@@ -54,11 +54,11 @@ curState = state
 
 // Behavioral Configuration
 
-var defly = false             // debugging flag - toggle with debug() or debug(bool)
+let defly = false             // debugging flag - toggle with debug() or debug(bool)
 
 
-var transaction_limit = 0     // limits the number of returned transactions
-var human_dates = false       // mutate the date format to human-readable (hardcoded to generic date string for now)
+let transaction_limit = 0     // limits the number of returned transactions
+let human_dates = false       // mutate the date format to human-readable (hardcoded to generic date string for now)
 
 
 // debug = true | turns on verbose activity console printing
@@ -202,8 +202,6 @@ exports.get_address_abstracts = (address, page) => {
       return axios
         .get(url + '/v1/get_address_abstracts/' + address + '/' + page)
         .then(response => {
-          // console.log(`Retrieved History for ${address} from neoscan ${url}`)
-          // console.log('response: ' + response.data)
           response.data.address = address
           resolve({ data: response.data, address: address })
         })

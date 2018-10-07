@@ -1,6 +1,7 @@
-// rpc getrawmempool in neon-js
-// Gets a list of unconfirmed transactions in memory
-//
+// rpc getBestBlockHash in neon-js
+// Get the latest block hash.
+// hash of the block
+
 require('module-alias/register')
 
 
@@ -19,7 +20,6 @@ program
   .usage('-n <node>')
   .option('-d, --debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
-  .option('-s, --summary', 'summarizes details to integer count of items in the list usually returned')
 
   .parse(process.argv);
 
@@ -33,8 +33,6 @@ if (program.debug) {
 
 const client = neon.default.create.rpcClient(program.node)
 
-client.getRawMemPool().then(response => {
-  if (program.summary) {
-    print('getRawMemPool\nresult:\n' + response.length)
-  } else dbg.logDeep('getRawMemPool\nresult:\n', response)
+client.getBestBlockHash().then(response => {
+  dbg.logDeep('result:\n', response)
 })

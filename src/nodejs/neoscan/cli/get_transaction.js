@@ -20,6 +20,8 @@ program
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-h, --hash <transaction hash>', 'Specify the tranaction by hash for transaction inquiry')
+  .option('-t, --time', 'Only return time field of last transaction')
+  .option('-H, --Human', 'I am human so make outputs easy for human')
   .parse(argus)
 
 if (!program.net) {
@@ -38,5 +40,12 @@ if (program.debug) {
 neoscan.set_net(program.net)
 
 neoscan.get_transaction(program.hash).then(result => {
-  dbg.logDeep('\nresult:\n', result)
+  if (program.Human) {
+      result.time = new Date(result.time * 1000).toLocaleString()
+  }
+
+  if (program.time) {
+    print('result:\n' + result.time)
+  }
+  else dbg.logDeep('\nresult:\n', result)
 })
