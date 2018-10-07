@@ -116,7 +116,7 @@ const intervalObj = setInterval(() => {
         body: program.body
       }
 
-      let rstr = message.body = dbg.lookDeep('\nresult:\n', r)
+      let rstr = message.body = dbg.lookDeep(r)
 
       if (defly) dbg.logDeep('body: ', message.body)
 
@@ -127,6 +127,7 @@ const intervalObj = setInterval(() => {
         })
       }
       last_run_result = rstr
+      if (defly) print('last result: ' + last_run_result)
     })
   }
 

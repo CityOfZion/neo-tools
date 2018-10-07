@@ -8,8 +8,6 @@ const program = require('commander')
 const _       = require('underscore')
 
 var neon      = require('@cityofzion/neon-js')
-
-const neoscan = require('nodejs_neoscan/neoscan')
 const dbg     = require('nodejs_util/debug')
 
 function print(msg) {
