@@ -34,7 +34,7 @@ if (!program.node) {
 }
 
 if (program.hash) arg = program.hash
-if (program.index) arg = program.index
+if (program.index) arg = parseInt(program.index)
 
 const client = neon.default.create.rpcClient(program.node)
 
