@@ -22,6 +22,7 @@ let defly = false
 let address
 let from
 let to
+let subject
 
 function print(msg) {
   console.log(msg)
@@ -42,7 +43,7 @@ program
   .option('-i, --index [index]', 'Get transaction at this index, 0 is the most recent transaction', 0)
   .option('-T, --ToEmail [ToEmail]', 'Send email to this address each time a new transaction is found')
   .option('-F, --FromEmail [FromEmail]', 'Send email from this address each time a new transaction is found, will use defaults in config if not present')
-  .option('-S, --Subject [Subject]', 'Set the subject', 'New Transaction')
+  .option('-S, --Subject [Subject]', 'Set the subject; if this is not supplied, "New Transaction for <address>" is used by default')
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
@@ -82,6 +83,11 @@ if (program.ToEmail) {
   to = cfg.get_smtp().to
 }
 
+if (program.Subject) subject = program.Subject
+else subject = 'New Tranaction ' + ' for ' + address
+
+print ('sub: ' + subject)
+
 if (defly) dbg.logDeep('to: ', to)
 
 var result
@@ -102,35 +108,41 @@ if (defly) print('sleeping: ' + program.wait + ' s')
 
 let last_run_result = ''
 
+get_last_transaction(argz)
+
 const intervalObj = setInterval(() => {
   if (i > program.loop && program.loop !== 0) {
     clearInterval(intervalObj)
     print('clearing timer')
   } else {
     print('loop #: ' + i + ' of ' + (program.loop ? program.loop : 'infinity'))
-
-    get_last_transactions_by_address.run(argz).then((r) => {
-      let message = {
-        to: to,
-        subject: program.Subject + ' for ' + address,
-        body: program.body
-      }
-
-      let rstr = message.body = dbg.lookDeep(r)
-
-      if (defly) dbg.logDeep('body: ', message.body)
-
-      if (last_run_result && last_run_result !== rstr) {
-        print('New Transaction')
-        email.send(message).then((id) => {
-          print('message away: ' + id)
-        })
-      }
-      last_run_result = rstr
-      if (defly) print('last result: ' + last_run_result)
-    })
+    get_last_transaction(argz)
   }
 
   print('sleeping: ' + program.wait + ' s')
   i++
 }, program.wait * 1000)
+
+
+function get_last_transaction(argz) {
+  get_last_transactions_by_address.run(argz).then((r) => {
+    let message = {
+      to: to,
+      subject: subject,
+      body: program.body
+    }
+
+    let rstr = message.body = dbg.lookDeep(r)
+
+    if (defly) dbg.logDeep('body: ', message.body)
+
+    if (last_run_result && last_run_result !== rstr) {
+      print('New Transaction')
+      email.send(message).then((id) => {
+        print('message away: ' + id)
+      })
+    }
+    last_run_result = rstr
+    if (defly) print('last result: ' + last_run_result)
+  })
+}
