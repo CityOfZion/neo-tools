@@ -55,7 +55,6 @@ if (program.debug) {
 }
 
 if (!program.net) {
-  // print('network: ' + program.net);
 }
 
 if (!program.address) {
@@ -85,8 +84,6 @@ if (program.ToEmail) {
 
 if (program.Subject) subject = program.Subject
 else subject = 'New Tranaction ' + ' for ' + address
-
-print ('sub: ' + subject)
 
 if (defly) dbg.logDeep('to: ', to)
 
@@ -124,8 +121,8 @@ const intervalObj = setInterval(() => {
 }, program.wait * 1000)
 
 
-function get_last_transaction(argz) {
-  get_last_transactions_by_address.run(argz).then((r) => {
+function get_last_transaction(runtimeArgs) {
+  get_last_transactions_by_address.run(runtimeArgs).then((r) => {
     let message = {
       to: to,
       subject: subject,
