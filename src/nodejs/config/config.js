@@ -60,8 +60,10 @@ exports.get_nodes = (net) => {
   var nodes = cfg.nodes
   if(nodes && nodes.path !== null) {
     var nodesCfg = require(nodes.path)
-    return nodesCfg.nodes[net]
+    if (nodesCfg.nodes && nodesCfg.nodes[net]) return nodesCfg.nodes[net]
+    else return null
   } else {
-    return nodes.nodes[net]
+    if (nodes && nodes[net])
+    return nodes[net]
   }
 }
