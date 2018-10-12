@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.45.0
+Version: 0.46.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -111,6 +111,11 @@ Node.js is the main implementation platform right now. We are looking for contri
     * raw mem pool
   * Network Vitals - get the vitals for all nodes on a given net
   * Node Vitals - get the vitals for a node
+* Node.js Network Utility
+  * network.resolveNetworkId()
+  * network.getNodesByTallet()
+  * network.getNodesByLeastConnections()
+  * network.getNodesByVersion()
 
 
 ## Developer's Note

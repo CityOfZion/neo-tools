@@ -7,9 +7,9 @@ require('module-alias/register')
 const program = require('commander')
 const _       = require('underscore')
 
-const neon      = require('@cityofzion/neon-js')
-const dbg       = require('nodejs_util/debug')
-const netutil   = require('nodejs_util/network')
+const neon    = require('@cityofzion/neon-js')
+const dbg     = require('nodejs_util/debug')
+const netutil = require('nodejs_util/network')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
@@ -27,7 +27,6 @@ program
   .option('-d, --debug', 'Debug')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
-  // TODO move all -n args to -N for network
 
   .parse(process.argv);
 

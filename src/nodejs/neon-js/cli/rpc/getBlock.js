@@ -10,9 +10,14 @@ const _       = require('underscore')
 
 const neon    = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
+const netutil = require('nodejs_util/network')
+
+var cfg       = require('nodejs_config/config.js')
+var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 const getBlock = require('nodejs_neon-js/modules/getBlock')
 
+let nodes = []
 let defly = false
 
 function print(msg) {
@@ -23,13 +28,12 @@ program
   .version('0.2.0')
   .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://)')
+  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-h, --hash [hash]', 'specify the hash of the block to fetch, if no hash or index is supplied will get the tallest')
   .option('-i, --index [index]', 'specify the number of the block to fetch, if no hash or index is supplied will get the tallest')
   .option('-t, --time', 'Only return time field of last block')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
-  // TODO move all -n args to -N for network
   .parse(process.argv);
 
 if (program.debug) {
@@ -41,25 +45,38 @@ if (!program.node) {
   // get a node from the list and try it
   let net = netutil.resolveNetworkId(program.Net)
 
-  dbg.logDeep('nets: ', cfg.get_nodes(net))
+  nodes = cfg.get_nodes(net)
 
-} else node = program.node
+  if (defly) dbg.logDeep('config nodes: ', nodes)
+
+  netutil.getNodesByTallest(nodes).then(rankedNodes => {
+    if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
+    nodes = rankedNodes
+    getBlockWrapper(nodes)
+  })
+
+} else {
+  nodes.push(program.node)
+  getBlockWrapper(nodes)
+}
 
 if (program.hash) arg = program.hash
 if (program.index) arg = parseInt(program.index)
 
-let runtimeArgs = {
-  'debug': defly,
-  'node': node,
-  'hash': program.hash,
-  'index': program.index,
-  'time': program.time ? program.time : false,
-  'human': program.Human ? program.Human : false,
-  'index': program.index
+function getBlockWrapper(nodes) {
+  let runtimeArgs = {
+    'debug': defly,
+    'node': nodes[0].url,
+    'hash': program.hash,
+    'index': program.index,
+    'time': program.time ? program.time : false,
+    'human': program.Human ? program.Human : false,
+    'index': program.index
+  }
+
+  if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
+
+  getBlock.run(runtimeArgs).then((r) => {
+    dbg.logDeep('\nresult:\n', r)
+  })
 }
-
-if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
-
-getBlock.run(runtimeArgs).then((r) => {
-  dbg.logDeep('\nresult:\n', r)
-})

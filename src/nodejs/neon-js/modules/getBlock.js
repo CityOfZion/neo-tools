@@ -65,7 +65,7 @@ exports.run = (config) => {
 
       function getBlock(runtimeArg) {
         client.getBlock(runtimeArg).then(response => {
-          if (program.Human) {
+          if (program.human) {
               response.time = new Date(response.time * 1000).toLocaleString()
           }
           if (program.time) {
