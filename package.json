@@ -1,6 +1,6 @@
 {
   "name": "neo-tools",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "description": "Composable command line tools and reference implementations for Neo Smart Economy function primitives",
   "repository": {
     "type": "git",
@@ -15,7 +15,8 @@
     "nodejs_market": "src/nodejs/market/",
     "nodejs_neoscan": "src/nodejs/neoscan/",
     "nodejs_account": "src/nodejs/account/",
-    "nodejs_alert": "src/nodejs/util/alert/"
+    "nodejs_alert": "src/nodejs/util/alert/",
+    "nodejs_neon-js": "src/nodejs/neon-js/"
   },
   "devDependencies": {
     "axios": "^0.18.0",

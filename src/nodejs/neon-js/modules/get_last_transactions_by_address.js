@@ -54,7 +54,7 @@ if (!program.address) {
   address = program.address
 }
 
-let runtimeArgs = {
+let argz = {
   'debug': defly,
   'net': program.net,
   'address': address,
@@ -64,8 +64,8 @@ let runtimeArgs = {
   'index': program.index
 }
 
-if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
+if (defly) dbg.logDeep('argz: ', argz)
 
-get_last_transactions_by_address.run(runtimeArgs).then((r) => {
+get_last_transactions_by_address.run(argz).then((r) => {
   dbg.logDeep('\nresult:\n', r)
 })

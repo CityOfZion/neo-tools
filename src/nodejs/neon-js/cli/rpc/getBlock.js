@@ -1,5 +1,6 @@
-// rpc getBlockCount in neon-js
-// This Query returns the current block height.
+// rpc getBlock CLI that calls modules/getBlock from CLI
+// Main Dependency: neon-js
+// This returns a block
 
 require('module-alias/register')
 
@@ -7,8 +8,12 @@ require('module-alias/register')
 const program = require('commander')
 const _       = require('underscore')
 
-const neon      = require('@cityofzion/neon-js')
+const neon    = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
+
+const getBlock = require('nodejs_neon-js/modules/getBlock')
+
+let defly = false
 
 function print(msg) {
   console.log(msg);
@@ -26,7 +31,8 @@ program
   .parse(process.argv);
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING: ' + __filename)
+  defly = true
 }
 
 if (!program.node) {
@@ -36,26 +42,18 @@ if (!program.node) {
 if (program.hash) arg = program.hash
 if (program.index) arg = parseInt(program.index)
 
-const client = neon.default.create.rpcClient(program.node)
-
-if (!program.hash && !program.index) { // get the tallest by default
-  client.getBestBlockHash().then(response => {
-    dbg.logDeep('', response)
-
-    getBlock(response)
-  })
-} else {
-  getBlock(arg)
+let runtimeArgs = {
+  'debug': defly,
+  'node': program.node,
+  'hash': program.hash,
+  'index': program.index,
+  'time': program.time ? program.time : false,
+  'human': program.Human ? program.Human : false,
+  'index': program.index
 }
 
-function getBlock(arg) {
-  client.getBlock(arg).then(response => {
-    if (program.Human) {
-        response.time = new Date(response.time * 1000).toLocaleString()
-    }
-    if (program.time) {
-      print('result:\n' + response.time)
-    }
-    else dbg.logDeep('result:\n', response)
-  })
-}
+if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
+
+getBlock.run(runtimeArgs).then((r) => {
+  dbg.logDeep('\nresult:\n', r)
+})
