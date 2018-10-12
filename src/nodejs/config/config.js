@@ -63,7 +63,7 @@ exports.get_nodes = (net) => {
     if (nodesCfg.nodes && nodesCfg.nodes[net]) return nodesCfg.nodes[net]
     else return null
   } else {
-    if (nodes && nodes[net])
-    return nodes[net]
+    if (nodes && nodes[net]) return nodes[net]
+    else return null
   }
 }
