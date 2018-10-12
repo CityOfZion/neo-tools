@@ -11,7 +11,6 @@ const neon      = require('@cityofzion/neon-js')
 const dbg       = require('nodejs_util/debug')
 const netutil   = require('nodejs_util/network')
 
-
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
@@ -23,7 +22,7 @@ function print(msg) {
 }
 
 program
-  .version('0.1.0')
+  .version('0.2.0')
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://)')
@@ -41,10 +40,13 @@ if (!program.node) {
   // get a node from the list and try it
   let net = netutil.resolveNetworkId(program.Net)
 
-  print('net: '+program.Net)
-  print('net: '+net)
+  let nodes = cfg.get_nodes(net)
 
-  dbg.logDeep('nets: ', cfg.get_nodes(net))
+  if (defly) dbg.logDeep('config nodes: ', nodes)
+
+  netutil.getNodesByTallest(nodes).then(rankedNodes => {
+    if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
+  })
 
 } else node = program.node
 
