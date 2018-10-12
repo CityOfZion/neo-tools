@@ -20,14 +20,16 @@ function print(msg) {
 }
 
 program
-  .version('0.1.0')
-  .usage('-n <node>')
+  .version('0.2.0')
+  .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
+  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://)')
   .option('-h, --hash [hash]', 'specify the hash of the block to fetch, if no hash or index is supplied will get the tallest')
   .option('-i, --index [index]', 'specify the number of the block to fetch, if no hash or index is supplied will get the tallest')
   .option('-t, --time', 'Only return time field of last block')
   .option('-H, --Human', 'I am human so make outputs easy for human')
+  .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
+  // TODO move all -n args to -N for network
   .parse(process.argv);
 
 if (program.debug) {
@@ -36,15 +38,19 @@ if (program.debug) {
 }
 
 if (!program.node) {
-  program.help()
-}
+  // get a node from the list and try it
+  let net = netutil.resolveNetworkId(program.Net)
+
+  dbg.logDeep('nets: ', cfg.get_nodes(net))
+
+} else node = program.node
 
 if (program.hash) arg = program.hash
 if (program.index) arg = parseInt(program.index)
 
 let runtimeArgs = {
   'debug': defly,
-  'node': program.node,
+  'node': node,
   'hash': program.hash,
   'index': program.index,
   'time': program.time ? program.time : false,
