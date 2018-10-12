@@ -88,3 +88,30 @@ exports.getNodesByLeastConnections = (nodes) => {
     }
   })
 }
+
+// Return an array of nodes sortyed with highest version first
+// This expects an array of nodes with keys named "url"
+// TODO: add caching with configurable time limit for results
+
+exports.getNodesByVersion = (nodes) => {
+  let rankedList = []
+  let i = 0
+
+  return new Promise((resolve, reject) => {
+    if (_.isArray(nodes)) {
+      nodes.forEach((n) => {
+        if (n.url) {
+          const client = neon.default.create.rpcClient(n.url)
+
+          client.getVersion().then(response => {
+            rankedList.push({ "url": n.url, "version": response })
+            if (i++ === (nodes.length - 1)) {
+              rankedList = _.sortBy(rankedList, 'version')
+              resolve(rankedList)
+            }
+          })
+        }
+      })
+    }
+  })
+}

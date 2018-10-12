@@ -44,7 +44,7 @@ if (!program.node) {
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 
-  netutil.getNodesByTallest(nodes).then(rankedNodes => {
+  netutil.getNodesByVersion(nodes).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
   })
 
