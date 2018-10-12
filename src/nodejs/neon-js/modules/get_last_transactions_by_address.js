@@ -40,9 +40,6 @@ if (program.debug) {
   defly = true
 }
 
-if (!program.net) {
-}
-
 if (!program.address) {
   // check for a default address in config, if not pressent show help
   var default_account = cfg.get_default_account()
@@ -54,7 +51,7 @@ if (!program.address) {
   address = program.address
 }
 
-let runtimeArgs = {
+let argz = {
   'debug': defly,
   'net': program.net,
   'address': address,
@@ -64,8 +61,8 @@ let runtimeArgs = {
   'index': program.index
 }
 
-if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
+if (defly) dbg.logDeep('argz: ', argz)
 
-get_last_transactions_by_address.run(runtimeArgs).then((r) => {
+get_last_transactions_by_address.run(argz).then((r) => {
   dbg.logDeep('\nresult:\n', r)
 })
