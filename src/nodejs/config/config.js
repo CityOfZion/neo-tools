@@ -15,6 +15,7 @@ exports.save = path => {
 }
 
 // returns account in user config that has "default:" true"
+
 exports.get_default_account = () => {
   var accounts = cfg.accounts
 
@@ -29,6 +30,7 @@ exports.get_default_account = () => {
 }
 
 // Load neotools config file outside of the repo path
+
 exports.get_exchanges = () => {
   var exchanges = cfg.exchanges
 
@@ -38,7 +40,7 @@ exports.get_exchanges = () => {
   }
 }
 
-// Load neotoosl config file outside of the repo path and get smtp details
+// Load neotools config file outside of the repo path and get smtp details
 
 exports.get_smtp = () => {
   var smtp = cfg.smtp
@@ -48,5 +50,18 @@ exports.get_smtp = () => {
     return smtpCfg.smtp
   } else {
     return smtp
+  }
+}
+
+// Load a list of nodes from configuration file
+// Net can be any name  you provide as they sub key under "nodes" in the config
+
+exports.get_nodes = (net) => {
+  var nodes = cfg.nodes
+  if(nodes && nodes.path !== null) {
+    var nodesCfg = require(nodes.path)
+    return nodesCfg.nodes[net]
+  } else {
+    return nodes.nodes[net]
   }
 }

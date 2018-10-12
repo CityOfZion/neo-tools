@@ -49,6 +49,11 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 Node.js is the main implementation platform right now. We are looking for contributions for others. See src/nodejs/, for the following:
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
+* Configuration via nodejs/src/config.js
+  * get_default_account()
+  * get_exchanges()
+  * get_smtp()
+  * get_nodes()
 * Alerts (Notifications)
   * src/nodejs/email_alert.js
   * src/nodejs/monitor/new_transaction_alert_loop
@@ -144,7 +149,7 @@ The following section of src/nodejs/config/nodejs.config.json can be configured 
     "account_name1": {
       "address": "",
       "default": false,
-      "path": "/home/user/configs/neotools.config.json
+      "path": "/home/user/configs/sample.config.json
     },
     "account_name2": {
       "address": "",
@@ -153,17 +158,22 @@ The following section of src/nodejs/config/nodejs.config.json can be configured 
     }
   },
   "exchanges": {
-    "path": "/home/user/configs/neotools.config.json"
+    "path": "/home/user/configs/sample.config.json"
   },
   "smtp": {
-    "path": "/home/user/configs/neotools.config.json"
+    "path": "/home/user/configs/sample.config.json"
+  },
+  "nodes": {
+    "path": "/home/fet/nwd/phetter/configs/sample.config.json"
   }
 }
 ```
 
 ## All-In-One Configuration File Example
 
-All of the configuration can be in one file or separated into multiple files. The path item of each config entry points to a json config file that adheres to the following format.
+All of the configuration can be in one file or separated into multiple files. Check out nodejs/src/config/sample.config.json for an example of a complete configuration file to get you started. You would simply set the path key of nodejs.config.json to point to the location of your copy.
+
+The path item of each config entry points to a json config file that adheres to the following format.
 
 ```
 {
@@ -193,7 +203,49 @@ All of the configuration can be in one file or separated into multiple files. Th
     "user": "user@user.user",
     "pass": "password",
     "from": "user@user.user"
-  }  
+  },
+  "nodes": {
+    "TestNet": [
+      { "url": "https://seed1.neo.org:20331" },
+      { "url": "http://seed2.neo.org:20332" },
+      { "url": "http://seed3.neo.org:20332" },
+      { "url": "http://seed4.neo.org:20332" },
+      { "url": "https://test1.cityofzion.io" },
+      { "url": "https://test2.cityofzion.io" },
+      { "url": "https://test3.cityofzion.io" },
+      { "url": "https://test4.cityofzion.io" },
+      { "url": "https://test5.cityofzion.io" },
+      { "url": "http://seed5.neo.org:20332" }
+    ],  
+    "MainNet": [
+      { "url": "https://seed1.switcheo.network:10331" },
+      { "url": "https://seed3.switcheo.network:10331" },
+      { "url": "http://seed1.travala.com:10332" },
+      { "url": "https://seed1.neo.org:10331" },
+      { "url": "https://seed1.cityofzion.io:443" },
+      { "url": "https://seed2.cityofzion.io:443" },
+      { "url": "https://seed3.cityofzion.io:443" },
+      { "url": "https://seed4.cityofzion.io:443" },
+      { "url": "https://seed5.cityofzion.io:443" },
+      { "url": "https://seed1.redpulse.com:443" },
+      { "url": "https://seed2.redpulse.com:443" },
+      { "url": "https://seed.o3node.org:10331" },
+      { "url": "http://seed1.aphelion-neo.com:10332" },
+      { "url": "http://seed2.aphelion-neo.com:10332" },
+      { "url": "http://seed4.aphelion-neo.com:10332" },
+      { "url": "https://seed1.spotcoin.com:10332" },
+      { "url": "http://rustylogic.ddns.net:10332" },
+      { "url": "http://seed1.ngd.network:10332" },
+      { "url": "http://seed2.ngd.network:10332" },
+      { "url": "http://seed3.ngd.network:10332" },
+      { "url": "http://seed4.ngd.network:10332" },
+      { "url": "http://seed5.ngd.network:10332" },
+      { "url": "http://seed6.ngd.network:10332" },
+      { "url": "http://seed7.ngd.network:10332" },
+      { "url": "http://seed8.ngd.network:10332" },
+      { "url": "http://seed9.ngd.network:10332" }
+    ]   
+  }     
 }
 
 ```
