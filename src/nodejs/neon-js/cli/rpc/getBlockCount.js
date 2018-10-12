@@ -14,7 +14,7 @@ const netutil   = require('nodejs_util/network')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-let node  = ''
+let nodes  = []
 let defly = false
 
 function print(msg) {
@@ -25,7 +25,7 @@ program
   .version('0.2.0')
   .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://)')
+  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   // TODO move all -n args to -N for network
 
@@ -40,18 +40,28 @@ if (!program.node) {
   // get a node from the list and try it
   let net = netutil.resolveNetworkId(program.Net)
 
-  let nodes = cfg.get_nodes(net)
+  nodes = cfg.get_nodes(net)
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 
-  netutil.getNodesByVersion(nodes).then(rankedNodes => {
+  netutil.getNodesByTallest(nodes).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
+    nodes = rankedNodes
+    getBlockCount(nodes)
   })
 
-} else node = program.node
+} else {
+  nodes.push(program.node)
+  getBlockCount(nodes)
+}
 
-const client = neon.default.create.rpcClient(node)
+function getBlockCount(nodes) {
+  const client = neon.default.create.rpcClient(nodes[0].url)
 
-// client.getBlockCount().then(response => {
-//   dbg.logDeep('result:\n', response)
-// })
+  client.getBlockCount().then(response => {
+    dbg.logDeep('result:\n', response)
+  })
+  .catch (error => {
+    console.log('neon-js.getBlockCount(): ' + error.message)
+  })
+}
