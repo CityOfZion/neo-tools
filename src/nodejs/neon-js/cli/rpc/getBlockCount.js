@@ -8,12 +8,14 @@ const program = require('commander')
 const _       = require('underscore')
 
 const neon      = require('@cityofzion/neon-js')
-const dbg     = require('nodejs_util/debug')
+const dbg       = require('nodejs_util/debug')
+const netutil   = require('nodejs_util/network')
+
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-let node = ''
+let node  = ''
 let defly = false
 
 function print(msg) {
@@ -37,11 +39,7 @@ if (program.debug) {
 
 if (!program.node) {
   // get a node from the list and try it
-  let net = program.Net.toLowerCase()
-
-  if (net === 'mainnet' || net === 'main' || net === 'main_net') net = 'MainNet'
-  else if (net === 'testnet' || net === 'test' || net === 'test_net') net = 'TestNet'
-  else net = program.Net
+  let net = netutil.resolveNetworkId(program.Net)
 
   print('net: '+program.Net)
   print('net: '+net)
