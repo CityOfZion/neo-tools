@@ -40,9 +40,6 @@ if (program.debug) {
   defly = true
 }
 
-if (!program.net) {
-}
-
 if (!program.address) {
   // check for a default address in config, if not pressent show help
   var default_account = cfg.get_default_account()

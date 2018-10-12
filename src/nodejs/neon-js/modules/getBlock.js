@@ -37,7 +37,6 @@ exports.run = (config) => {
   }
 
   if (program.debug) {
-    print('DEBUGGING')
     print('DEBUGGING: ' + __filename)
     defly = true
   }
