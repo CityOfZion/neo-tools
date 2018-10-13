@@ -63,10 +63,10 @@ if (!program.node) {
 if (program.hash) arg = program.hash
 if (program.index) arg = parseInt(program.index)
 
-function getBlockWrapper(nodes) {
+function getBlockWrapper(nodelist) {
   let runtimeArgs = {
     'debug': defly,
-    'node': nodes[0].url,
+    'node': nodelist[0].url,
     'hash': program.hash,
     'index': program.index,
     'time': program.time ? program.time : false,
@@ -78,5 +78,8 @@ function getBlockWrapper(nodes) {
 
   getBlock.run(runtimeArgs).then((r) => {
     dbg.logDeep('\nresult:\n', r)
+  })
+  .catch (error => {
+    console.log('neon-js.getBlockCount(): ' + error.message)
   })
 }

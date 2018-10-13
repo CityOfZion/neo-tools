@@ -54,8 +54,8 @@ if (!program.node) {
   getBlockCount(nodes)
 }
 
-function getBlockCount(nodes) {
-  const client = neon.default.create.rpcClient(nodes[0].url)
+function getBlockCount(nodelist) {
+  const client = neon.default.create.rpcClient(nodelist[0].url)
 
   client.getBlockCount().then(response => {
     dbg.logDeep('result:\n', response)

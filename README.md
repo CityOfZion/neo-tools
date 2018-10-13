@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.46.0
+Version: 0.47.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
