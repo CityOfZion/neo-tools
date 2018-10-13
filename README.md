@@ -113,7 +113,7 @@ Node.js is the main implementation platform right now. We are looking for contri
   * Node Vitals - get the vitals for a node
 * Node.js Network Utility
   * network.resolveNetworkId()
-  * network.getNodesByTallet()
+  * network.getNodesByTallest()
   * network.getNodesByLeastConnections()
   * network.getNodesByVersion()
 
