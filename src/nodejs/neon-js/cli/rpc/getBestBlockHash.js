@@ -24,7 +24,7 @@ function print(msg) {
 
 program
   .version('0.2.0')
-  .usage('-n <node>')
+  .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
