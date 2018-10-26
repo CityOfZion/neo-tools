@@ -55,7 +55,7 @@ exports.run = (config) => {
 
       if (!program.hash && !program.index) { // get the tallest by default
         client.getBestBlockHash().then(response => {
-          if (defly) dbg.logDeep('', response)
+          // if (defly) dbg.logDeep('', response)
 
           getBlock(response)
         })
@@ -70,11 +70,11 @@ exports.run = (config) => {
           }
           if (program.time) {
             result = response.time
-            if (defly) print('result:\n' + result)
+            // if (defly) print('result:\n' + result)
             resolve(result)
           }
           else {
-            if (defly) dbg.logDeep('result:\n', response)
+            // if (defly) dbg.logDeep('result:\n', response)
             resolve(response)
           }
         })

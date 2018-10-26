@@ -39,6 +39,7 @@ program
 if (program.debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
+  netutil.debug()
 }
 
 if (!program.node) {
@@ -49,14 +50,18 @@ if (!program.node) {
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 
+  // TODO: look at if dynamic node selection should happen here or in the module
+
   netutil.getNodesByTallest(nodes).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
     nodes = rankedNodes
     getBlockWrapper(nodes)
+  }).catch (error => {
+      console.log('neon-js.getNodesByTallest(): ' + error.message)
   })
 
 } else {
-  nodes.push(program.node)
+  nodes.push({ "url": program.node })
   getBlockWrapper(nodes)
 }
 

@@ -19,6 +19,15 @@ function print(msg) {
   console.log(msg);
 }
 
+
+exports.debug = (debug) => {
+  if (debug !== undefined) defly = debug
+  else defly = !defly
+  if (defly) console.log('neoscan api debugging enabled')
+  else console.log('This is your last debugging message! neoscan api debugging disabled')
+}
+
+
 // Allow shortcuts for main net and test net (.i.e., main, Main and Main_Net resolve to MainNet),
 // but pass custom network names right through
 
@@ -39,22 +48,29 @@ exports.resolveNetworkId = (networkId) => {
 
 exports.getNodesByTallest = (nodes) => {
   let rankedList = []
-  let i = 0
+  let i = 0, errors = 0
   return new Promise((resolve, reject) => {
-
     if (_.isArray(nodes)) {
       nodes.forEach((n) => {
         if (n.url) {
+          if (defly) print('getting node height for: ' + n.url)
+
           const client = neon.default.create.rpcClient(n.url)
 
           client.getBlockCount().then(response => {
             rankedList.push({ "url": n.url, "height": response })
-
-            if (i++ === (nodes.length - 1)) {
+            print('n: ' + n.url)
+            print('loop i: ' + i)
+            print('errors: ' + (nodes.length - errors))
+            print('node n: ' + nodes.length)
+            if (i++ === (nodes.length - 1) || i === (nodes.length - errors) ) {
               rankedList = _.sortBy(rankedList, 'height')
               rankedList = rankedList.reverse()
               resolve(rankedList)
             }
+          }).catch(error => {
+            print('error: ' + error)
+            errors++
           })
         }
       })
