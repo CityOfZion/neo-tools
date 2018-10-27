@@ -65,7 +65,7 @@ exports.getNodesByTallest = (nodes) => {
           const client = neon.default.create.rpcClient(n.url)
 
           client.ping().then(ms => {
-            print(n.url + ' ms: ' + ms)
+            if (defly) print(n.url + ' ms: ' + ms)
 
             if (ms < maxPing) {
               client.getBlockCount().then(response => {
@@ -113,7 +113,7 @@ exports.getNodesByLeastConnections = (nodes) => {
           const client = neon.default.create.rpcClient(n.url)
 
           client.ping().then(ms => {
-            print(n.url + ' ms: ' + ms)
+            if (defly) print(n.url + ' ms: ' + ms)
 
             if (ms < maxPing) {
               client.getConnectionCount().then(response => {
@@ -149,7 +149,7 @@ exports.getNodesByVersion = (nodes) => {
           const client = neon.default.create.rpcClient(n.url)
 
           client.ping().then(ms => {
-            print(n.url + ' ms: ' + ms)
+            if (defly) print(n.url + ' ms: ' + ms)
 
             if (ms < maxPing) {
               client.getVersion().then(response => {
