@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.47.0
+Version: 0.48.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -116,6 +116,7 @@ Node.js is the main implementation platform right now. We are looking for contri
   * network.getNodesByTallest()
   * network.getNodesByLeastConnections()
   * network.getNodesByVersion()
+  * network.getNodesByPing()
   * added ping detection to improve RTT
 
 

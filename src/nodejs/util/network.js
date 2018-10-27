@@ -117,7 +117,7 @@ exports.getNodesByLeastConnections = (nodes) => {
 
             if (ms < maxPing) {
               client.getConnectionCount().then(response => {
-                rankedList.push({ "url": n.url, "connections": response })
+                if (response) rankedList.push({ "url": n.url, "connections": response })
                 if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
                   rankedList = _.sortBy(rankedList, 'connections')
                   resolve(rankedList)
@@ -155,7 +155,7 @@ exports.getNodesByVersion = (nodes) => {
 
             if (ms < maxPing) {
               client.getVersion().then(response => {
-                rankedList.push({ "url": n.url, "version": response })
+                if (response) rankedList.push({ "url": n.url, "version": response })
                 if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
                   rankedList = _.sortBy(rankedList, 'version')
                   resolve(rankedList)
@@ -167,6 +167,44 @@ exports.getNodesByVersion = (nodes) => {
             } else {
               highPings++
             }
+          })
+        }
+      })
+    }
+  })
+}
+
+
+// Return an array of nodes sortyed with lowest pings first
+// This expects an array of nodes with keys named "url"
+// TODO: add caching with configurable time limit for results
+
+exports.getNodesByPing = (nodes) => {
+  let rankedList = []
+  let i = 0, errors = 0, highPings = 0
+
+  return new Promise((resolve, reject) => {
+    if (_.isArray(nodes)) {
+      nodes.forEach((n) => {
+        if (n.url) {
+          const client = neon.default.create.rpcClient(n.url)
+
+          client.ping().then(ms => {
+            if (defly) print(n.url + ' ms: ' + ms)
+
+            if (ms < maxPing) {
+              rankedList.push({ "url": n.url, "ping": ms })
+
+              if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
+                rankedList = _.sortBy(rankedList, 'ping')
+                resolve(rankedList)
+              }
+            } else {
+              highPings++
+            }
+          }).catch(error => {
+            print('error: ' + error)
+            errors++
           })
         }
       })
