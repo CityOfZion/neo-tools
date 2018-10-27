@@ -14,9 +14,16 @@ var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 let node  = ''
 let defly = false
+let maxPing = 2000
+
 
 function print(msg) {
   console.log(msg);
+}
+
+
+exports.configure = (cfgObj) => {
+  ({ maxPing } = cfgObj)
 }
 
 
@@ -48,7 +55,7 @@ exports.resolveNetworkId = (networkId) => {
 
 exports.getNodesByTallest = (nodes) => {
   let rankedList = []
-  let i = 0, errors = 0
+  let i = 0, errors = 0, highPings = 0
   return new Promise((resolve, reject) => {
     if (_.isArray(nodes)) {
       nodes.forEach((n) => {
@@ -57,20 +64,33 @@ exports.getNodesByTallest = (nodes) => {
 
           const client = neon.default.create.rpcClient(n.url)
 
-          client.getBlockCount().then(response => {
-            rankedList.push({ "url": n.url, "height": response })
-            print('n: ' + n.url)
-            print('loop i: ' + i)
-            print('errors: ' + (nodes.length - errors))
-            print('node n: ' + nodes.length)
-            if (i++ === (nodes.length - 1) || i === (nodes.length - errors) ) {
-              rankedList = _.sortBy(rankedList, 'height')
-              rankedList = rankedList.reverse()
-              resolve(rankedList)
+          client.ping().then(ms => {
+            print(n.url + ' ms: ' + ms)
+
+            if (ms < maxPing) {
+              client.getBlockCount().then(response => {
+                if (response) rankedList.push({ "url": n.url, "height": response })
+
+                if (defly) {
+                  print('n: ' + n.url)
+                  print('response: ' + response)
+                  print('loop i: ' + i)
+                  print('errors: ' + errors)
+                  print('node n: ' + nodes.length)
+                }
+
+                if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
+                  rankedList = _.sortBy(rankedList, 'height')
+                  rankedList = rankedList.reverse()
+                  resolve(rankedList)
+                }
+              }).catch(error => {
+                print('error: ' + error)
+                errors++
+              })
+            } else {
+              highPings++
             }
-          }).catch(error => {
-            print('error: ' + error)
-            errors++
           })
         }
       })
@@ -84,7 +104,7 @@ exports.getNodesByTallest = (nodes) => {
 
 exports.getNodesByLeastConnections = (nodes) => {
   let rankedList = []
-  let i = 0
+  let i = 0, errors = 0, highPings = 0
 
   return new Promise((resolve, reject) => {
     if (_.isArray(nodes)) {
@@ -92,11 +112,20 @@ exports.getNodesByLeastConnections = (nodes) => {
         if (n.url) {
           const client = neon.default.create.rpcClient(n.url)
 
-          client.getConnectionCount().then(response => {
-            rankedList.push({ "url": n.url, "connections": response })
-            if (i++ === (nodes.length - 1)) {
-              rankedList = _.sortBy(rankedList, 'connections')
-              resolve(rankedList)
+          client.ping().then(ms => {
+            print(n.url + ' ms: ' + ms)
+
+            if (ms < maxPing) {
+              client.getConnectionCount().then(response => {
+                rankedList.push({ "url": n.url, "connections": response })
+                if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
+                  rankedList = _.sortBy(rankedList, 'connections')
+                  resolve(rankedList)
+                }
+              }).catch(error => {
+                print('error: ' + error)
+                errors++
+              })
             }
           })
         }
@@ -111,7 +140,7 @@ exports.getNodesByLeastConnections = (nodes) => {
 
 exports.getNodesByVersion = (nodes) => {
   let rankedList = []
-  let i = 0
+  let i = 0, errors = 0, highPings = 0
 
   return new Promise((resolve, reject) => {
     if (_.isArray(nodes)) {
@@ -119,11 +148,20 @@ exports.getNodesByVersion = (nodes) => {
         if (n.url) {
           const client = neon.default.create.rpcClient(n.url)
 
-          client.getVersion().then(response => {
-            rankedList.push({ "url": n.url, "version": response })
-            if (i++ === (nodes.length - 1)) {
-              rankedList = _.sortBy(rankedList, 'version')
-              resolve(rankedList)
+          client.ping().then(ms => {
+            print(n.url + ' ms: ' + ms)
+
+            if (ms < maxPing) {
+              client.getVersion().then(response => {
+                rankedList.push({ "url": n.url, "version": response })
+                if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
+                  rankedList = _.sortBy(rankedList, 'version')
+                  resolve(rankedList)
+                }
+              }).catch(error => {
+                print('error: ' + error)
+                errors++
+              })
             }
           })
         }
