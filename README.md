@@ -116,6 +116,7 @@ Node.js is the main implementation platform right now. We are looking for contri
   * network.getNodesByTallest()
   * network.getNodesByLeastConnections()
   * network.getNodesByVersion()
+  * added ping detection to improve RTT
 
 
 ## Developer's Note
