@@ -126,6 +126,8 @@ exports.getNodesByLeastConnections = (nodes) => {
                 print('error: ' + error)
                 errors++
               })
+            } else {
+              highPings++
             }
           })
         }
@@ -162,6 +164,8 @@ exports.getNodesByVersion = (nodes) => {
                 print('error: ' + error)
                 errors++
               })
+            } else {
+              highPings++
             }
           })
         }
