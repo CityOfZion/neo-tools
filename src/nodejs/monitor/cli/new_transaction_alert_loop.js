@@ -99,7 +99,7 @@ let argz = {
   'index': program.index
 }
 
-let i = 1
+let i = 1, alerts = 0
 
 if (defly) print('sleeping: ' + program.wait + ' s')
 
@@ -108,7 +108,7 @@ let last_run_result = ''
 get_last_transaction(argz)
 
 const intervalObj = setInterval(() => {
-  if (i > program.loop && program.loop !== 0) {
+  if (i >= program.loop && program.loop !== 0) {
     clearInterval(intervalObj)
     print('clearing timer')
   } else {
@@ -137,9 +137,10 @@ function get_last_transaction(runtimeArgs) {
       print('New Transaction')
       email.send(message).then((id) => {
         print('Message away: ' + id)
+        alerts++
       })
     } else {
-      print('No news on the chain')
+      print(alerts + ' alert(s)')
     }
     last_run_result = rstr
 

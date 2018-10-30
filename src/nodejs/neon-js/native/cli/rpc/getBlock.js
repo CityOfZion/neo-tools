@@ -15,7 +15,7 @@ const netutil = require('nodejs_util/network')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const getBlock = require('nodejs_neon-js/modules/getBlock')
+const getBlock = require('nodejs_neon-js/native/modules/rpc/getBlock')
 
 let nodes = []
 let defly = false

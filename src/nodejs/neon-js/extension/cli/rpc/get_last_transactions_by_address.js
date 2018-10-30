@@ -1,4 +1,7 @@
-// neon-js/get_last_transactions_by_address
+// neon-js/extension/cli/rpc/get_last_transactions_by_address
+// This is the CLI control file that leverages the module:
+// neon-js/extension/modules/rpc/get_last_transactions_by_address
+
 // RPC version of get_last_transactions_by_address (eventually, template for now)
 
 // TODO ensure the rpc node can be reported
