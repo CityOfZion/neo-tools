@@ -1,4 +1,7 @@
-// neoscan get_last_transactions_by_address cli wrapper
+// neon-js/get_last_transactions_by_address
+// RPC version of get_last_transactions_by_address (eventually, template for now)
+
+// TODO ensure the rpc node can be reported
 
 require('module-alias/register')
 
