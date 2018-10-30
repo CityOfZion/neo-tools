@@ -115,13 +115,13 @@ const intervalObj = setInterval(() => {
     print('loop #: ' + i + ' of ' + (program.loop ? program.loop : 'infinity'))
     get_last_transaction(argz)
   }
-
-  print('sleeping: ' + program.wait + ' s')
   i++
 }, program.wait * 1000)
 
 
 function get_last_transaction(runtimeArgs) {
+  print('Searching news for ' + address)
+
   get_last_transactions_by_address.run(runtimeArgs).then((r) => {
     let message = {
       to: to,
@@ -136,10 +136,15 @@ function get_last_transaction(runtimeArgs) {
     if (last_run_result && last_run_result !== rstr) {
       print('New Transaction')
       email.send(message).then((id) => {
-        print('message away: ' + id)
+        print('Message away: ' + id)
       })
+    } else {
+      print('No news on the chain')
     }
     last_run_result = rstr
+
     if (defly) print('last result: ' + last_run_result)
+
+    print('sleeping: ' + program.wait + ' s' + '\n...')
   })
 }

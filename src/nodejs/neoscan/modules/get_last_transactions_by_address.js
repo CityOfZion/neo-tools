@@ -1,6 +1,6 @@
 // neoscan get_last_transactions_by_address cli module
 // TODO reverse sort order
-// summarize transaction - show amount of last n txs or similar
+// TODO summarize transaction - show amount of last n txs or similar
 
 require('module-alias/register')
 
