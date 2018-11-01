@@ -2,7 +2,7 @@
 // Main Dependency: neon-js
 // This talks to an RPC node on the given netowrk and returns a transaction
 
-// IMPORTANT OPTIMIZATION NOTE: The only difference in the return value of getRawTransaction versus getBlock is three fields more in the former:
+// IMPORTANT OPTIMIZATION NOTE: As of /NEO:2.8.0/, the only difference in the return value of getRawTransaction versus getBlock is three fields more in the former:
 // blockhash, confirmations, and blocktime.  Don't make the extra RPC call to getRawTransaction if you don't need to.
 
 // TODO: extension? Get nth transaction
@@ -39,7 +39,7 @@ program
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .on('--help', function(){
-    print('OPTIMIZATION NOTE: \n\nThe only difference in the return value of getRawTransaction versus getBlock is three fields more in the former: blockhash, confirmations, and blocktime. Don\'t make the extra RPC call to getRawTransaction if you don\'t need to.')
+    print('OPTIMIZATION NOTE: \n\nAs of /NEO:2.8.0/, the only difference in the return value of getRawTransaction versus getBlock is three fields more in the former: blockhash, confirmations, and blocktime. Don\'t make the extra RPC call to getRawTransaction if you don\'t need to.')
   })
   .parse(process.argv)
 
