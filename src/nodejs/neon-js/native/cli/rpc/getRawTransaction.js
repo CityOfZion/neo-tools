@@ -1,10 +1,11 @@
-// RPC getBlock CLI that calls native/modules/rpc/getBlock from CLI
+// RPC getRawTransaction CLI that calls native/modules/rpc/getRawTransaction from CLI
 // Main Dependency: neon-js
-// This returns a block or an array of transactions for a block
+// This talks to an RPC node on the given netowrk and returns a transaction
 
 // IMPORTANT OPTIMIZATION NOTE: The only difference in the return value of getRawTransaction versus getBlock is three fields more in the former:
 // blockhash, confirmations, and blocktime.  Don't make the extra RPC call to getRawTransaction if you don't need to.
 
+// TODO: extension? Get nth transaction
 
 require('module-alias/register')
 
@@ -19,7 +20,7 @@ const netutil = require('nodejs_util/network')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const command = require('nodejs_neon-js/native/modules/rpc/getBlock')
+const command = require('nodejs_neon-js/native/modules/rpc/getRawTransaction')
 
 let nodes = []
 let defly = false
@@ -31,19 +32,17 @@ function print(msg) {
 program
   .version('0.2.0')
   .usage('')
-  .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
-  .option('-h, --hash [hash]', 'specify the hash of the block to fetch, if no hash or index is supplied will get the tallest')
-  .option('-i, --index [index]', 'specify the number of the block to fetch, if no hash or index is supplied will get the tallest')
-  .option('-t, --time', 'Only return time field of last block - this does not work with -T option')
-  .option('-T, --Txs', 'Only return an array of transactions for the block')
+  .option('-h, --hash [hash]', 'specify the hash of the transaction to fetch, if no hash is provided, will get the most recent')
+  .option('-t, --time', 'Only return time field of results')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .on('--help', function(){
     print('OPTIMIZATION NOTE: \n\nThe only difference in the return value of getRawTransaction versus getBlock is three fields more in the former: blockhash, confirmations, and blocktime. Don\'t make the extra RPC call to getRawTransaction if you don\'t need to.')
   })
   .parse(process.argv)
+
 
 
 if (program.debug) {
@@ -76,18 +75,14 @@ if (!program.node) {
 }
 
 if (program.hash) arg = program.hash
-if (program.index) arg = parseInt(program.index)
 
 function commandWrapper(nodelist) {
   let runtimeArgs = {
     'debug': defly,
     'node': nodelist[0].url,
     'hash': program.hash,
-    'index': program.index,
     'time': program.time ? program.time : false,
     'human': program.Human ? program.Human : false,
-    'txs': program.Txs ? program.Txs : false,
-    'index': program.index
   }
 
   if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)

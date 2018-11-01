@@ -7,7 +7,6 @@ const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
 const neoscan = require('nodejs_neoscan/neoscan')
-const email   = require('nodejs_alert/email')
 
 const get_last_transactions_by_address = require('nodejs_neoscan/modules/get_last_transactions_by_address')
 
@@ -27,7 +26,7 @@ program
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --address [address]', 'Specify the address for transaction inquiry')
-  .option('-p, --page [page]', 'Show last stransactions for [address] starting at [page]', 1)
+  .option('-p, --page [page]', 'Show last transactions for [address] starting at [page]', 1)
   .option('-t, --time', 'Only return time field of last transactions')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-i, --index [index]', 'Get transaction at this index, 0 is the most recent transaction', 0)

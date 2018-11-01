@@ -1,9 +1,10 @@
-// RPC getBlock module
-// This is called by native/cli/rpc/getBlock CLI wrapper
+// RPC getTransactionsByBlock module
+// This is called by native/cli/rpc/getTransactionsByBlock CLI wrapper
 // Main Dependency: neon-js
-// This returns a block
-// This returns a block or an array of transactions for a block
-// TODO block source and sink
+//
+// This returns an array oftransactions for a given block.
+// The block can be chosen by hash or index.
+// If no hash or index is provided the highest block is used.
 
 require('module-alias/register')
 
@@ -17,8 +18,10 @@ const dbg     = require('nodejs_util/debug')
 // program.hash     // Specify the hash of the block to fetch, if no hash or index is supplied will get the tallest
 // program.time     // Only return the time field of the last block
 // program.human    // Make dates human-readable
-// program.index    // Specify the number of the block to fetch, if no hash or index is supplied will get the tallest
-// program.Txs      // Only return an array of transactions from the block
+// program.index    // specify the number of the block to fetch, if no hash or index is supplied will get the tallest
+// TODO add transaction limit
+// TODO json blockreader: dump json blocks on stdin
+// TODO start reading at a block and don't stop fetching transactions until there are no more blocks
 
 exports.run = (config) => {
   let program = {}
@@ -32,7 +35,6 @@ exports.run = (config) => {
     program.time = false
     program.human = false
     program.index = 0
-    program.txs = false
   }
 
   function print(msg) {
@@ -78,11 +80,7 @@ exports.run = (config) => {
           }
           else {
             // if (defly) dbg.logDeep('result:\n', response)
-            if (program.txs) { // only return tx array of block
-              if (response.tx) resolve(response.tx)
-              else resolve([])
-            }
-            else resolve(response)
+            resolve(response)
           }
         })
       }

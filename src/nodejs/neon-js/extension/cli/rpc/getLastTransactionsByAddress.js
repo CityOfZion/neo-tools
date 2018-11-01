@@ -1,6 +1,6 @@
-// neon-js/extension/cli/rpc/get_last_transactions_by_address
-// This is the CLI control file that leverages the module:
-// neon-js/extension/modules/rpc/get_last_transactions_by_address
+// neon-js/extension/cli/rpc/getLastTransactionsByAddress
+// This is the CLI control file that leverages the module file:
+// neon-js/extension/modules/rpc/getLastTransactionsByAddress
 
 // RPC version of get_last_transactions_by_address (eventually, template for now)
 
@@ -11,11 +11,12 @@ require('module-alias/register')
 const program = require('commander');
 const _       = require('underscore')
 
+const neon    = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
-const neoscan = require('nodejs_neoscan/neoscan')
-const email   = require('nodejs_alert/email')
+const netutil = require('nodejs_util/network')
 
-const get_last_transactions_by_address = require('nodejs_neoscan/modules/get_last_transactions_by_address')
+
+const command = require('nodejs_neon-js/extension/modules/rpc/getLastTransactionsByAddress')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
@@ -31,14 +32,15 @@ program
   .version('0.1.0')
   .usage('[address] [page]')
   .option('-d, --debug', 'Debug')
-  .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
+  .option('-N, --Net [Net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
+  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-a, --address [address]', 'Specify the address for transaction inquiry')
-  .option('-p, --page [page]', 'Show last stransactions for [address] starting at [page]', 1)
+  .option('-p, --page [page]', 'Show last transactions for [address] starting at [page]', 1)
   .option('-t, --time', 'Only return time field of last transactions')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-i, --index [index]', 'Get transaction at this index, 0 is the most recent transaction', 0)
   // TODO reverse sort order
-  // summarize transaction - show amount of last n txs or similar
+  // TODO summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
 
 if (program.debug) {
@@ -69,6 +71,6 @@ let argz = {
 
 if (defly) dbg.logDeep('argz: ', argz)
 
-get_last_transactions_by_address.run(argz).then((r) => {
+command.run(argz).then((r) => {
   dbg.logDeep('\nresult:\n', r)
 })

@@ -1,9 +1,7 @@
-// RPC getBlock module
-// This is called by native/cli/rpc/getBlock CLI wrapper
+// RPC getRawTransaction module
+// This is called by native/cli/rpc/getRawTransaction CLI wrapper
 // Main Dependency: neon-js
-// This returns a block
-// This returns a block or an array of transactions for a block
-// TODO block source and sink
+// This talks to an RPC node on the given netowrk and returns a transaction
 
 require('module-alias/register')
 
@@ -14,11 +12,9 @@ const dbg     = require('nodejs_util/debug')
 // Pass an object named config of the following format to control module behavior
 // program.debug    // Toggle debugging
 // program.node     // Set RPC node to use (be sure to preface with https://)
-// program.hash     // Specify the hash of the block to fetch, if no hash or index is supplied will get the tallest
-// program.time     // Only return the time field of the last block
+// program.hash     // Specify the hash of the transaction to fetch, if no hash is provided, will get the most recent
+// program.time     // Only return the time field of results
 // program.human    // Make dates human-readable
-// program.index    // Specify the number of the block to fetch, if no hash or index is supplied will get the tallest
-// program.Txs      // Only return an array of transactions from the block
 
 exports.run = (config) => {
   let program = {}
@@ -31,8 +27,6 @@ exports.run = (config) => {
     program.hash = null
     program.time = false
     program.human = false
-    program.index = 0
-    program.txs = false
   }
 
   function print(msg) {
@@ -45,7 +39,6 @@ exports.run = (config) => {
   }
 
   if (program.hash) arg = program.hash
-  if (program.index) arg = parseInt(program.index)
 
   if (!program.node) {
     print('Please supply a node. You can use src/nodejs/neoscan/cli/get_all_nodes.js to find a list or see monitor.cityofzion.io')
@@ -56,33 +49,36 @@ exports.run = (config) => {
 
       const client = neon.default.create.rpcClient(program.node)
 
-      if (!program.hash && !program.index) { // get the tallest by default
+      if (!program.hash) { // get the tallest by default
         client.getBestBlockHash().then(response => {
           // if (defly) dbg.logDeep('', response)
-
-          commandWrapper(response)
+          client.getBlock(response).then(response => {
+            if (response.tx) {
+              let newest = response.tx.length - 1
+              let txid = response.tx[newest].txid
+              if (txid) {
+                commandWrapper(txid.slice(2)) // chop off the '0x'
+              }
+            } else resolve({})
+          })
         })
       } else {
         commandWrapper(arg)
       }
 
       function commandWrapper(runtimeArg) {
-        client.getBlock(runtimeArg).then(response => {
+        client.getRawTransaction(runtimeArg).then(response => {
           if (program.human) {
-              response.time = new Date(response.time * 1000).toLocaleString()
+              response.blocktime = new Date(response.blocktime * 1000).toLocaleString()
           }
           if (program.time) {
-            result = response.time
+            result = response.blocktime
             // if (defly) print('result:\n' + result)
             resolve(result)
           }
           else {
             // if (defly) dbg.logDeep('result:\n', response)
-            if (program.txs) { // only return tx array of block
-              if (response.tx) resolve(response.tx)
-              else resolve([])
-            }
-            else resolve(response)
+            resolve(response)
           }
         })
       }
