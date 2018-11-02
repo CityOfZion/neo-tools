@@ -69,7 +69,6 @@ if (!program.address) {
   var default_account = cfg.get_default_account()
 
   if(default_account) address = default_account.address
-
   else program.help()
 } else {
   address = program.address
@@ -93,7 +92,7 @@ if (!program.node) {
     nodes = rankedNodes
     commandWrapper(nodes)
   }).catch (error => {
-      console.log('neon-js.getNodesByTallest(): ' + error.message)
+      print('neon-js.getNodesByTallest(): ' + error.message)
   })
 
 } else {
@@ -114,6 +113,6 @@ function commandWrapper(nodelist) {
     dbg.logDeep(' ', r)
   })
   .catch (error => {
-    console.log(__filename + ': ' + error.message)
+    print(__filename + ': ' + error.message)
   })
 }

@@ -53,7 +53,6 @@ if (!program.address) {
   var default_account = cfg.get_default_account()
 
   if(default_account) address = default_account.address
-
   else program.help()
 } else {
   address = program.address

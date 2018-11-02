@@ -24,6 +24,7 @@ const command = require('nodejs_neon-js/native/modules/rpc/getRawTransaction')
 
 let nodes = []
 let defly = false
+let arg
 
 function print(msg) {
   console.log(msg);
@@ -50,6 +51,8 @@ if (program.debug) {
   netutil.debug()
 }
 
+if (program.hash) arg = program.hash
+
 if (!program.node) {
   // get a node from the list and try it
   let net = netutil.resolveNetworkId(program.Net)
@@ -72,8 +75,6 @@ if (!program.node) {
   nodes.push({ "url": program.node })
   commandWrapper(nodes)
 }
-
-if (program.hash) arg = program.hash
 
 function commandWrapper(nodelist) {
   let runtimeArgs = {

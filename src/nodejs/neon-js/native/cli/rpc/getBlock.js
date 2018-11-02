@@ -23,6 +23,7 @@ const command = require('nodejs_neon-js/native/modules/rpc/getBlock')
 
 let nodes = []
 let defly = false
+let arg
 
 function print(msg) {
   console.log(msg);
@@ -52,6 +53,9 @@ if (program.debug) {
   netutil.debug()
 }
 
+if (program.hash) arg = program.hash
+if (program.index) arg = parseInt(program.index)
+
 if (!program.node) {
   // get a node from the list and try it
   let net = netutil.resolveNetworkId(program.Net)
@@ -67,16 +71,13 @@ if (!program.node) {
     nodes = rankedNodes
     commandWrapper(nodes)
   }).catch (error => {
-      console.log('neon-js.getNodesByTallest(): ' + error.message)
+      print('neon-js.getNodesByTallest(): ' + error.message)
   })
 
 } else {
   nodes.push({ "url": program.node })
   commandWrapper(nodes)
 }
-
-if (program.hash) arg = program.hash
-if (program.index) arg = parseInt(program.index)
 
 function commandWrapper(nodelist) {
   let runtimeArgs = {
@@ -96,6 +97,6 @@ function commandWrapper(nodelist) {
     dbg.logDeep(' ', r)
   })
   .catch (error => {
-    console.log(__filename + ': ' + error.message)
+    print(__filename + ': ' + error.message)
   })
 }
