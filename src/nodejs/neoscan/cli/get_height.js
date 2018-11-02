@@ -32,5 +32,5 @@ if (program.debug) {
 neoscan.set_net(program.net)
 
 neoscan.get_height().then(result => {
-  print('\nresult:\n{ "height": ' + result.height + ' }')
+  print(' { "height": ' + result.height + ' }')
 })

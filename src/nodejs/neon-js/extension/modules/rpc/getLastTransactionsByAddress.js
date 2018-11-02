@@ -70,5 +70,5 @@ let argz = {
 if (defly) dbg.logDeep('argz: ', argz)
 
 command.run(argz).then((r) => {
-  dbg.logDeep('\nresult:\n', r)
+  dbg.logDeep(' ', r)
 })

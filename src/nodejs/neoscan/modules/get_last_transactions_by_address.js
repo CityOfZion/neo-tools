@@ -93,11 +93,11 @@ exports.run = (config) => {
          })
 
          if (!program.time) {
-           if (defly) dbg.logDeep('\nresult:\n', txs)
+           if (defly) dbg.logDeep(' ', txs)
            results = txs
          }
          else {
-           if (defly) dbg.logDeep('\nresult:\n', results)
+           if (defly) dbg.logDeep(' ', results)
          }
        } else if (txs.data.time) { // not array
          if (program.human) {
@@ -106,12 +106,12 @@ exports.run = (config) => {
              txs.data.time = new Date(txs.data.time * 1000).toLocaleString()
              results.push(txs.data)
            }
-           if (defly) dbg.logDeep('\nresult:\n', results)
+           if (defly) dbg.logDeep(' ', results)
          }
          else if (program.time) {
            results.push({ "last_transaction_time": txs.data.time })
 
-           if (defly) dbg.logDeep('\nresult:\n', results)
+           if (defly) dbg.logDeep(' ', results)
          } else {
            results.push(txs.data)
 

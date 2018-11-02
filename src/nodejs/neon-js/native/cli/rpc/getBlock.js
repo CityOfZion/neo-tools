@@ -93,7 +93,7 @@ function commandWrapper(nodelist) {
   if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
 
   command.run(runtimeArgs).then((r) => {
-    dbg.logDeep('\nresult:\n', r)
+    dbg.logDeep(' ', r)
   })
   .catch (error => {
     console.log('neon-js.getBlockCount(): ' + error.message)

@@ -69,7 +69,7 @@ neoscan.get_height().then(result => {
           result.time = new Date(result.time * 1000).toLocaleString()
         }
 
-        print('\nresult:\n{ ' + keyStr + ': "' + result.time + '" }')
+        print(' { ' + keyStr + ': "' + result.time + '" }')
       }
       else print('error')
     })

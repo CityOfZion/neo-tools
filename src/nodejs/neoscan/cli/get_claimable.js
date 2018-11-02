@@ -75,7 +75,7 @@ function fetch() {
     addresses.forEach((address) => {
       neoscan.get_claimable(address).then(result => {
         print('\naddress: ' + address)
-        dbg.logDeep('\nresult:\n', result)
+        dbg.logDeep(' ', result)
       })
     })
   }

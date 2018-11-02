@@ -66,5 +66,5 @@ let runtimeArgs = {
 if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
 
 get_last_transactions_by_address.run(runtimeArgs).then((r) => {
-  dbg.logDeep('\nresult:\n', r)
+  dbg.logDeep(' ', r)
 })

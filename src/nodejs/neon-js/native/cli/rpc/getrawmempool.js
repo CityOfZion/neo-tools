@@ -35,6 +35,6 @@ const client = neon.default.create.rpcClient(program.node)
 
 client.getRawMemPool().then(response => {
   if (program.summary) {
-    print('getRawMemPool\nresult:\n' + response.length)
-  } else dbg.logDeep('getRawMemPool\nresult:\n', response)
+    print('getRawMemPool ' + response.length)
+  } else dbg.logDeep('getRawMemPool ', response)
 })

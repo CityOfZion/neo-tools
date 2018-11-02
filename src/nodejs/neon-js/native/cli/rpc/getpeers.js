@@ -35,8 +35,8 @@ const client = neon.default.create.rpcClient(program.node)
 
 client.getPeers().then(response => {
   if (program.summary) {
-    print('getPeers connected\nresult:\n' + response.connected.length)
-    print('getPeers unconnected\nresult:\n' + response.unconnected.length)
-    print('getPeers bad\nresult:\n' + response.bad.length)
-  } else dbg.logDeep('getPeers\nresult:\n', response)
+    print('getPeers connected ' + response.connected.length)
+    print('getPeers unconnected ' + response.unconnected.length)
+    print('getPeers bad ' + response.bad.length)
+  } else dbg.logDeep('getPeers ', response)
 })
