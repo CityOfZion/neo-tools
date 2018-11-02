@@ -10,6 +10,8 @@ const _       = require('underscore')
 var neon      = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
 
+let defly = false
+
 function print(msg) {
   console.log(msg);
 }
@@ -28,13 +30,14 @@ if (!program.node) {
 }
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING: ' + __filename)
+  defly = true
 }
 
 const client = neon.default.create.rpcClient(program.node)
 
 client.getRawMemPool().then(response => {
   if (program.summary) {
-    print('getRawMemPool\nresult:\n' + response.length)
-  } else dbg.logDeep('getRawMemPool\nresult:\n', response)
+    print('getRawMemPool ' + response.length)
+  } else dbg.logDeep('getRawMemPool ', response)
 })

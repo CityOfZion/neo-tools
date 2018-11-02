@@ -95,11 +95,11 @@ neoscan.get_address_abstracts(address, pageArg).then(result => {
     if (program.everything) {
       for (var i=1; i <= result.data.total_pages; i++) {
         neoscan.get_address_abstracts(address, i).then(result => {
-          dbg.logDeep('\nresult:\n', result)
+          dbg.logDeep(' ', result)
         })
       }
     } else {
-      dbg.logDeep('\nresult:\n', result)
+      dbg.logDeep(' ', result)
     }
   }
 })

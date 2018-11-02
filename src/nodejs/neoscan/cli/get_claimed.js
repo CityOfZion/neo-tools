@@ -74,7 +74,7 @@ program
     if (addresses.length){
       addresses.forEach((address) => {
         neoscan.get_claimed(address).then(result => {
-          dbg.logDeep('\nresult:\n', result)
+          dbg.logDeep(' ', result)
         })
       })
     }

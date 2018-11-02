@@ -33,5 +33,5 @@ if (program.debug) {
 }
 
 binance.get_book_ticker(program.symbol).then(result => {
-  dbg.logDeep('binance book: \nresult:\n', result)
+  dbg.logDeep('binance book:  ', result)
 })

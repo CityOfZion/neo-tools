@@ -1,4 +1,5 @@
-// neoscan get_last_transactions_by_address cli module
+// neoscan get_last_transactions_by_address module
+// is called by cli/get_last_transactions_by_address
 // TODO reverse sort order
 // TODO summarize transaction - show amount of last n txs or similar
 
@@ -82,7 +83,7 @@ exports.run = (config) => {
          txs.data.forEach((tx) => {
            if (program.time) {
              if (program.human) {
-               results.push({ "last_transaction_time": new Date(tx.time * 1000).toLocaleString() })
+               results.push({ "last_transaction_time": new Date(tx.time * 1000).toLocaleString([], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit', second:'2-digit' }) })
              }
              else {
                results.push({ "last_transaction_time": tx.time })
@@ -93,25 +94,25 @@ exports.run = (config) => {
          })
 
          if (!program.time) {
-           if (defly) dbg.logDeep('\nresult:\n', txs)
+           if (defly) dbg.logDeep(' ', txs)
            results = txs
          }
          else {
-           if (defly) dbg.logDeep('\nresult:\n', results)
+           if (defly) dbg.logDeep(' ', results)
          }
        } else if (txs.data.time) { // not array
          if (program.human) {
-           if (program.time) results.push({ "last_transaction_time": new Date(txs.data.time * 1000).toLocaleString() })
+           if (program.time) results.push({ "last_transaction_time": new Date(txs.data.time * 1000).toLocaleString([], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit', second:'2-digit' }) })
            else {
              txs.data.time = new Date(txs.data.time * 1000).toLocaleString()
              results.push(txs.data)
            }
-           if (defly) dbg.logDeep('\nresult:\n', results)
+           if (defly) dbg.logDeep(' ', results)
          }
          else if (program.time) {
            results.push({ "last_transaction_time": txs.data.time })
 
-           if (defly) dbg.logDeep('\nresult:\n', results)
+           if (defly) dbg.logDeep(' ', results)
          } else {
            results.push(txs.data)
 

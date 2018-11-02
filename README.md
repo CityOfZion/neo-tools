@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.48.0
+Version: 0.50.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -93,15 +93,17 @@ Node.js is the main implementation platform right now. We are looking for contri
 * Crypto
   * shacli support added for SHA256 and HMAC SHA256
 * Neon-js RPC Implementation
-  * neon-js/cli/rpc/query.js - dynamic query construction
-  * neon-js/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
-  * neon-js/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
-  * neon-js/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
-  * neon-js/cli/rpc/getVersion - Gets version information of this node
-  * neon-js/cli/rpc/validateAddress - Verify that the address is a correct NEO address
-  * neon-js/cli/rpc/getBestBlockHash - Get the hash of the tallest block
-  * neon-js/cli/rpc/getBlockCount - Get the number of blocks in the chain
-  * neon-js/cli/rpc/getBlock - Get the block by number or hash or most recent
+  * neon-js/native/cli/rpc/query.js - dynamic query construction
+  * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
+  * neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
+  * neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
+  * neon-js/native/cli/rpc/getVersion - Gets version information of this node
+  * neon-js/native/cli/rpc/validateAddress - Verify that the address is a correct NEO address
+  * neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
+  * neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
+  * neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
+  * neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
+  * neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
 * Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
   * Vitals included:
     * version

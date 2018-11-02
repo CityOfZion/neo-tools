@@ -47,5 +47,5 @@ neoscan.get_transaction(program.hash).then(result => {
   if (program.time) {
     print('result:\n' + result.time)
   }
-  else dbg.logDeep('\nresult:\n', result)
+  else dbg.logDeep(' ', result)
 })

@@ -75,7 +75,7 @@ program
       addresses.forEach((address) => {
         neoscan.get_unclaimed(address).then(result => {
           print('\naddress: ' + address)
-          dbg.logDeep('\nresult:\n', result)
+          dbg.logDeep(' ', result)
         })
       })
     }

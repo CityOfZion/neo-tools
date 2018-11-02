@@ -59,6 +59,6 @@ function getBestBlockHash(nodelist) {
   const client = neon.default.create.rpcClient(nodelist[0].url)
 
   client.getBestBlockHash().then(response => {
-    dbg.logDeep('result:\n', response)
+    dbg.logDeep(' ', response)
   })
 }

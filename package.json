@@ -1,6 +1,6 @@
 {
   "name": "neo-tools",
-  "version": "0.48.0",
+  "version": "0.50.0",
   "description": "Composable command line tools and reference implementations for Neo Smart Economy function primitives",
   "repository": {
     "type": "git",

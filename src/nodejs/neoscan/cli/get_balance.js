@@ -73,8 +73,7 @@ function fetch() {
   if (addresses.length){
     addresses.forEach((address) => {
       neoscan.get_balance(address).then(result => {
-        print('\naddress: ' + address)
-        dbg.logDeep('result:\n', result)
+        dbg.logDeep(' ', result)
       })
     })
   }

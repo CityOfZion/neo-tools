@@ -37,7 +37,7 @@ neoscan.get_height().then(result => {
 
   if (result && result.height) {
     neoscan.get_block(result.height).then(result => {
-      dbg.logDeep('\nresult:\n', result)
+      dbg.logDeep(' ', result)
     })
   }
 })
