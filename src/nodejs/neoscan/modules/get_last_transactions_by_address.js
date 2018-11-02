@@ -82,7 +82,7 @@ exports.run = (config) => {
          txs.data.forEach((tx) => {
            if (program.time) {
              if (program.human) {
-               results.push({ "last_transaction_time": new Date(tx.time * 1000).toLocaleString([], { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute:'2-digit', second:'2-digit' }) })
+               results.push({ "last_transaction_time": new Date(tx.time * 1000).toLocaleString([], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit', second:'2-digit' }) })
              }
              else {
                results.push({ "last_transaction_time": tx.time })
@@ -101,7 +101,7 @@ exports.run = (config) => {
          }
        } else if (txs.data.time) { // not array
          if (program.human) {
-           if (program.time) results.push({ "last_transaction_time": new Date(txs.data.time * 1000).toLocaleString([], { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute:'2-digit', second:'2-digit' }) })
+           if (program.time) results.push({ "last_transaction_time": new Date(txs.data.time * 1000).toLocaleString([], { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute:'2-digit', second:'2-digit' }) })
            else {
              txs.data.time = new Date(txs.data.time * 1000).toLocaleString()
              results.push(txs.data)
