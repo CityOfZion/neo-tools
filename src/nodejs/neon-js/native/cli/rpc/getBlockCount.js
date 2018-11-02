@@ -58,9 +58,9 @@ function getBlockCount(nodelist) {
   const client = neon.default.create.rpcClient(nodelist[0].url)
 
   client.getBlockCount().then(response => {
-    dbg.logDeep('result:\n', response)
+    dbg.logDeep(' ', response)
   })
   .catch (error => {
-    console.log('neon-js.getBlockCount(): ' + error.message)
+    console.log(__filename + ': ' + error.message)
   })
 }

@@ -8,11 +8,12 @@ const _       = require('underscore')
 var neon      = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
 
+let args
+let defly = false
+
 function print(msg) {
   console.log(msg);
 }
-
-let args
 
 program
   .version('0.1.0')
@@ -34,11 +35,12 @@ if (program.parms) {
 }
 
 if (program.debug) {
-  print('DEBUGGING');
-  console.print('program.node: '+program.node+'\nprogram.method: '+'\nprogram.args: '+program.args)
+  print('DEBUGGING: ' + __filename)
+  defly = true
+  print('program.node: '+program.node+'\nprogram.method: '+'\nprogram.args: '+program.args)
 }
 
 const query = neon.default.create.query({method: program.method, params: args})
 query.execute(program.node).then(response => {
-  dbg.logDeep('result\n:', response)
+  dbg.logDeep(' ', response)
 })

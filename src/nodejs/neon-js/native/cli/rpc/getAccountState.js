@@ -1,10 +1,26 @@
-// RPC getBlock CLI that calls native/modules/rpc/getBlock from CLI
+// RPC getAccountState CLI
+// This calls native/modules/rpc/getAccountState from CLI
 // Main Dependency: neon-js
-// This returns a block or an array of transactions for a block
+// This talks to an RPC node on the given netowrk and returns account state
+// i.e.,
+// {
+//     "jsonrpc": "2.0",
+//     "id": 1,
+//     "result": {
+//         "version": 0,
+//         "script_hash": "0x1179716da2e9523d153a35fb3ad10c561b1e5b1a",
+//         "frozen": false,
+//         "votes": [],
+//         "balances": [
+//             {
+//                 "asset": "0xc56f33fc6ecfcd0c225c4ab356fee59390af8560be0e930faebe74a6daff7c9b",
+//                 "value": "94"
+//             }
+//         ]
+//     }
+// }
 
-// IMPORTANT OPTIMIZATION NOTE: As of /NEO:2.8.0/, the only difference in the return value of getRawTransaction versus getBlock is three fields more in the former:
-// blockhash, confirmations, and blocktime.  Don't make the extra RPC call to getRawTransaction if you don't need to.
-
+// TODO: add multiple address option support project-wide
 
 require('module-alias/register')
 
@@ -19,7 +35,7 @@ const netutil = require('nodejs_util/network')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const command = require('nodejs_neon-js/native/modules/rpc/getBlock')
+const command = require('nodejs_neon-js/native/modules/rpc/getAccountState')
 
 let nodes = []
 let defly = false
@@ -31,20 +47,16 @@ function print(msg) {
 program
   .version('0.2.0')
   .usage('')
-  .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
-  .option('-h, --hash [hash]', 'specify the hash of the block to fetch, if no hash or index is supplied will get the tallest')
-  .option('-i, --index [index]', 'specify the number of the block to fetch, if no hash or index is supplied will get the tallest')
-  .option('-t, --time', 'Only return time field of last block - this does not work with -T option')
-  .option('-T, --Txs', 'Only return an array of transactions for the block')
+  .option('-a, --address [address]', 'Specify the address for the inquiry')
+  .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
+  .option('-x, --xstr', 'Return hexstring transactoin value instead of default json', 1)
+  .option('-t, --time', 'Only return time field of results')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .on('--help', function(){
-    print('OPTIMIZATION NOTE: \n\nAs of /NEO:2.8.0/, the only difference in the return value of getRawTransaction versus getBlock is three fields more in the former: blockhash, confirmations, and blocktime. Don\'t make the extra RPC call to getRawTransaction if you don\'t need to.')
   })
   .parse(process.argv)
-
 
 if (program.debug) {
   print('DEBUGGING: ' + __filename)
@@ -52,8 +64,22 @@ if (program.debug) {
   netutil.debug()
 }
 
+if (!program.address) {
+  // check for a default address in config, if not pressent show help
+  var default_account = cfg.get_default_account()
+
+  if(default_account) address = default_account.address
+
+  else program.help()
+} else {
+  address = program.address
+}
+
+if (defly) print('address: ' + address)
+
 if (!program.node) {
   // get a node from the list and try it
+  // TODO: move node automatic selection into a standard, reusable location (netutil?)
   let net = netutil.resolveNetworkId(program.Net)
 
   nodes = cfg.get_nodes(net)
@@ -75,19 +101,11 @@ if (!program.node) {
   commandWrapper(nodes)
 }
 
-if (program.hash) arg = program.hash
-if (program.index) arg = parseInt(program.index)
-
 function commandWrapper(nodelist) {
   let runtimeArgs = {
     'debug': defly,
     'node': nodelist[0].url,
-    'hash': program.hash,
-    'index': program.index,
-    'time': program.time ? program.time : false,
-    'human': program.Human ? program.Human : false,
-    'txs': program.Txs ? program.Txs : false,
-    'index': program.index
+    'address': address,
   }
 
   if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)

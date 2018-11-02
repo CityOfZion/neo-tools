@@ -6,7 +6,7 @@ const _       = require('underscore')
 const json    = require('nodejs_util/json')
 
 exports.lookDeep = (o) => {
-  return util.inspect(o, { depth: null })
+  return util.inspect(o, { depth: null, breakLength: Infinity })
 }
 
 
@@ -17,7 +17,7 @@ exports.logDeep = (msg, o) => {
 
   if (msg) str = msg + ' ' + this.lookDeep(o)
   else str = str = this.lookDeep(o)
-  
+
   console.log(str)
   return str
 }

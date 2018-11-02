@@ -91,6 +91,6 @@ function commandWrapper(nodelist) {
     dbg.logDeep(' ', r)
   })
   .catch (error => {
-    console.log('neon-js.getBlockCount(): ' + error.message)
+    console.log(__filename + ': ' + error.message)
   })
 }

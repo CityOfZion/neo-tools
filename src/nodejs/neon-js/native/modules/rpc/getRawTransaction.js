@@ -19,6 +19,7 @@ const dbg     = require('nodejs_util/debug')
 exports.run = (config) => {
   let program = {}
   let defly = false
+  let arg
 
   if (config) program = config
   else {

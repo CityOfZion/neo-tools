@@ -1,4 +1,5 @@
-// neoscan get_last_transactions_by_address cli module
+// neoscan get_last_transactions_by_address module
+// is called by cli/get_last_transactions_by_address
 // TODO reverse sort order
 // TODO summarize transaction - show amount of last n txs or similar
 

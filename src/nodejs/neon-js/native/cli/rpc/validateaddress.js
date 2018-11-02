@@ -11,6 +11,8 @@ const _       = require('underscore')
 var neon      = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
 
+let defly = false
+
 function print(msg) {
   console.log(msg);
 }
@@ -29,11 +31,12 @@ if (!program.node || !program.address) {
 }
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING: ' + __filename)
+  defly = true
 }
 
 const client = neon.default.create.rpcClient(program.node)
 
 client.validateAddress(program.address).then(response => {
-  dbg.logDeep('result:\n', response)
+  dbg.logDeep(' ', response)
 })

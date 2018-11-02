@@ -295,10 +295,13 @@ exports.get_balance = address => {
       return axios
         .get(url)
         .then(response => {
-          let assets = {}
+          let assets = {
+            address: address
+          }
           let data = response.data
           if (data.address === 'not found') {
             assets = {
+              address: address,
               neo: 0,
               gas: 0,
             }
@@ -306,7 +309,9 @@ exports.get_balance = address => {
             // TODO rewrite to dynamically populate assets
             data.balance.map(b => {
 
-              let ast = {}
+              let ast = {
+                address: address
+              }
               ast[b.asset] = b.amount
 
               if (b.asset === 'NEO') {
