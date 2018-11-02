@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.49.0
+Version: 0.50.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -102,6 +102,8 @@ Node.js is the main implementation platform right now. We are looking for contri
   * neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
   * neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
   * neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
+  * neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
+  * neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
 * Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
   * Vitals included:
     * version
