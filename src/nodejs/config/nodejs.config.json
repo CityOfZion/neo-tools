@@ -12,5 +12,11 @@
   },
   "exchanges": {
     "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+  },
+  "smtp": {
+    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+  },
+  "nodes": {
+    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
   }
 }

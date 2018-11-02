@@ -25,8 +25,9 @@ program
 
 if (program.debug) {
   print('DEBUGGING');
+  binance.debug(true)
 }
 
 binance.ping().then(result => {
-  dbg.logDeep('ping: \nresult:\n', result)
+  dbg.logDeep('ping:  ', result)
 })

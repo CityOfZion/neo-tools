@@ -33,6 +33,7 @@ if (!program.node) {
 
 if (program.debug) {
   print('DEBUGGING');
+  neoscan.debug(true)
 }
 
 const client = neon.default.create.rpcClient(program.node)
@@ -40,27 +41,27 @@ const client = neon.default.create.rpcClient(program.node)
 print('node: ' + program.node)
 
 client.getVersion().then(response => {
-  dbg.logDeep('getVersion:\nresult:\n', response)
+  dbg.logDeep('getVersion: ', response)
 })
 
 client.getPeers().then(response => {
   if (program.summary) {
-    print('getPeers connected\nresult:\n' + response.connected.length)
-    print('getPeers unconnected\nresult:\n' + response.unconnected.length)
-    print('getPeers bad\nresult:\n' + response.bad.length)
-  } else dbg.logDeep('getPeers\nresult:\n', response)
+    print('getPeers connected ' + response.connected.length)
+    print('getPeers unconnected ' + response.unconnected.length)
+    print('getPeers bad ' + response.bad.length)
+  } else dbg.logDeep('getPeers ', response)
 })
 
 client.getConnectionCount().then(response => {
-  dbg.logDeep('getConnectionCount:\nresult:\n', response)
+  dbg.logDeep('getConnectionCount: ', response)
 })
 
 client.getBlockCount().then(response => {
-  dbg.logDeep('getBlockCount\nresult:\n', response)
+  dbg.logDeep('getBlockCount ', response)
 })
 
 client.getRawMemPool().then(response => {
   if (program.summary) {
-    print('getRawMemPool\nresult:\n' + response.length)
+    print('getRawMemPool ' + response.length)
   } else dbg.logDeep('getRawMemPool\nresult\n', response)
 })

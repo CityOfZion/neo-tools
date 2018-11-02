@@ -11,15 +11,18 @@ function print(msg) {
   console.log(msg);
 }
 
+let argus = process.argv
+
 program
   .version('0.1.0')
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .parse(process.argv);
+  .parse(argus);
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING')
+  neoscan.debug(true)
 }
 
 neoscan.set_net(program.net)

@@ -12,6 +12,8 @@ const binance = require('nodejs_exchange/binance/binance-api.js')
 var cfg       = require('nodejs_config/config')
 var account   = require('nodejs_account/account')
 
+const json    = require('nodejs_util/json')
+
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 function print(msg) {
@@ -25,7 +27,8 @@ program
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-c, --config [config]', 'Specify a config file to use')
-
+  .option('-w, --watch', 'Only list watch addresses i.e., marked watch: true in config')
+  .option('-n, --name [name]', 'Find account with name')
   .parse(process.argv);
 
 if (program.config) {
@@ -37,6 +40,27 @@ if (program.debug) {
   print('DEBUGGING');
 }
 
-var result = account.list(configData)
 
-if(result) dbg.logDeep('accounts: \nresult:\n', result)
+if (program.watch) {
+  var result = account.get_watch_addresses(configData)
+
+  if (result && result.length)
+  print('result:')
+  result.forEach((r) => {
+    dbg.logDeep('', r)
+  })
+} else {
+  var result = account.list(configData)
+
+
+  if (result) {
+
+    if (program.name) {
+      json.findAllKeysWhere(result, program.name, (key, val) => {
+        result = val
+      })
+    }
+
+    print('result:\n' + json.quoteJSON(JSON.stringify(result)))
+  }
+}

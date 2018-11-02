@@ -10,8 +10,10 @@ const neoscan = require('nodejs_neoscan/neoscan')
 
 
 function print(msg) {
-  console.log(msg);
+  console.log(msg)
 }
+
+let argus = process.argv
 
 program
   .version('0.1.0')
@@ -19,7 +21,7 @@ program
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-h, --hash <block hash>', 'Specify the block by hash for block inquiry')
-  .parse(process.argv);
+  .parse(argus)
 
 if (!program.net) {
 }
@@ -29,11 +31,12 @@ if (!program.hash) {
 }
 
 if (program.debug) {
-  print('DEBUGGING');
+  print('DEBUGGING')
+  neoscan.debug(true)
 }
 
 neoscan.set_net(program.net)
 
 neoscan.get_block(program.hash).then(result => {
-  dbg.logDeep('\nresult:\n', result)
+  dbg.logDeep(' ', result)
 })

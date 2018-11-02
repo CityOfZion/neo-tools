@@ -1,4 +1,5 @@
 // account functionality - uses ../config/config.js to read config file from nodejs.config.json
+// TODO store latest currency valuation to account storage
 
 require('module-alias/register')
 
@@ -6,6 +7,7 @@ const _ = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
 var cfg       = require('nodejs_config/config')
+const json    = require('nodejs_util/json')
 
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
@@ -25,17 +27,29 @@ exports.get_default_account = () => {
 }
 
 // returns account address where "watch": true
-exports.get_watch_addresses = () => {
-  var accounts = config.accounts
+exports.get_watch_addresses = (configData) => {
+  var accounts = configData.accounts
+  var results = []
 
-  var account = _.findWhere(accounts, {watch: true})
+  if(accounts) {
+    for (var name in accounts) {
+      var account = accounts[name]
+      if(account && account.path && account.path.length) {
+        config = require(account.path) // save global config in memory for right now
 
-  if(account && account.path !== null) {
-    config = require(account.path) // save global config in memory for right now
+        var pathAccounts = config.accounts
 
-    var pathAccounts = config.accounts
-    return _.findWhere(pathAccounts, {watch: true})
+        for (var name in pathAccounts) {
+          if(pathAccounts[name].watch == true) {
+            var o = {}
+            o[name] = pathAccounts[name]
+            results.push(o)
+          }
+        }
+      }
+    }
   }
+  return results
 }
 
 // sets watch: true for an account with address.
@@ -59,7 +73,7 @@ exports.list = (configData, accountName) => {
 
   var account
 
-  if(accountName) account = accounts[accountName]
+  if(accountName && accounts.length) account = accounts[accountName]
 
   else account = accounts.default
 
