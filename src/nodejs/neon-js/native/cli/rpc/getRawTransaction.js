@@ -33,8 +33,9 @@ program
   .version('0.2.0')
   .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
-  .option('-h, --hash [hash]', 'specify the hash of the transaction to fetch, if no hash is provided, will get the most recent')
+  .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
+  .option('-h, --hash [hash]', 'Specify the hash of the transaction to fetch, if no hash is provided, will get the most recent')
+  .option('-x, --xstr', 'Return hexstring transactoin value instead of default json', 1)
   .option('-t, --time', 'Only return time field of results')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
@@ -42,8 +43,6 @@ program
     print('OPTIMIZATION NOTE: \n\nAs of /NEO:2.8.0/, the only difference in the return value of getRawTransaction versus getBlock is three fields more in the former: blockhash, confirmations, and blocktime. Don\'t make the extra RPC call to getRawTransaction if you don\'t need to.')
   })
   .parse(process.argv)
-
-
 
 if (program.debug) {
   print('DEBUGGING: ' + __filename)
@@ -83,6 +82,7 @@ function commandWrapper(nodelist) {
     'hash': program.hash,
     'time': program.time ? program.time : false,
     'human': program.Human ? program.Human : false,
+    'xstr': program.xstr ? program.xstr : 0,
   }
 
   if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)

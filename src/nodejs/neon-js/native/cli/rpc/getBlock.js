@@ -2,7 +2,7 @@
 // Main Dependency: neon-js
 // This returns a block or an array of transactions for a block
 
-// IMPORTANT OPTIMIZATION NOTE: The only difference in the return value of getRawTransaction versus getBlock is three fields more in the former:
+// IMPORTANT OPTIMIZATION NOTE: As of /NEO:2.8.0/, the only difference in the return value of getRawTransaction versus getBlock is three fields more in the former:
 // blockhash, confirmations, and blocktime.  Don't make the extra RPC call to getRawTransaction if you don't need to.
 
 

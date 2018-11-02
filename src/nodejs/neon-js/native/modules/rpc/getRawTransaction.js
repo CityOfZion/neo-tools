@@ -27,6 +27,7 @@ exports.run = (config) => {
     program.hash = null
     program.time = false
     program.human = false
+    program.xstr = 0
   }
 
   function print(msg) {
@@ -67,7 +68,7 @@ exports.run = (config) => {
       }
 
       function commandWrapper(runtimeArg) {
-        client.getRawTransaction(runtimeArg).then(response => {
+        client.getRawTransaction(runtimeArg, program.xstr).then(response => {
           if (program.human) {
               response.blocktime = new Date(response.blocktime * 1000).toLocaleString()
           }
