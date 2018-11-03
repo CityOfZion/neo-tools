@@ -57,7 +57,7 @@ if (!program.node) {
   // get a node from the list and try it
   let net = netutil.resolveNetworkId(program.Net)
 
-  nodes = cfg.get_nodes(net)
+  nodes = cfg.getNodes(net)
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 

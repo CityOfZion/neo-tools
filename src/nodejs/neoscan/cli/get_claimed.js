@@ -59,7 +59,7 @@ program
 
     // check for a default address in config, if not pressent show help
   } else {
-    var default_account = cfg.get_default_account()
+    var default_account = cfg.getDefaultAccount()
     if (default_account) {
       addresses.push(default_account.address)
       fetch()

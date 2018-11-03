@@ -10,7 +10,7 @@ require('module-alias/register')
 
 const axios   = require('axios')
 const Promise = require('bluebird')
-const { URL } = require('url');
+const { URL } = require('url')
 
 const { logDeep } = require('nodejs_util/debug')
 
