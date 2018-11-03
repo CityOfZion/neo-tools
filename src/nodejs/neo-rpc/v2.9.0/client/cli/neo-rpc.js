@@ -42,6 +42,5 @@ netutil.debug()
 
 
 let options = {
-  ping: 'tallest'
 }
 netutil.getRpcNodes(options)

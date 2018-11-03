@@ -53,13 +53,16 @@ exports.resolveNetworkId = (networkId) => {
 }
 
 
-// Select RPC nodes on options.net by options.by.
+// Select RPC nodes on options.net by options.byFunc
+// byFunc is one of any of the getNodesBy functions in this module, i.e., getNoddesByPing
 // Returns a promise of an array that is empty or full of sorted nodes.
 // This will ALWAYS ping.
 
 exports.getRpcNodes = (options) => {
   options.net ? options.net : options.net = 'TestNet'
-  options.by ? options.by : options.by = 'ping'
+  options.byFunc ? options.byFunc : options.byFunc = 'getNodesByPing'
+
+  let byFunc = options.byFunc
 
   let net = this.resolveNetworkId(options.net)
 
@@ -69,58 +72,17 @@ exports.getRpcNodes = (options) => {
     dbg.logDeep(__filename + ': getRpcNode().options: ', options)
     dbg.logDeep(__filename + ': getRpcNode().net: ', net)
     dbg.logDeep(__filename + ': getRpcNode().cfg.GetNodes(): ', nodes)
+    dbg.logDeep(__filename + ': getRpcNode().byFunc: ', byFunc)
   }
 
   return new Promise((resolve, reject) => {
-    switch(options.by.toLowerCase()) {
-      case 'ping':
-        this.getNodesByPing(nodes).then(rankedNodes => {
-          if (defly) dbg.logDeep(__filename + ': getRpcNode().rankedNodes: ', rankedNodes)
-          resolve(rankedNodes)
-        })
-        .catch (error => {
-          reject(__filename + ': getNodesByPing(): ' + error.message)
-        })
-        break
-      case 'height':
-        this.getNodesByTallest(nodes).then(rankedNodes => {
-          if (defly) dbg.logDeep(__filename + ': getRpcNode().rankedNodes: ', rankedNodes)
-          nodes = rankedNodes
-          resolve(nodes)
-        })
-        .catch (error => {
-          reject(__filename + ': getNodesByTallest(): ' + error.message)
-        })
-        break
-      case 'version':
-        this.getNodesByVersion(nodes).then(rankedNodes => {
-          if (defly) dbg.logDeep(__filename + ': getRpcNode().rankedNodes: ', rankedNodes)
-          nodes = rankedNodes
-          resolve(nodes)
-        })
-        .catch (error => {
-          reject(__filename + ': getNodesByVersion(): ' + error.message)
-        })
-        break
-      case 'connections':
-        this.getNodesByLeastConnections(nodes).then(rankedNodes => {
-          if (defly) dbg.logDeep(__filename + ': getRpcNode().rankedNodes: ', rankedNodes)
-          nodes = rankedNodes
-          resolve(nodes)
-        })
-        .catch (error => {
-          reject(__filename + ': getNodesByLeastConnections(): ' + error.message)
-        })
-        break
-      default:
-        this.getNodesByPing(nodes).then(rankedNodes => {
-          if (defly) dbg.logDeep(__filename + ': getRpcNode().rankedNodes: ', rankedNodes)
-          resolve(rankedNodes)
-        })
-        .catch (error => {
-          reject(__filename + ': getNodesByPing(): ' + error.message)
-        })
-    }
+    this[byFunc](nodes).then(rankedNodes => {
+      if (defly) dbg.logDeep(__filename + ': getRpcNode().rankedNodes: ', rankedNodes)
+      resolve(rankedNodes)
+    })
+    .catch (error => {
+      reject(__filename + ': ' + byFunc + ': ' + error.message)
+    })
   })
 }
 
