@@ -9,7 +9,7 @@ With neotools in place, one would have easy lookup of various operations and fun
 
 ## Project Version and Status
 
-Version: 0.50.0
+Version: 0.51.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards
 
@@ -49,6 +49,10 @@ implementations is ideal to facilitate complimentary capabilities where necessar
 Node.js is the main implementation platform right now. We are looking for contributions for others. See src/nodejs/, for the following:
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
+* Dynamic RPC invocation from CLI with nodejs/neo-rpc
+  * Automatically select nodes
+  * Get nodes by configurable sort factor
+  * GetNodesByX
 * Configuration via nodejs/src/config.js
   * get_default_account()
   * get_exchanges()
@@ -274,6 +278,20 @@ node account/cli/list.js -n test
 
 ```
 
+
+#### Neo-rpc
+
+```
+# Get a list of nodes by tallest
+node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m getNodesByTallest
+
+
+# Use the node returned from getNodesBy to query the version for that RPC node
+# This is the RECOMMENDED method
+node neo-rpc/v2.9.0/client/cli/neo-rpc -m getversion -n 'https://test1.cityofzion.io'
+
+
+```
 
 ### Neoscan for TestNet and MainNet
 https://neoscan.io/docs/index.html#api-v1-get

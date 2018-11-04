@@ -66,7 +66,7 @@ if (program.debug) {
 
 if (!program.address) {
   // check for a default address in config, if not pressent show help
-  var default_account = cfg.get_default_account()
+  var default_account = cfg.getDefaultAccount()
 
   if(default_account) address = default_account.address
   else program.help()
@@ -81,7 +81,7 @@ if (!program.node) {
   // TODO: move node automatic selection into a standard, reusable location (netutil?)
   let net = netutil.resolveNetworkId(program.Net)
 
-  nodes = cfg.get_nodes(net)
+  nodes = cfg.getNodes(net)
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 

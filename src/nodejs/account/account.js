@@ -13,7 +13,7 @@ var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 
 // returns account in user config that has "default:" true"
-exports.get_default_account = () => {
+exports.getDefaultAccount = () => {
   var accounts = config.accounts
 
   var account = _.findWhere(accounts, {default: true})

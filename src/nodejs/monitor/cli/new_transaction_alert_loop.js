@@ -59,7 +59,7 @@ if (!program.net) {
 
 if (!program.address) {
   // check for a default address in config, if not pressent show help
-  var default_account = cfg.get_default_account()
+  var default_account = cfg.getDefaultAccount()
 
   if(default_account) address = default_account.address
 
@@ -71,7 +71,7 @@ if (!program.address) {
 if (program.FromEmail) {
   from = program.FromEmail
 } else {
-  from = cfg.get_smtp().from
+  from = cfg.getSmtp().from
 }
 
 if (defly) dbg.logDeep('from: ', from)
@@ -79,7 +79,7 @@ if (defly) dbg.logDeep('from: ', from)
 if (program.ToEmail) {
   to = program.ToEmail
 } else {
-  to = cfg.get_smtp().to
+  to = cfg.getSmtp().to
 }
 
 if (program.Subject) subject = program.Subject
