@@ -100,9 +100,9 @@ exports.getNodesByPing = (options) => {
   let nodes  = cfg.getNodes(net)
 
   if (defly) {
-    dbg.logDeep(__filename + ': getRpcNode().options: ', opts)
-    dbg.logDeep(__filename + ': getRpcNode().net: ', net)
-    dbg.logDeep(__filename + ': getRpcNode().cfg.GetNodes(): ', nodes)
+    dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
+    dbg.logDeep(__filename + ': getNodesByPing().net: ', net)
+    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', nodes)
   }
 
   return new Promise((resolve, reject) => {

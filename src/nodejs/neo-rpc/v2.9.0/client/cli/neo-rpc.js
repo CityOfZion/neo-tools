@@ -1,5 +1,10 @@
 // neo-rpc.js
 // CLI module interface to remote Neo RPC systems
+// This uses neo-rpc/v2.9.0/module/neo-rpc.js
+
+// Invoke an RPC method from CLI
+
+// TODO Implement result modifiers
 
 require('module-alias/register')
 
@@ -13,6 +18,9 @@ const netutil = require('nodejs_util/network')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
+const command = require('nodejs_neo-rpc/v2.9.0/client/module/neo-rpc')
+
+
 let nodes = []
 let defly = false
 let arg
@@ -24,26 +32,29 @@ function print(msg) {
 program
   .version('0.2.0')
   .usage('')
-  .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-t, --time', 'Only return time field of last block - this does not work with -T option')
   .option('-T, --Txs', 'Only return an array of transactions for the block')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
-  .option('-m, --method [method]', 'Call node with this RPC method, default \'getBlockCount\'', 'getBlockCount')
+  .option('-m, --method [method]', 'Call node with this RPC method, default \'getBlockCount\'', 'getblockcount')
   .option('-p, --params [params]', 'Call RPC method with these params, default is blank', '')
   .on('--help', function(){
-    print('OPTIMIZATION NOTE: \n\nAs of /NEO:2.8.0/, the only difference in the return value of getRawTransaction versus getBlock is three fields more in the former: blockhash, confirmations, and blocktime. Don\'t make the extra RPC call to getRawTransaction if you don\'t need to.')
+    print("Note: Currently, arguments that modify the results of an RPC call are NOT IMPLEMENTED.")
+    print("      It Is highly recommended to use neo-rpc/client/cli/getNodesByX to find a node to use and then use this programs --node or -n option")
   })
   .parse(process.argv)
 
-if (program.hash) arg = program.hash
-if (program.index) arg = parseInt(program.index)
+if (program.debug) {
+  print('DEBUGGING: ' + __filename)
+  defly = true
+  netutil.debug()
+}
 
 if (!program.node) {
   let options = {
-    net: program.net,
+    net: program.Net,
   }
   netutil.getNodesByPing(options).then(rankedNodes => {
     if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
@@ -57,4 +68,25 @@ if (!program.node) {
 else {
   nodes.push({ "url": program.node })
   commandWrapper(nodes)
+}
+
+function commandWrapper(nodelist) {
+  let runtimeArgs = {
+    'debug': defly,
+    'node': nodelist[0].url,
+    'method': program.method.toLowerCase(),
+    'params': program.params.split(','),
+    'time': program.time ? program.time : false,
+    'human': program.Human ? program.Human : false,
+    'txs': program.Txs ? program.Txs : false
+  }
+
+  if (defly) dbg.logDeep('runtimeArgs: ', runtimeArgs)
+
+  command.run(runtimeArgs).then((r) => {
+    dbg.logDeep(' ', r)
+  })
+  .catch (error => {
+    print(__filename + ': ' + error.message)
+  })
 }
