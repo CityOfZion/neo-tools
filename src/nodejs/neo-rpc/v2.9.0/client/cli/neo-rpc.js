@@ -42,5 +42,12 @@ netutil.debug()
 
 
 let options = {
+  net: 'main',
 }
-netutil.getRpcNodes(options)
+netutil.getNodesByPing(options).then(rankedNodes => {
+  if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
+  dbg.logDeep(' ', rankedNodes)
+})
+.catch (error => {
+  print(__filename + ': ' + error.message)
+})
