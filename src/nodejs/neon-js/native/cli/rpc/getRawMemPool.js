@@ -1,4 +1,4 @@
-// rpc getrawmempool in neon-js
+// RPC getRawMemPool in neon-js
 // Gets a list of unconfirmed transactions in memory
 //
 require('module-alias/register')

@@ -299,6 +299,8 @@ The path item of each config entry points to a json config file that adheres to 
 
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
+Many examples are provided below. Anything listed in the features above most likely has a CLI frontend. If it doesn't have an execution example below, trying calling it like any of the other examples here and add ```--help``` to see online help at command line.
+
 
 ### Accounts
 
@@ -314,6 +316,8 @@ node account/cli/list.js -n test
 #### Neo-rpc
 
 ```
+cd src/nodejs/neo-rpc/
+
 # Get a list of nodes by tallest
 node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m getNodesByTallest
 
@@ -322,6 +326,28 @@ node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m getNodesByTallest
 # This is the RECOMMENDED method (query a specific node for repetitious operations)
 node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
 
+
+```
+
+
+#### [neon-js](https://github.com/cityofzion/neon-js)
+
+Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.
+
+```
+cd src/nodejs/neon-js/
+
+* neon-js/native/cli/rpc/query.js - dynamic query construction
+* neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
+* neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
+* neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
+* neon-js/native/cli/rpc/getVersion - Gets version information of this node
+* neon-js/native/cli/rpc/validateAddress - Verify that the address is a correct NEO address
+* neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
+* neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
+* neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
+* neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
+* neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
 
 ```
 

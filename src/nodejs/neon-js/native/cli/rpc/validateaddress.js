@@ -1,4 +1,4 @@
-// rpc validateAddress in neon-js
+// RPC validateAddress in neon-js
 // Verify that the address is a correct NEO address
 // boolean return
 
