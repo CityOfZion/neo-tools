@@ -49,7 +49,7 @@ Next: Database, Wallet, Server, Node
 
 
 ## Primary Goals
-This project has two major goals:
+This project has three major goals:
 
 1. Provide a command line tool for each Neo Smart Economy system function primitive. In example,
 each function useful for an account, a wallet, a transaction, etc should be contained in its own module with
