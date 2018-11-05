@@ -13,7 +13,7 @@ const binance = require('nodejs_exchange/binance/binance-api.js')
 
 
 var config = cfg.load('nodejs_config/nodejs.config.json')
-var extCfg = cfg.get_exchanges()
+var extCfg = cfg.getExchanges()
 // dbg.logDeep('external config: ', extCfg);
 
 function print(msg) {

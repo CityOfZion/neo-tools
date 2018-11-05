@@ -2,6 +2,8 @@
 
 // network helper functions
 
+// TODO: rewrite getNodesByWhatever to first call getNodesByPing
+
 require('module-alias/register')
 
 const _       = require('underscore')
@@ -30,8 +32,8 @@ exports.configure = (cfgObj) => {
 exports.debug = (debug) => {
   if (debug !== undefined) defly = debug
   else defly = !defly
-  if (defly) console.log('neoscan api debugging enabled')
-  else console.log('This is your last debugging message! neoscan api debugging disabled')
+  if (defly) print(__filename + ': API debugging enabled')
+  else print('This is your last debugging message! neoscan api debugging disabled')
 }
 
 
@@ -41,6 +43,8 @@ exports.debug = (debug) => {
 exports.resolveNetworkId = (networkId) => {
   let net = networkId.toLowerCase()
 
+  if (net == 'MainNet' || net === 'TestNet') return net
+
   if (net === 'mainnet' || net === 'main' || net === 'main_net') net = 'MainNet'
   else if (net === 'testnet' || net === 'test' || net === 'test_net') net = 'TestNet'
   else net = networkId
@@ -49,165 +53,209 @@ exports.resolveNetworkId = (networkId) => {
 }
 
 
-// Return an array of nodes sorted into a list with tallest first
-// This expects an array of nodes with keys named "url"
-// TODO: add caching with configurable time limit for results
+// Select RPC nodes on options.net by options.byFunc
+// byFunc is one of any of the getNodesBy functions in this module, i.e., getNoddesByPing
+// Returns a promise of an array that is empty or full of sorted nodes.
+// This will ALWAYS ping.
 
-exports.getNodesByTallest = (nodes) => {
-  let rankedList = []
-  let i = 0, errors = 0, highPings = 0
-  return new Promise((resolve, reject) => {
-    if (_.isArray(nodes)) {
-      nodes.forEach((n) => {
-        if (n.url) {
-          if (defly) print('getting node height for: ' + n.url)
+exports.getRpcNodes = (options) => {
+  let opts = options ? options : opts = {}
 
-          const client = neon.default.create.rpcClient(n.url)
+  opts.net ? opts.net : opts.net = 'TestNet'
+  opts.byFunc ? opts.byFunc : opts.byFunc = 'getNodesByPing'
 
-          client.ping().then(ms => {
-            if (defly) print(n.url + ' ms: ' + ms)
+  let byFunc = opts.byFunc
+  let net    = this.resolveNetworkId(opts.net)
+  let nodes  = cfg.getNodes(net)
 
-            if (ms < maxPing) {
-              client.getBlockCount().then(response => {
-                if (response) rankedList.push({ "url": n.url, "height": response })
-
-                if (defly) {
-                  print('n: ' + n.url)
-                  print('response: ' + response)
-                  print('loop i: ' + i)
-                  print('errors: ' + errors)
-                  print('node n: ' + nodes.length)
-                }
-
-                if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
-                  rankedList = _.sortBy(rankedList, 'height')
-                  rankedList = rankedList.reverse()
-                  resolve(rankedList)
-                }
-              }).catch(error => {
-                print('error: ' + error)
-                errors++
-              })
-            } else {
-              highPings++
-            }
-          })
-        }
-      })
-    }
-  })
-}
-
-// Return an array of nodes sortyed with least connections first
-// This expects an array of nodes with keys named "url"
-// TODO: add caching with configurable time limit for results
-
-exports.getNodesByLeastConnections = (nodes) => {
-  let rankedList = []
-  let i = 0, errors = 0, highPings = 0
+  if (defly) {
+    dbg.logDeep(__filename + ': getRpcNode().byFunc: ', byFunc)
+    dbg.logDeep(__filename + ': getRpcNode().options: ', opts)
+    dbg.logDeep(__filename + ': getRpcNode().net: ', net)
+    dbg.logDeep(__filename + ': getRpcNode().cfg.GetNodes(): ', nodes)
+  }
 
   return new Promise((resolve, reject) => {
-    if (_.isArray(nodes)) {
-      nodes.forEach((n) => {
-        if (n.url) {
-          const client = neon.default.create.rpcClient(n.url)
-
-          client.ping().then(ms => {
-            if (defly) print(n.url + ' ms: ' + ms)
-
-            if (ms < maxPing) {
-              client.getConnectionCount().then(response => {
-                if (response) rankedList.push({ "url": n.url, "connections": response })
-                if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
-                  rankedList = _.sortBy(rankedList, 'connections')
-                  resolve(rankedList)
-                }
-              }).catch(error => {
-                print('error: ' + error)
-                errors++
-              })
-            } else {
-              highPings++
-            }
-          })
-        }
-      })
-    }
-  })
-}
-
-// Return an array of nodes sortyed with highest version first
-// This expects an array of nodes with keys named "url"
-// TODO: add caching with configurable time limit for results
-
-exports.getNodesByVersion = (nodes) => {
-  let rankedList = []
-  let i = 0, errors = 0, highPings = 0
-
-  return new Promise((resolve, reject) => {
-    if (_.isArray(nodes)) {
-      nodes.forEach((n) => {
-        if (n.url) {
-          const client = neon.default.create.rpcClient(n.url)
-
-          client.ping().then(ms => {
-            if (defly) print(n.url + ' ms: ' + ms)
-
-            if (ms < maxPing) {
-              client.getVersion().then(response => {
-                if (response) rankedList.push({ "url": n.url, "version": response })
-                if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
-                  rankedList = _.sortBy(rankedList, 'version')
-                  resolve(rankedList)
-                }
-              }).catch(error => {
-                print('error: ' + error)
-                errors++
-              })
-            } else {
-              highPings++
-            }
-          })
-        }
-      })
-    }
+    this[byFunc](nodes).then(rankedNodes => {
+      if (defly) dbg.logDeep(__filename + ': getRpcNode().rankedNodes: ', rankedNodes)
+      resolve(rankedNodes)
+    })
+    .catch (error => {
+      reject(__filename + ': ' + byFunc + ': ' + error.message)
+    })
   })
 }
 
 
 // Return an array of nodes sortyed with lowest pings first
-// This expects an array of nodes with keys named "url"
 // TODO: add caching with configurable time limit for results
 
-exports.getNodesByPing = (nodes) => {
-  let rankedList = []
-  let i = 0, errors = 0, highPings = 0
+exports.getNodesByPing = (options) => {
+  let rankedList = [], i = 0
+  let opts = options ? options : opts = {}
+
+  opts.net ? opts.net : opts.net = 'TestNet'
+
+  let net    = this.resolveNetworkId(opts.net)
+  let cfgNodes  = cfg.getNodes(net)
+
+  opts.nodes ? opts.nodes : opts.nodes = cfgNodes
+
+  let nodes = opts.nodes
+
+  if (defly) {
+    dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
+    dbg.logDeep(__filename + ': getNodesByPing().net: ', net)
+    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', cfgNodes)
+  }
 
   return new Promise((resolve, reject) => {
     if (_.isArray(nodes)) {
       nodes.forEach((n) => {
         if (n.url) {
           const client = neon.default.create.rpcClient(n.url)
-
           client.ping().then(ms => {
-            if (defly) print(n.url + ' ms: ' + ms)
-
+            i++
             if (ms < maxPing) {
               rankedList.push({ "url": n.url, "ping": ms })
-
-              if ((i++ === (nodes.length - 1)) || (i === (nodes.length - highPings))) {
-                rankedList = _.sortBy(rankedList, 'ping')
-                resolve(rankedList)
-              }
-            } else {
-              highPings++
             }
-          }).catch(error => {
-            print('error: ' + error)
-            errors++
+
+            if (i === nodes.length) {
+              rankedList = _.sortBy(rankedList, 'ping')
+              resolve(rankedList)
+            }
+          })
+          .catch(error => {
+            i++
+            print(__filename + ': getNodesByPing().error: ' + error)
+
+            if (i === nodes.length) {
+              rankedList = _.sortBy(rankedList, 'ping')
+              resolve(rankedList)
+            }
           })
         }
       })
     }
+  })
+}
+
+
+// Return an array of nodes sorted into a list with tallest first
+// TODO: add caching with configurable time limit for results
+// This will ALWAYS ping first with getNodesByPing
+
+
+exports.getNodesByTallest = (options) => {
+  let rankedList = [], i = 0
+
+  return new Promise((resolve, reject) => {
+    this.getNodesByPing(options).then(nodes => {
+      if (_.isArray(nodes)) {
+        nodes.forEach((n) => {
+          if (n.url) {
+            const client = neon.default.create.rpcClient(n.url)
+
+            client.getBlockCount().then(response => {
+              i++
+              if (response) rankedList.push({ "url": n.url, "height": response })
+
+              if (i === nodes.length) {
+                rankedList = _.sortBy(rankedList, 'height')
+                rankedList = rankedList.reverse()
+                resolve(rankedList)
+              }
+            })
+            .catch(error => {
+              i++
+              print(__filename + ': getNodesByTallest().error: ' + error)
+              resolve(rankedList)
+            })
+          }
+        })
+      }
+    })
+    .catch (error => {
+      print(__filename + ': getNodesByTallest().getNodesByPing().error: ' + error)
+    })
+  })
+}
+
+
+// Return an array of nodes sortyed with least connections first
+// TODO: add caching with configurable time limit for results
+// This will ALWAYS ping first with getNodesByPing
+
+exports.getNodesByConnections = (options) => {
+  let rankedList = [], i = 0
+
+  return new Promise((resolve, reject) => {
+    this.getNodesByPing(options).then(nodes => {
+      if (_.isArray(nodes)) {
+        nodes.forEach((n) => {
+          if (n.url) {
+            const client = neon.default.create.rpcClient(n.url)
+
+            client.getConnectionCount().then(response => {
+              i++
+              if (response) rankedList.push({ "url": n.url, "connections": response })
+
+              if (i === nodes.length) {
+                rankedList = _.sortBy(rankedList, 'connections')
+                resolve(rankedList)
+              }
+            })
+            .catch(error => {
+              i++
+              print(__filename + ': getNodesByConnections().error: ' + error)
+              resolve(rankedList)
+            })
+          }
+        })
+      }
+    })
+    .catch (error => {
+      print(__filename + ': getNodesByConnections().getNodesByPing().error: ' + error)
+    })
+  })
+}
+
+
+// Return an array of nodes sortyed with highest version first
+// TODO: add caching with configurable time limit for results
+// This will ALWAYS ping first with getNodesByPing
+
+exports.getNodesByVersion = (options) => {
+  let rankedList = [], i = 0
+
+  return new Promise((resolve, reject) => {
+    this.getNodesByPing(options).then(nodes => {
+      if (_.isArray(nodes)) {
+        nodes.forEach((n) => {
+          if (n.url) {
+            print(n.url)
+            const client = neon.default.create.rpcClient(n.url)
+
+            client.getVersion().then(response => {
+              i++
+              if (response) rankedList.push({ "url": n.url, "version": response })
+
+              if (i === nodes.length) {
+                rankedList = _.sortBy(rankedList, 'version')
+                resolve(rankedList)
+              }
+            })
+            .catch(error => {
+              i++
+              print(__filename + ': getNodesByVersion().error: ' + error)
+              resolve(rankedList)
+            })
+          }
+        })
+      }
+    })
+    .catch (error => {
+      print(__filename + ': getNodesByVersion().getNodesByPing().error: ' + error)
+    })
   })
 }

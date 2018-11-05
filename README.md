@@ -1,54 +1,108 @@
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
+
+- [neo-tools](#neo-tools)
+	- [Summary](#summary)
+	- [Project Version and Status](#project-version-and-status)
+	- [Primary Goals](#primary-goals)
+	- [Requirements](#requirements)
+	- [Operating System Support](#operating-system-support)
+	- [Node.js Features](#nodejs-features)
+	- [Developer's Note](#developers-note)
+	- [Roadmap](#roadmap)
+	- [Setup](#setup)
+	- [neo-tools APIs](#neo-tools-apis)
+	- [Configuration](#configuration)
+	- [All-in-One Configuration File Example](#all-in-one-configuration-file-example)
+	- [Calling Conventions](#calling-conventions)
+	- [Accounts](#accounts)
+	- [Neo-rpc](#neo-rpc)
+	- [[neon-js](https://github.com/cityofzion/neon-js)](#neon-jshttpsgithubcomcityofzionneon-js)
+	- [Neoscan for TestNet and MainNet](#neoscan-for-testnet-and-mainnet)
+	- [Exchange and Market APIs](#exchange-and-market-apis)
+	- [crypto](#crypto)
+	- [Neo Status](#neo-status)
+	- [CLI Chaining examples](#cli-chaining-examples)
+	- [Shell Script Example](#shell-script-example)
+	- [Monitoring, Alerts and Notifications](#monitoring-alerts-and-notifications)
+	- [Planned Future Calling Convention](#planned-future-calling-convention)
+
+<!-- /TOC -->
+
 # neo-tools
 
 ## Summary
 
-The goal is to have all Neo Smart Economy API or project implementation primitives as a part of a unix-style command line chainable toolset.
+The goal is to have all Neo Smart Economy APIs or project implementation primitives as a part of a Unix-style Command Line Interface (CLI) chainable toolset.
 
-With neotools in place, one would have easy lookup of various operations and functions, reference implementation, clear calling syntax, and usage examples. A common problem for me, working in c#, nodejs, and python, is that I'm always having to go back to one of those projects, navigate their specific layout, then locate a piece or example to be sure I'm doing something right. Instead of trying to get everyone to agree on a standard I thought why not implement a bunch of those projects' primitives in a standard way to unify that reference. Besides, being able to call a lot of those directly from command line would be really useful.
+With neo-tools in place, one has easy lookup of various operations and functions, reference implementation, clear calling syntax, and usage examples.
 
 
 ## Project Version and Status
 
-Version: 0.50.0
+Version: 0.52.0
 
-Status: Writing alpha code (see section Features below), documenting goals, and defining standards
+Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
-Next: Write implementation example template
+Current Implementation Focus: Node.js
+
+Next: Database, Wallet, Server, Node
+
+
 
 ## Primary Goals
 This project has two major goals:
 
 1. Provide a command line tool for each Neo Smart Economy system function primitive. In example,
 each function useful for an account, a wallet, a transaction, etc should be contained in its own module with
-the ability to call it directly from the command line, by itself, and retrieve a result. Each CLI invocation should
-enable stdio behavior so commands may be chained together to form command line scripts.
+the ability to call it directly from the command line, by itself, and retrieve a result. Each CLI invocation should enable stdio behavior so commands may be chained together to form command line scripts.
 
-2. Provide simple and clear examples of each Neo Smart Economy system function primitive to offer reusable, standard
-reference implementations for each language or API. This will accelerate community understanding and implementation adoption.
+2. Provide simple and clear examples of each Neo Smart Economy system function primitive to offer reusable, standard reference implementations for each language or API. This will accelerate community understanding and implementation adoption.
+
+3. Get up and running quickly and easily.
 
 ## Requirements
 
 1. Source hierarchy *must* be organized by language/implementation/function in adherence with familiar and relevant project naming conventions.
+  * In Progress
+
 
 2. Modules *must* be composable, where applicable.
+  * In Progress
+
 
 3. A registry of implementations names *must* be maintained and consistent with community.
+  * In Progress: As the project is alpha this still isn't frozen.
 
-4. A standard format for argument passing and return values *must* be maintained across *all* modules. Composability between
-implementations is ideal to facilitate complimentary capabilities where necessary and possible.
+
+4. A standard format for argument passing and return values *must* be maintained across *all* modules. Composability between implementations is ideal to facilitate complimentary capabilities where necessary and possible.
+  * In Progress
+
 
 5. Each module *must* be callable from command line with the capability to read argument input from its standard input and the ability to write operation results to its standard output. Use of standard error would be ideal.
+  * In Progress: Some examples have it and some don't.
+
 
 6. Each module *must* provide a description including its registered parent project name, purpose, and calling convention (arguments and return value).
+  * Not Started: This exists as a function of directory organization
 
 ## Operating System Support
 1. Linux
 
 ## Node.js Features
 
-Node.js is the main implementation platform right now. We are looking for contributions for others. See src/nodejs/, for the following:
+Node.js is the primary implementation platform right now. We are looking for contributions for others.
+
+See src/nodejs/ for the following:
 
 * Default address support via accounts config in src/nodejs/nodejs.config.json
+
+
+* Dynamic RPC invocation from CLI with nodejs/neo-rpc/NEO_v2.9.0/client/cli/query.js
+  * Automatically select nodes
+  * Get nodes by configurable sort factor
+  * GetNodesByX
+
+
 * Configuration via nodejs/src/config.js
   * get_default_account()
   * get_exchanges()
@@ -57,12 +111,16 @@ Node.js is the main implementation platform right now. We are looking for contri
 * Alerts (Notifications)
   * src/nodejs/email_alert.js
   * src/nodejs/monitor/new_transaction_alert_loop
+
+
 * Wallet/Account support
   * address
   * default account
   * list addresses
   * get and set watch addresses
   * NEP-2 and NEP-6 coming soon!
+
+
 * Neoscan API command line is functional (see neoscan calling convention below)
   - get_address_abstracts, now with JSON and CSV export option
   - get_all_nodes
@@ -76,6 +134,8 @@ Node.js is the main implementation platform right now. We are looking for contri
   - get_last_transactions_by_address
   - get_transaction
   - get_unclaimed
+
+
 * Exchange
   * Query coinmarketcap.com tickers
   * Binance
@@ -90,8 +150,12 @@ Node.js is the main implementation platform right now. We are looking for contri
       - search symbols cli with exchange/binance/cli/get_all_symbols.js
     * WAPI:
       - Asset Detail: get_asset_detail
+
+
 * Crypto
   * shacli support added for SHA256 and HMAC SHA256
+
+
 * Neon-js RPC Implementation
   * neon-js/native/cli/rpc/query.js - dynamic query construction
   * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
@@ -104,6 +168,8 @@ Node.js is the main implementation platform right now. We are looking for contri
   * neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
   * neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
   * neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
+
+
 * Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
   * Vitals included:
     * version
@@ -113,6 +179,8 @@ Node.js is the main implementation platform right now. We are looking for contri
     * raw mem pool
   * Network Vitals - get the vitals for all nodes on a given net
   * Node Vitals - get the vitals for a node
+
+
 * Node.js Network Utility
   * network.resolveNetworkId()
   * network.getNodesByTallest()
@@ -134,23 +202,23 @@ I apologize if the command-line arguments and capabilities aren't consistent acr
   - C#
   - golang
 
-* Needs error handling and feedback
-* Implement full modularity
+* Needs error handling and feedback standardized. This is kind of in progress.
+* Implement full modularity project-wide
 * Add tests
 
 ## Setup
 
 `npm install`
+,
+## neo-tools APIs
 
-## neotools APIs
-
-For now there is no official API but features are still available. neotools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
-To leverage any module for a specific language, simple enter the src folder for that language and locate the folder/folder.js file for the relevant feature. For example, to use the Node.js config module
+For now there is no official API but features are still available. neo-tools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
+To leverage any module for a specific language, simple enter the ```src``` folder for that language and locate the folder/folder.js file for the relevant feature. For example, to use the Node.js config module
 require src/nodejs/config/config.js.
 
 ## Configuration
 
-The following section of src/nodejs/config/nodejs.config.json can be configured to use your wallet:
+The following section of ```src/nodejs/config/nodejs.config.json``` can be configured to use your wallet:
 
 ```
 {
@@ -178,9 +246,9 @@ The following section of src/nodejs/config/nodejs.config.json can be configured 
 }
 ```
 
-## All-In-One Configuration File Example
+## All-in-One Configuration File Example
 
-All of the configuration can be in one file or separated into multiple files. Check out nodejs/src/config/sample.config.json for an example of a complete configuration file to get you started. You would simply set the path key of nodejs.config.json to point to the location of your copy.
+All of the configuration can be in one file or separated into multiple files. Check out ```nodejs/src/config/sample.config.json``` for an example of a complete configuration file to get you started. You would simply set the path key of ```nodejs.config.json``` to point to the location of your copy.
 
 The path item of each config entry points to a json config file that adheres to the following format.
 
@@ -263,6 +331,8 @@ The path item of each config entry points to a json config file that adheres to 
 
 NOTE: If you have an account configured as default: true in config.json you can omit the address argument and it will use that one.
 
+Many examples are provided below. Anything listed in the features above most likely has a CLI frontend. If it doesn't have an execution example below, trying calling it like any of the other examples here and add ```--help``` to see online help at command line.
+
 
 ### Accounts
 
@@ -274,6 +344,44 @@ node account/cli/list.js -n test
 
 ```
 
+
+#### Neo-rpc
+
+```
+cd src/nodejs/neo-rpc/
+
+# Get a list of nodes by tallest
+node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m getNodesByTallest
+
+
+# Use the node returned from getNodesBy to query the version for that RPC node.
+# This is the RECOMMENDED method (query a specific node for repetitious operations)
+node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
+
+
+```
+
+
+#### [neon-js](https://github.com/cityofzion/neon-js)
+
+Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.
+
+```
+cd src/nodejs/neon-js/
+
+* neon-js/native/cli/rpc/query.js - dynamic query construction
+* neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
+* neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
+* neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
+* neon-js/native/cli/rpc/getVersion - Gets version information of this node
+* neon-js/native/cli/rpc/validateAddress - Verify that the address is a correct NEO address
+* neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
+* neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
+* neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
+* neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
+* neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
+
+```
 
 ### Neoscan for TestNet and MainNet
 https://neoscan.io/docs/index.html#api-v1-get

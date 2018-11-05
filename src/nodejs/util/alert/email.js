@@ -48,7 +48,7 @@ exports.init = (config) => {
   } else { // load up from defaults
     // default config
     var njscfg        = cfg.load('nodejs_config/nodejs.config.json')
-    var smtpcfg       = cfg.get_smtp()
+    var smtpcfg       = cfg.getSmtp()
 
     transporter = nodemailer.createTransport({
         host: smtpcfg.host,

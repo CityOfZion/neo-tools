@@ -1,4 +1,4 @@
-// rpc getconnection count in neon-js
+// RPC getConnectionCount in neon-js
 // Gets the current number of connections for the node
 //
 require('module-alias/register')
