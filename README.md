@@ -1,3 +1,33 @@
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:0 orderedList:0 -->
+
+- [neo-tools](#neo-tools)
+	- [Summary](#summary)
+	- [Project Version and Status](#project-version-and-status)
+	- [Primary Goals](#primary-goals)
+	- [Requirements](#requirements)
+	- [Operating System Support](#operating-system-support)
+	- [Node.js Features](#nodejs-features)
+	- [Developer's Note](#developers-note)
+	- [Roadmap](#roadmap)
+	- [Setup](#setup)
+	- [neo-tools APIs](#neo-tools-apis)
+	- [Configuration](#configuration)
+	- [All-in-One Configuration File Example](#all-in-one-configuration-file-example)
+	- [Calling Conventions](#calling-conventions)
+	- [Accounts](#accounts)
+	- [Neo-rpc](#neo-rpc)
+	- [[neon-js](https://github.com/cityofzion/neon-js)](#neon-jshttpsgithubcomcityofzionneon-js)
+	- [Neoscan for TestNet and MainNet](#neoscan-for-testnet-and-mainnet)
+	- [Exchange and Market APIs](#exchange-and-market-apis)
+	- [crypto](#crypto)
+	- [Neo Status](#neo-status)
+	- [CLI Chaining examples](#cli-chaining-examples)
+	- [Shell Script Example](#shell-script-example)
+	- [Monitoring, Alerts and Notifications](#monitoring-alerts-and-notifications)
+	- [Planned Future Calling Convention](#planned-future-calling-convention)
+
+<!-- /TOC -->
+
 # neo-tools
 
 ## Summary
@@ -16,6 +46,8 @@ Status: Writing alpha code (see section Features below), documenting goals, and 
 Current Implementation Focus: Node.js
 
 Next: Database, Wallet, Server, Node
+
+
 
 ## Primary Goals
 This project has two major goals:
