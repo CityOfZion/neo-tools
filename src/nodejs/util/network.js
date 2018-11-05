@@ -97,12 +97,16 @@ exports.getNodesByPing = (options) => {
   opts.net ? opts.net : opts.net = 'TestNet'
 
   let net    = this.resolveNetworkId(opts.net)
-  let nodes  = cfg.getNodes(net)
+  let cfgNodes  = cfg.getNodes(net)
+
+  opts.nodes ? opts.nodes : opts.nodes = cfgNodes
+
+  let nodes = opts.nodes
 
   if (defly) {
     dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
     dbg.logDeep(__filename + ': getNodesByPing().net: ', net)
-    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', nodes)
+    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', cfgNodes)
   }
 
   return new Promise((resolve, reject) => {
@@ -229,6 +233,7 @@ exports.getNodesByVersion = (options) => {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
+            print(n.url)
             const client = neon.default.create.rpcClient(n.url)
 
             client.getVersion().then(response => {
