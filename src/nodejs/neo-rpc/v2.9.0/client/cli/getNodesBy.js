@@ -28,6 +28,7 @@ program
   .version('0.2.0')
   .usage('')
   .option('-d, --debug', 'Debug')
+  .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .option('-m, --method [method]', 'Get nodes by the given criteria, default is ping', 'getNodesByPing')
   .on('--help', function(){
@@ -42,10 +43,13 @@ if (program.debug) {
 }
 
 let options = {
-  net: program.Net,
+  net: program.Net
 }
 
+if (program.node) options.nodes = [{ 'url': program.node }]
+
 netutil[program.method](options).then(rankedNodes => {
+
   if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
   nodes = rankedNodes
   dbg.logDeep(' ', nodes)

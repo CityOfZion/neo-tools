@@ -1,4 +1,4 @@
-// rpc getpeers in neon-js
+// RPC getPeers in neon-js
 // Gets a list of nodes that are currently connected/disconnected/bad by this node
 //
 require('module-alias/register')
