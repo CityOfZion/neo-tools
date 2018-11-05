@@ -28,7 +28,7 @@ program
   .version('0.2.0')
   .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
+  .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .option('-m, --method [method]', 'Get nodes by the given criteria, default is ping', 'getNodesByPing')
   .on('--help', function(){

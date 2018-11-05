@@ -7,7 +7,6 @@ require('module-alias/register')
 const program = require('commander')
 const _       = require('underscore')
 
-// var neon      = require('neon-js')
 var neon      = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
 
