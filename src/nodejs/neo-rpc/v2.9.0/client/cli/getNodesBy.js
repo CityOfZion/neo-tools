@@ -9,6 +9,7 @@ const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
 const netUtil = require('nodejs_util/network')
+const neoscan = require('nodejs_neoscan/neoscan')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
@@ -32,6 +33,8 @@ program
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .option('-m, --method [method]', 'Get nodes by the given criteria, default is ping', 'ping')
   .option('-o, --order [order]', 'Order by \'asc\' (ascending <- default) or \'dsc\' (descending)', 'asc')
+  .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API ')
+
   .on('--help', function(){
     print('Note: -m --method options are: "ping", "tallest", "connection", "version", "rawmempool"')
   })
@@ -50,6 +53,12 @@ let options = {
 
 if (program.node) options.nodes = [{ 'url': program.node }]
 
+else if (program.getNodes) {
+  neoscan.set_net(program.Net)
+   neoscan.get_all_nodes().then(result => {
+     if (result) options.nodes = result
+   })
+}
 getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
 
   if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
