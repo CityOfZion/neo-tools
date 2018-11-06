@@ -38,7 +38,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.52.0
+Version: 0.53.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -591,6 +591,10 @@ cd src/nodejs/monitor/cli/
 # when one is found. This will loop forever, return the time field, and present
 # the time in human-readable format.
 node new_transaction_alert_loop.js -i 0 -H -t -w 1
+
+
+# Watch the default wallet address on main net for new transactions older than 7 minutes and send an email
+node new_transaction_alert_loop.js -n main -o 7
 
 ```
 

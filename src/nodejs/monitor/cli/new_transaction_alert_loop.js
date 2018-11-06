@@ -2,6 +2,7 @@
 // This module runs forever looking for new transactions.
 // If it finds one, it sends an email.
 
+// NOTE: First item in tx array is the most recent
 
 require('module-alias/register')
 
@@ -30,7 +31,7 @@ function print(msg) {
 
 
 program
-  .version('0.1.0')
+  .version('0.2.0')
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test')
@@ -44,6 +45,7 @@ program
   .option('-T, --ToEmail [ToEmail]', 'Send email to this address each time a new transaction is found')
   .option('-F, --FromEmail [FromEmail]', 'Send email from this address each time a new transaction is found, will use defaults in config if not present')
   .option('-S, --Subject [Subject]', 'Set the subject; if this is not supplied, "New Transaction for <address>" is used by default')
+  .option('-o, --olderThan [olderThan]', 'Set the age in minutes that a transaction must be older than to alert. By default, any new transactions alert, but loop must be at least 2', 6)
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
@@ -133,7 +135,32 @@ function get_last_transaction(runtimeArgs) {
 
     if (defly) dbg.logDeep('body: ', message.body)
 
-    if (last_run_result && last_run_result !== rstr) {
+    let lastTransactionTest = false
+
+    if (program.olderThan === 6) {
+      lastTransactionTest = last_run_result && (last_run_result !== rstr)
+    }
+    else {
+      let time = r.data[0].time
+      // let time = r.time
+      if (time) {
+        let now = new Date().getTime()
+        let txTime = new Date(time * 1000).toLocaleString()
+        print('last transaction time: ' + txTime)
+        txTime = new Date(time * 1000).getTime()
+        time = new Date(Math.abs(now - txTime)).getTime()
+        let minutesSince = (time/1000)/60
+        let hoursSince = minutesSince / 60
+        let daysSince = hoursSince / 24
+        print('~' + Math.round(daysSince) + ' days = ~' +  Math.round(hoursSince) + ' hours = ~' + Math.round(minutesSince) + ' minutes' )
+
+        lastTransactionTest = minutesSince > program.olderThan
+      } else {
+        print('no time field found - assuming no news')
+        lastTransactionTest = false
+      }
+    }
+    if (lastTransactionTest) {
       print('New Transaction')
       email.send(message).then((id) => {
         print('Message away: ' + id)
