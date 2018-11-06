@@ -20,6 +20,7 @@ var config    = cfg.load('nodejs_config/nodejs.config.json')
 
 
 let defly = false
+let lastTransactionTest = false
 let address
 let from
 let to
@@ -135,7 +136,6 @@ function get_last_transaction(runtimeArgs) {
 
     if (defly) dbg.logDeep('body: ', message.body)
 
-    let lastTransactionTest = false
 
     if (program.youngerThan === 6) {
       lastTransactionTest = last_run_result && (last_run_result !== rstr)
