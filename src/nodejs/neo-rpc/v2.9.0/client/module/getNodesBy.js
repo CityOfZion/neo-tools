@@ -147,12 +147,11 @@ exports.ping = (options) => {
 // This will ALWAYS ping first with getNodesBy.ping()
 
 exports.tallest = (options) => {
-  let rankedList = [], i = 0
-  let pingOptions = options
+  let rankedList = [], i = 0, pingOptions = {}
+  Object.assign(options, pingOptions)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    let pi
     this.ping(pingOptions).then(nodes => {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
@@ -201,8 +200,8 @@ exports.tallest = (options) => {
 // This will ALWAYS ping first with getNodesBy.ping()
 
 exports.connection = (options) => {
-  let rankedList = [], i = 0
-  let pingOptions = options
+  let rankedList = [], i = 0, pingOptions = {}
+  Object.assign(options, pingOptions)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
@@ -254,8 +253,8 @@ exports.connection = (options) => {
 // This will ALWAYS ping first with getNodesBy.ping()
 
 exports.version = (options) => {
-  let rankedList = [], i = 0
-  let pingOptions = options
+  let rankedList = [], i = 0, pingOptions = {}
+  Object.assign(options, pingOptions)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
@@ -307,8 +306,8 @@ exports.version = (options) => {
 // This will ALWAYS ping first with getNodesBy.ping()
 
 exports.rawmempool = (options) => {
-  let rankedList = [], i = 0
-  let pingOptions = options
+  let rankedList = [], i = 0, pingOptions = {}
+  Object.assign(options, pingOptions)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {

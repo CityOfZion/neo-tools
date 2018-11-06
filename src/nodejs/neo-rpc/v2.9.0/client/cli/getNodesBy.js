@@ -48,6 +48,8 @@ let options = {
   order: program.order
 }
 
+print('ordera: ' + program.order)
+
 if (program.node) options.nodes = [{ 'url': program.node }]
 
 getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
