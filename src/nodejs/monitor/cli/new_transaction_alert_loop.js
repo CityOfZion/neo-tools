@@ -141,21 +141,22 @@ function get_last_transaction(runtimeArgs) {
       lastTransactionTest = last_run_result && (last_run_result !== rstr)
     }
     else {
+      print('Looking for transactions younger than: ' + program.youngerThan + ' minutes')
+
       let time = r.data[0].time
 
       if (time) {
         let now = new Date().getTime()
-        let txTime = new Date(time * 1000).toLocaleString()
+        let lastLocaleTxTime = new Date(time * 1000).toLocaleString()
 
-        print('last transaction time: ' + txTime)
-
-        txTime = new Date(time * 1000).getTime()
+        let txTime = new Date(time * 1000).getTime()
         time = new Date(Math.abs(now - txTime)).getTime()
+
         let minutesSince = (time/1000)/60
         let hoursSince = minutesSince / 60
         let daysSince = hoursSince / 24
 
-        print('~' + Math.round(daysSince) + ' days = ~' +  Math.round(hoursSince) + ' hours = ~' + Math.round(minutesSince) + ' minutes' )
+        print('last tx: ' + lastLocaleTxTime + ' ~' + Math.round(daysSince) + ' days = ~' +  Math.round(hoursSince) + ' hours = ~' + Math.round(minutesSince) + ' minutes')
 
         lastTransactionTest = minutesSince < program.youngerThan
       } else {
