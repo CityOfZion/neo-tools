@@ -1,6 +1,6 @@
-// neo-rpc.js
+// query.js
 // RPC module
-// This is called by native/cli/rpc/neo-rpc/v2.9.0/cli/neo-rpc.js CLI wrapper
+// This is called by native/cli/rpc/neo-rpc/v2.9.0/cli/query.js CLI wrapper
 
 // Invoke an RPC method from CLI
 
@@ -11,7 +11,7 @@ const axios   = require('axios')
 const _       = require('underscore')
 const neon    = require('@cityofzion/neon-js')
 
-const netutil = require('nodejs_util/network')
+const netUtil = require('nodejs_util/network')
 const dbg     = require('nodejs_util/debug')
 
 
