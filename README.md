@@ -593,8 +593,8 @@ cd src/nodejs/monitor/cli/
 node new_transaction_alert_loop.js -i 0 -H -t -w 1
 
 
-# Watch the default wallet address on main net for new transactions older than 7 minutes and send an email
-node new_transaction_alert_loop.js -n main -o 7
+# Watch the default wallet address on main net for new transactions younger than 7 minutes and send an email
+node new_transaction_alert_loop.js -n main -y 7
 
 ```
 

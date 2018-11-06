@@ -45,7 +45,7 @@ program
   .option('-T, --ToEmail [ToEmail]', 'Send email to this address each time a new transaction is found')
   .option('-F, --FromEmail [FromEmail]', 'Send email from this address each time a new transaction is found, will use defaults in config if not present')
   .option('-S, --Subject [Subject]', 'Set the subject; if this is not supplied, "New Transaction for <address>" is used by default')
-  .option('-o, --olderThan [olderThan]', 'Set the age in minutes that a transaction must be older than to alert. By default, any new transactions alert, but loop must be at least 2', 6)
+  .option('-y, --youngerThan [youngerThan]', 'Set the age in minutes that a transaction must be younger than to alert. By default, any new transactions alert, but loop must be at least 2', 6)
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
@@ -137,7 +137,7 @@ function get_last_transaction(runtimeArgs) {
 
     let lastTransactionTest = false
 
-    if (program.olderThan === 6) {
+    if (program.youngerThan === 6) {
       lastTransactionTest = last_run_result && (last_run_result !== rstr)
     }
     else {
@@ -157,7 +157,7 @@ function get_last_transaction(runtimeArgs) {
 
         print('~' + Math.round(daysSince) + ' days = ~' +  Math.round(hoursSince) + ' hours = ~' + Math.round(minutesSince) + ' minutes' )
 
-        lastTransactionTest = minutesSince > program.olderThan
+        lastTransactionTest = minutesSince < program.youngerThan
       } else {
         print('no time field found - assuming no news')
         lastTransactionTest = false
