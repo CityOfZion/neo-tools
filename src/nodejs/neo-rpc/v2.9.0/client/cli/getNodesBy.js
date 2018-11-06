@@ -33,7 +33,7 @@ program
   .option('-m, --method [method]', 'Get nodes by the given criteria, default is ping', 'ping')
   .option('-o, --order [order]', 'Order by \'asc\' (ascending <- default) or \'dsc\' (descending)', 'asc')
   .on('--help', function(){
-    print('Note: -m --method options are: "ping", "tallest", "connection", "version", "rawMemPool"')
+    print('Note: -m --method options are: "ping", "tallest", "connection", "version", "rawmempool"')
   })
   .parse(process.argv)
 
