@@ -38,7 +38,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.54.0
+Version: 0.55.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -595,13 +595,12 @@ node email_alert -t you@youradddress.com -f me@myaddress.com -s "subject" -b "bo
 cd src/nodejs/monitor/cli/
 
 # Watch the default address on test net for new transactions and send an email
-# when one is found. This will loop forever, return the time field, and present
-# the time in human-readable format.
-node new_transaction_alert_loop.js -i 0 -H -t -w 1
+# when one is found. This must run with a loop of at least 1 if no -y --youngerThan transaction age in minutes is specified.
+node new_transaction_alert_loop.js
 
 
-# Watch the default wallet address on main net for new transactions younger than 7 minutes and send an email
-node new_transaction_alert_loop.js -n main -y 7
+# Watch the default wallet address on main net for new transactions younger than 7 minutes and send an email.
+node new_transaction_alert_loop.js -N main -y 7
 
 ```
 
