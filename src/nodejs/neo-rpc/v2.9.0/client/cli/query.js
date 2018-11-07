@@ -1,6 +1,6 @@
-// neo-rpc.js
+// query.js
 // CLI module interface to remote Neo RPC systems
-// This uses neo-rpc/v2.9.0/module/neo-rpc.js
+// This uses neo-rpc/v2.9.0/module/query.js
 
 // Invoke an RPC method from CLI
 
@@ -13,12 +13,12 @@ const program = require('commander')
 const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
-const netutil = require('nodejs_util/network')
+const netUtil = require('nodejs_util/network')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const command = require('nodejs_neo-rpc/v2.9.0/client/module/neo-rpc')
+const command = require('nodejs_neo-rpc/v2.9.0/client/module/query')
 
 
 let nodes = []
@@ -49,14 +49,14 @@ program
 if (program.debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
-  netutil.debug()
+  netUtil.debug()
 }
 
 if (!program.node) {
   let options = {
     net: program.Net,
   }
-  netutil.getNodesByPing(options).then(rankedNodes => {
+  netUtil.getNodesByPing(options).then(rankedNodes => {
     if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
     nodes = rankedNodes
     commandWrapper(nodes)

@@ -30,7 +30,7 @@ const _       = require('underscore')
 
 const neon    = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
-const netutil = require('nodejs_util/network')
+const netUtil = require('nodejs_util/network')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
@@ -61,7 +61,7 @@ program
 if (program.debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
-  netutil.debug()
+  netUtil.debug()
 }
 
 if (!program.address) {
@@ -78,8 +78,8 @@ if (defly) print('address: ' + address)
 
 if (!program.node) {
   // get a node from the list and try it
-  // TODO: move node automatic selection into a standard, reusable location (netutil?)
-  let net = netutil.resolveNetworkId(program.Net)
+  // TODO: move node automatic selection into a standard, reusable location (netUtil?)
+  let net = netUtil.resolveNetworkId(program.Net)
 
   nodes = cfg.getNodes(net)
 
@@ -87,7 +87,7 @@ if (!program.node) {
 
   // TODO: look at if dynamic node selection should happen here or in the module
 
-  netutil.getNodesByTallest(nodes).then(rankedNodes => {
+  netUtil.getNodesByTallest(nodes).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
     nodes = rankedNodes
     commandWrapper(nodes)

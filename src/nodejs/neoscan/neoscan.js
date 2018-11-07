@@ -66,8 +66,8 @@ let human_dates = false       // mutate the date format to human-readable (hardc
 exports.debug = (debug) => {
   if (debug !== undefined) defly = debug
   else defly = !defly
-  if (defly) console.log('neoscan api debugging enabled')
-  else console.log('This is your last debugging message! neoscan api debugging disabled')
+  if (defly) console.log(__filename + ': API debugging enabled')
+  else console.log(__filename + ': This is your last debugging message! API debugging disabled')
 }
 
 

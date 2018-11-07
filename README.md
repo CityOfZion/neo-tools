@@ -38,7 +38,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.53.0
+Version: 0.54.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -345,16 +345,22 @@ node account/cli/list.js -n test
 
 
 #### Neo-rpc
+Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
+See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/
+
 
 ```
 cd src/nodejs/neo-rpc/
 
 # Get a list of nodes by tallest
-node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m getNodesByTallest
+# See --help for -m --method options
+node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m tallest
 
 
 # Use the node returned from getNodesBy to query the version for that RPC node.
 # This is the RECOMMENDED method (query a specific node for repetitious operations)
+# See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/
+
 node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
 
 
@@ -362,6 +368,7 @@ node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.
 
 
 #### neon-js
+Uses neon-js 3.11.4
 [neon-js](https://github.com/cityofzion/neon-js)
 
 Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.

@@ -1,0 +1,9 @@
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
+  [ { url: 'http://seed2.ngd.network:10332', rawmempool: 27421 }, { url: 'http://seed1.aphelion-neo.com:10332', rawmempool: 7 }, { url: 'http://seed3.ngd.network:10332', rawmempool: 0 }, { url: 'http://seed4.ngd.network:10332', rawmempool: 0 }, { url: 'http://seed9.ngd.network:10332', rawmempool: 3 }, { url: 'https://seed1.spotcoin.com:10332', rawmempool: 0 }, { url: 'http://seed4.aphelion-neo.com:10332', rawmempool: 0 }, { url: 'http://seed1.ngd.network:10332', rawmempool: 0 }, { url: 'http://seed6.ngd.network:10332', rawmempool: 0 }, { url: 'http://seed7.ngd.network:10332', rawmempool: 0 }, { url: 'http://seed8.ngd.network:10332', rawmempool: 0 } ]
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
+/home/fet/nwd/phetter/neotools/src/nodejs/neo-rpc/v2.9.0/client/module/getNodesBy.js: getNodesBy.version().error: Error: timeout of 30000ms exceeded
