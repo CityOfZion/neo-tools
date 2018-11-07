@@ -33,7 +33,7 @@ exports.debug = (debug) => {
   if (debug !== undefined) defly = debug
   else defly = !defly
   if (defly) print(__filename + ': API debugging enabled')
-  else print('This is your last debugging message! API debugging disabled')
+  else print(__filename + ': This is your last debugging message! API debugging disabled')
 }
 
 

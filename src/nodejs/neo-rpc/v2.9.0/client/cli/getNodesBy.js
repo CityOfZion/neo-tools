@@ -44,6 +44,7 @@ if (program.debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
   netUtil.debug()
+  neoscan.debug()
 }
 
 let options = {
@@ -59,6 +60,7 @@ else if (program.getNodes) {
      if (result) options.nodes = result
    })
 }
+
 getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
 
   if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
