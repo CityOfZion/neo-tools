@@ -346,7 +346,7 @@ node account/cli/list.js -n test
 
 #### Neo-rpc
 Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
-See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/
+See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/
 
 
 ```
