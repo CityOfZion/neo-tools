@@ -38,7 +38,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.53.0
+Version: 0.54.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -350,11 +350,14 @@ node account/cli/list.js -n test
 cd src/nodejs/neo-rpc/
 
 # Get a list of nodes by tallest
-node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m getNodesByTallest
+# See --help for -m --method options
+node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m tallest
 
 
 # Use the node returned from getNodesBy to query the version for that RPC node.
 # This is the RECOMMENDED method (query a specific node for repetitious operations)
+#
+
 node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
 
 
