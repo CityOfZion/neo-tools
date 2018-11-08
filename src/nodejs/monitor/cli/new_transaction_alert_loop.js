@@ -16,7 +16,6 @@ const email   = require('nodejs_alert/email')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-
 let defly = false
 let lastTransactionTest = false
 let address
@@ -27,7 +26,6 @@ let subject
 function print(msg) {
   console.log(msg)
 }
-
 
 program
   .version('0.3.0')
@@ -41,7 +39,7 @@ program
   .option('-T, --ToEmail [ToEmail]', 'Send email to this address each time a new transaction is found')
   .option('-F, --FromEmail [FromEmail]', 'Send email from this address each time a new transaction is found, will use defaults in config if not present')
   .option('-S, --Subject [Subject]', 'Set the subject; if this is not supplied, "New Transaction for <address>" is used by default')
-  .option('-y, --youngerThan [youngerThan]', 'Set the age in minutes that a transaction must be younger than to alert. By default, any new transactions alert, but loop must be at least 2', 6)
+  .option('-y, --youngerThan [youngerThan]', 'Set the age in minutes that a transaction must be younger than to alert. By default, any new transactions alert, but loop must be at least 2')
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
@@ -52,7 +50,6 @@ if (program.debug) {
     email.debug(true)
     neoscan.debug()
 }
-
 if (!program.address) {
   // check for a default address in config, if not pressent show help
   var default_account = cfg.getDefaultAccount()
@@ -63,13 +60,11 @@ if (!program.address) {
 } else {
   address = program.address
 }
-
 if (program.FromEmail) {
   from = program.FromEmail
 } else {
   from = cfg.getSmtp().from
 }
-
 if (defly) dbg.logDeep('from: ', from)
 
 if (program.ToEmail) {
@@ -77,24 +72,19 @@ if (program.ToEmail) {
 } else {
   to = cfg.getSmtp().to
 }
-
 if (program.Subject) subject = program.Subject
 else subject = 'New Tranaction ' + ' for ' + address
 
 if (defly) dbg.logDeep('to: ', to)
 
-var result
-
+let result
 let argz = {
   'debug': defly,
   'net': program.Net,
   'address': address,
-  'page': 0,
   'time': program.time ? program.time : false,
-  'human': program.Human ? program.Human : false,
-  'index': 0
+  'human': program.Human ? program.Human : false
 }
-
 let i = 1, alerts = 0
 
 if (defly) print('sleeping: ' + program.wait + ' s')
@@ -116,66 +106,60 @@ const intervalObj = setInterval(() => {
   i++
 }, program.wait * 1000)
 
-
 function get_last_transaction(runtimeArgs) {
-  print('Searching news for ' + address)
-
+  if (program.youngerThan) {
+    if (program.youngerThan === true) program.youngerThan = 1
+    print('Searching ' + address + ' for transactions younger than ' + program.youngerThan + ' minutes')
+  }
+  else {
+    print('Searching ' + address + ' for new transactions')
+  }
   neoscan.get_address_abstracts(address, 0).then((r) => {
     let message = {
       to: to,
       subject: subject,
       body: program.body
     }
+    if (r && r.data && r.data.entries.length) {
+      let entry = r.data.entries[0]
+      let toAddress = entry.address_to
+      let from = entry.address_from
+      let amount = entry.amount
+      let blockheight = entry.block_height
+      let lastTxTimeInS = new Date(entry.time * 1000).getTime()
+      let lastTxTimeAsLocale = new Date(lastTxTimeInS).toLocaleString()
+      let txid = entry.txid
+      let rstr = message.body = amount + ' ' + lastTxTimeAsLocale + ' ' + from + ' ' + toAddress
+      let now = new Date().getTime()
+      timeA = new Date(Math.abs(now - lastTxTimeInS)).getTime()
+      let minutesSince = timeA / 1000 / 60
+      let hoursSince = minutesSince / 60
+      let daysSince = hoursSince / 24
 
-    let entry = r.data.entries[0]
-    let toAddress = entry.address_to
-    let from = entry.address_from
-    let amount = entry.amount
-    let blockheight = entry.block_height
-    let time = new Date(entry.time * 1000).toLocaleString()
-    let txid = entry.txid
+      if (lastTxTimeInS) {
+        print('last tx @ ' + lastTxTimeAsLocale + ' or ~' + Math.round(daysSince) + ' days or ~' +  Math.round(hoursSince) + ' hours or ~' + Math.round(minutesSince) + ' minutes ago')
 
-    let rstr = message.body = amount + ' ' + time + ' ' + from + ' ' + toAddress
-
-    if (program.youngerThan === 6) {
-      lastTransactionTest = last_run_result && (last_run_result !== rstr)
-    }
-    else {
-      print('Looking for transactions younger than: ' + program.youngerThan + ' minutes')
-
-      let time = r.data.entries[0].time
-
-      if (time) {
-        let now = new Date().getTime()
-        let lastLocaleTxTime = new Date(time * 1000).toLocaleString()
-
-        let txTime = new Date(time * 1000).getTime()
-        timeA = new Date(Math.abs(now - txTime)).getTime()
-
-        let minutesSince = (timeA/1000)/60
-        let hoursSince = minutesSince / 60
-        let daysSince = hoursSince / 24
-
-        print('last tx: ' + lastLocaleTxTime + ' ~' + Math.round(daysSince) + ' days = ~' +  Math.round(hoursSince) + ' hours = ~' + Math.round(minutesSince) + ' minutes')
-
-        lastTransactionTest = minutesSince < program.youngerThan
+        if (program.youngerThan) lastTransactionTest = minutesSince < program.youngerThan
+        else lastTransactionTest = last_run_result && (last_run_result !== rstr)
       } else {
-        print('no time field found - assuming no news')
+        print('No transaction time field found so there can\'t be any news.')
         lastTransactionTest = false
       }
-    }
-    if (lastTransactionTest) {
-      print('New Transaction')
-      email.send(message).then((id) => {
-        print('Message away: ' + id)
-        alerts++
-      })
+      if (lastTransactionTest) {
+        print('New Transaction')
+        email.send(message).then((id) => {
+          print('Message away: ' + id)
+          alerts++
+          print(alerts + ' alert(s). sleeping: ' + program.wait + ' s ')
+        })
+      } else {
+        print(alerts + ' alert(s). sleeping: ' + program.wait + ' s ')
+      }
+      last_run_result = rstr
+
+      if (defly) print('last result: ' + last_run_result)
     } else {
+      print('No transactions to search.')
     }
-    last_run_result = rstr
-
-    if (defly) print('last result: ' + last_run_result)
-
-    print(alerts + ' alert(s). sleeping: ' + program.wait + ' s ')
   })
 }
