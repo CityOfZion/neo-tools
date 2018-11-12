@@ -33,10 +33,10 @@ program
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .option('-m, --method [method]', 'Get nodes by the given criteria, default is ping', 'ping')
   .option('-o, --order [order]', 'Order by \'asc\' (ascending <- default) or \'dsc\' (descending)', 'asc')
-  .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API ')
+  .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API. If not, will use config files if -n --node options aren\'t used. ')
 
   .on('--help', function(){
-    print('Note: -m --method options are: "ping", "tallest", "connection", "version", "rawmempool"')
+    print('Note: -m --method options are: "all", "ping", "tallest", "connection", "version", "rawmempool"')
   })
   .parse(process.argv)
 
@@ -62,7 +62,6 @@ else if (program.getNodes) {
 }
 
 getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
-
   if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
   nodes = rankedNodes
   dbg.logDeep(' ', nodes)
