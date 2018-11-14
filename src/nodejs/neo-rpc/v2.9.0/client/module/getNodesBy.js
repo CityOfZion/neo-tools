@@ -357,7 +357,7 @@ exports.rawmempool = (options) => {
 // { 'nodeurl': { 'url': url, 'height': height, 'version': version, 'connections': connectionsCount, 'rawmempool': rawmempoolLength}}
 
 exports.all = (options) => {
-  let list = {}, i = 0, j = 0, objCopy, results = {}
+  let list = {}, objCopy, results = {}
   let getTallest = this.tallest
   getTallest.keyName = 'height'
   let getConnections = this.connection
@@ -370,23 +370,23 @@ exports.all = (options) => {
   let operations = [getTallest, getConnections, getVersion, getRawMemPool]
 
   return new Promise((resolve, reject) => {
-    operations.forEach(op => {
+    operations.forEach((op, outerIndex) => {
       op(options).then(rankedNodes => {
         list[op.keyName] = rankedNodes
 
-        if (i++ === operations.length-1) {
+        if (outerIndex === operations.length-1) {
           operations.forEach(op => {
             print('retrieving op: ' + op.keyName)
 
             list[op.keyName].forEach(node => {
-              operations.forEach(op2 => {
+              operations.forEach((op2, innerIndex) => {
                 list[op2.keyName].forEach(node2 => {
                   if (node.url === node2.url) {
                     objCopy = Object.assign(node, node2)
                     results[node.url] = objCopy
                   }
                 })
-                if (j++ === operations.length-1) {
+                if (innerIndex === operations.length-1) {
                   resolve(results)
                 }
               })
