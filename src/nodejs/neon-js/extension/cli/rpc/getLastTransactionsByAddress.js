@@ -13,7 +13,7 @@ const _       = require('underscore')
 
 const neon    = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
-const netutil = require('nodejs_util/network')
+const netUtil = require('nodejs_util/network')
 
 
 const command = require('nodejs_neon-js/extension/modules/rpc/getLastTransactionsByAddress')

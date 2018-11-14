@@ -1,3 +1,9 @@
+// debug.js
+// This provides basic debugging capability
+
+// TODO add function key name with value function name to module exports
+// to help with debugging by function.
+
 require('module-alias/register')
 
 const util    = require('util')

@@ -2,6 +2,7 @@
 // This module runs forever looking for new transactions.
 // If it finds one, it sends an email.
 
+// NOTE: First item in tx array is the most recent
 
 require('module-alias/register')
 
@@ -12,13 +13,11 @@ const dbg     = require('nodejs_util/debug')
 const neoscan = require('nodejs_neoscan/neoscan')
 const email   = require('nodejs_alert/email')
 
-const get_last_transactions_by_address = require('nodejs_neoscan/modules/get_last_transactions_by_address')
-
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-
 let defly = false
+let lastTransactionTest = false
 let address
 let from
 let to
@@ -28,22 +27,19 @@ function print(msg) {
   console.log(msg)
 }
 
-
 program
-  .version('0.1.0')
+  .version('0.3.0')
   .usage('')
   .option('-d, --debug', 'Debug')
-  .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test')
+  .option('-N, --Net [Net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test')
   .option('-a, --address [address]', 'Specify the address for transaction inquiry')
-  .option('-t, --time', 'Only return time field of last transactions')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-w, --wait [wait]', 'Period in seconds to wait between successive transaction inquries', 300)
-  .option('-p, --page [page]', 'Show last stransactions for [address] starting at [page]', 1)
   .option('-l, --loop [loop]', 'Loop this many times, default is infinite', 0)
-  .option('-i, --index [index]', 'Get transaction at this index, 0 is the most recent transaction', 0)
   .option('-T, --ToEmail [ToEmail]', 'Send email to this address each time a new transaction is found')
   .option('-F, --FromEmail [FromEmail]', 'Send email from this address each time a new transaction is found, will use defaults in config if not present')
   .option('-S, --Subject [Subject]', 'Set the subject; if this is not supplied, "New Transaction for <address>" is used by default')
+  .option('-y, --youngerThan [youngerThan]', 'Set the age in minutes that a transaction must be younger than to alert. By default, any new transactions alert, but loop must be at least 2')
   // TODO reverse sort order
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
@@ -52,11 +48,8 @@ if (program.debug) {
     print('DEBUGGING: ' + __filename)
     defly = true
     email.debug(true)
+    neoscan.debug()
 }
-
-if (!program.net) {
-}
-
 if (!program.address) {
   // check for a default address in config, if not pressent show help
   var default_account = cfg.getDefaultAccount()
@@ -67,13 +60,11 @@ if (!program.address) {
 } else {
   address = program.address
 }
-
 if (program.FromEmail) {
   from = program.FromEmail
 } else {
   from = cfg.getSmtp().from
 }
-
 if (defly) dbg.logDeep('from: ', from)
 
 if (program.ToEmail) {
@@ -81,36 +72,33 @@ if (program.ToEmail) {
 } else {
   to = cfg.getSmtp().to
 }
-
 if (program.Subject) subject = program.Subject
 else subject = 'New Tranaction ' + ' for ' + address
 
 if (defly) dbg.logDeep('to: ', to)
 
-var result
-
+let result
 let argz = {
   'debug': defly,
-  'net': program.net,
+  'net': program.Net,
   'address': address,
-  'page': program.page,
   'time': program.time ? program.time : false,
-  'human': program.Human ? program.Human : false,
-  'index': program.index
+  'human': program.Human ? program.Human : false
 }
-
 let i = 1, alerts = 0
 
 if (defly) print('sleeping: ' + program.wait + ' s')
 
 let last_run_result = ''
 
+neoscan.set_net(program.Net)
+
 get_last_transaction(argz)
 
 const intervalObj = setInterval(() => {
   if (i >= program.loop && program.loop !== 0) {
     clearInterval(intervalObj)
-    print('clearing timer')
+    print('times up ------')
   } else {
     print('loop #: ' + i + ' of ' + (program.loop ? program.loop : 'infinity'))
     get_last_transaction(argz)
@@ -118,34 +106,60 @@ const intervalObj = setInterval(() => {
   i++
 }, program.wait * 1000)
 
-
 function get_last_transaction(runtimeArgs) {
-  print('Searching news for ' + address)
-
-  get_last_transactions_by_address.run(runtimeArgs).then((r) => {
+  if (program.youngerThan) {
+    if (program.youngerThan === true) program.youngerThan = 1
+    print('Searching ' + address + ' for transactions younger than ' + program.youngerThan + ' minutes')
+  }
+  else {
+    print('Searching ' + address + ' for new transactions')
+  }
+  neoscan.get_address_abstracts(address, 0).then((r) => {
     let message = {
       to: to,
       subject: subject,
       body: program.body
     }
+    if (r && r.data && r.data.entries.length) {
+      let entry = r.data.entries[0]
+      let toAddress = entry.address_to
+      let from = entry.address_from
+      let amount = entry.amount
+      let blockheight = entry.block_height
+      let lastTxTimeInS = new Date(entry.time * 1000).getTime()
+      let lastTxTimeAsLocale = new Date(lastTxTimeInS).toLocaleString()
+      let txid = entry.txid
+      let rstr = message.body = amount + ' ' + lastTxTimeAsLocale + ' ' + from + ' ' + toAddress
+      let now = new Date().getTime()
+      timeA = new Date(Math.abs(now - lastTxTimeInS)).getTime()
+      let minutesSince = timeA / 1000 / 60
+      let hoursSince = minutesSince / 60
+      let daysSince = hoursSince / 24
 
-    let rstr = message.body = dbg.lookDeep(r)
+      if (lastTxTimeInS) {
+        print('last tx @ ' + lastTxTimeAsLocale + ' or ~' + Math.round(daysSince) + ' days or ~' +  Math.round(hoursSince) + ' hours or ~' + Math.round(minutesSince) + ' minutes ago')
 
-    if (defly) dbg.logDeep('body: ', message.body)
+        if (program.youngerThan) lastTransactionTest = minutesSince < program.youngerThan
+        else lastTransactionTest = last_run_result && (last_run_result !== rstr)
+      } else {
+        print('No transaction time field found so there can\'t be any news.')
+        lastTransactionTest = false
+      }
+      if (lastTransactionTest) {
+        print('New Transaction')
+        email.send(message).then((id) => {
+          print('Message away: ' + id)
+          alerts++
+          print(alerts + ' alert(s). sleeping: ' + program.wait + ' s ')
+        })
+      } else {
+        print(alerts + ' alert(s). sleeping: ' + program.wait + ' s ')
+      }
+      last_run_result = rstr
 
-    if (last_run_result && last_run_result !== rstr) {
-      print('New Transaction')
-      email.send(message).then((id) => {
-        print('Message away: ' + id)
-        alerts++
-      })
+      if (defly) print('last result: ' + last_run_result)
     } else {
-      print(alerts + ' alert(s)')
+      print('No transactions to search.')
     }
-    last_run_result = rstr
-
-    if (defly) print('last result: ' + last_run_result)
-
-    print('sleeping: ' + program.wait + ' s' + '\n...')
   })
 }

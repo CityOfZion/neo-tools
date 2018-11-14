@@ -38,7 +38,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.52.0
+Version: 0.56.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -100,6 +100,7 @@ See src/nodejs/ for the following:
   * Automatically select nodes
   * Get nodes by configurable sort factor
   * GetNodesByX
+    * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [neo-rpc](#neo-rpc) for examples.
 
 
 * Configuration via nodejs/src/config.js
@@ -344,17 +345,23 @@ node account/cli/list.js -n test
 ```
 
 
-#### Neo-rpc
+#### neo-rpc
+Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
+See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/
+
 
 ```
 cd src/nodejs/neo-rpc/
 
 # Get a list of nodes by tallest
-node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m getNodesByTallest
+# See --help for -m --method options
+node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m tallest
 
 
 # Use the node returned from getNodesBy to query the version for that RPC node.
 # This is the RECOMMENDED method (query a specific node for repetitious operations)
+# See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/
+
 node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
 
 
@@ -362,6 +369,7 @@ node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.
 
 
 #### neon-js
+Uses neon-js 3.11.4
 [neon-js](https://github.com/cityofzion/neon-js)
 
 Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.
@@ -588,9 +596,12 @@ node email_alert -t you@youradddress.com -f me@myaddress.com -s "subject" -b "bo
 cd src/nodejs/monitor/cli/
 
 # Watch the default address on test net for new transactions and send an email
-# when one is found. This will loop forever, return the time field, and present
-# the time in human-readable format.
-node new_transaction_alert_loop.js -i 0 -H -t -w 1
+# when one is found. This must run with a loop of at least 1 if no -y --youngerThan transaction age in minutes is specified.
+node new_transaction_alert_loop.js
+
+
+# Watch the default wallet address on main net for new transactions younger than 7 minutes and send an email.
+node new_transaction_alert_loop.js -N main -y 7
 
 ```
 

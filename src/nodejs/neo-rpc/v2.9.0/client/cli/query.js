@@ -1,6 +1,6 @@
-// neo-rpc.js
+// query.js
 // CLI module interface to remote Neo RPC systems
-// This uses neo-rpc/v2.9.0/module/neo-rpc.js
+// This uses neo-rpc/v2.9.0/module/query.js
 
 // Invoke an RPC method from CLI
 
@@ -13,12 +13,12 @@ const program = require('commander')
 const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
-const netutil = require('nodejs_util/network')
+const netUtil = require('nodejs_util/network')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const command = require('nodejs_neo-rpc/v2.9.0/client/module/neo-rpc')
+const command = require('nodejs_neo-rpc/v2.9.0/client/module/query')
 
 
 let nodes = []
@@ -38,25 +38,26 @@ program
   .option('-T, --Txs', 'Only return an array of transactions for the block')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
-  .option('-m, --method [method]', 'Call node with this RPC method, default \'getBlockCount\'', 'getblockcount')
+  .option('-m, --method [method]', 'Call node with this RPC method, default \'getblockcount\'', 'getblockcount')
   .option('-p, --params [params]', 'Call RPC method with these params, default is blank', '')
   .on('--help', function(){
-    print("Note: Currently, arguments that modify the results of an RPC call are NOT IMPLEMENTED.")
-    print("      It Is highly recommended to use neo-rpc/client/cli/getNodesByX to find a node to use and then use this programs --node or -n option")
+    print('Note: Currently, arguments that modify the results of an RPC call are NOT IMPLEMENTED.')
+    print('      It Is highly recommended to use neo-rpc/client/cli/getNodesByX to find a node to use and then use this programs --node or -n option')
+    print('\nFor API /NEO:2.9.0/ See http://docs.neo.org/en-us/node/cli/2.9.0/api.html for a list of method names.')
   })
   .parse(process.argv)
 
 if (program.debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
-  netutil.debug()
+  netUtil.debug()
 }
 
 if (!program.node) {
   let options = {
     net: program.Net,
   }
-  netutil.getNodesByPing(options).then(rankedNodes => {
+  netUtil.getNodesByPing(options).then(rankedNodes => {
     if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
     nodes = rankedNodes
     commandWrapper(nodes)

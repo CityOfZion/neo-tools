@@ -9,7 +9,7 @@ const _       = require('underscore')
 
 const neon    = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
-const netutil = require('nodejs_util/network')
+const netUtil = require('nodejs_util/network')
 
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
@@ -37,13 +37,13 @@ if (program.debug) {
 
 if (!program.node) {
   // get a node from the list and try it
-  let net = netutil.resolveNetworkId(program.Net)
+  let net = netUtil.resolveNetworkId(program.Net)
 
   nodes = cfg.getNodes(net)
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 
-  netutil.getNodesByTallest(nodes).then(rankedNodes => {
+  netUtil.getNodesByTallest(nodes).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
     nodes = rankedNodes
     getBlockCount(nodes)
