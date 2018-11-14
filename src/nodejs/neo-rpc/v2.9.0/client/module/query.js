@@ -3,13 +3,13 @@
 // This is called by native/cli/rpc/neo-rpc/v2.9.0/cli/query.js CLI wrapper
 
 // Invoke an RPC method from CLI
+// See http://docs.neo.org/en-us/node/cli/2.9.0/api.html for a list of method names.
 
 
 require('module-alias/register')
 
 const axios   = require('axios')
 const _       = require('underscore')
-const neon    = require('@cityofzion/neon-js')
 
 const netUtil = require('nodejs_util/network')
 const dbg     = require('nodejs_util/debug')

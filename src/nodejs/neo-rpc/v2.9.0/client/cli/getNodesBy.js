@@ -33,10 +33,11 @@ program
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .option('-m, --method [method]', 'Get nodes by the given criteria, default is ping', 'ping')
   .option('-o, --order [order]', 'Order by \'asc\' (ascending <- default) or \'dsc\' (descending)', 'asc')
-  .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API ')
+  .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API. If not, will use config files if -n --node options aren\'t used. ')
+  .option('-c, --conf', 'Disable \'press any key to continue\' confirmation prompt')
 
   .on('--help', function(){
-    print('Note: -m --method options are: "ping", "tallest", "connection", "version", "rawmempool"')
+    print('Note: -m --method options are: "all", "ping", "tallest", "connection", "version", "rawmempool"')
   })
   .parse(process.argv)
 
@@ -61,12 +62,27 @@ else if (program.getNodes) {
    })
 }
 
-getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
+function command() {
+  getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
+    if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
+    nodes = rankedNodes
+    dbg.logDeep(' ', nodes)
+    process.exit()
+  })
+  .catch (error => {
+    print(__filename + ': ' + error.message)
+    process.exit()
+  })
+}
 
-  if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
-  nodes = rankedNodes
-  dbg.logDeep(' ', nodes)
-})
-.catch (error => {
-  print(__filename + ': ' + error.message)
-})
+if (program.conf) {
+  command()
+} else {
+  print('Warning: this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested.')
+  print('This can be disabled with -c or --conf.')
+  print('Press any key to continue...')
+
+  process.stdin.setRawMode(true);
+  process.stdin.resume();
+  process.stdin.on('data', command);
+}

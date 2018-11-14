@@ -38,7 +38,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.55.0
+Version: 0.56.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -100,6 +100,7 @@ See src/nodejs/ for the following:
   * Automatically select nodes
   * Get nodes by configurable sort factor
   * GetNodesByX
+    * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [neo-rpc](#neo-rpc) for examples.
 
 
 * Configuration via nodejs/src/config.js
@@ -344,7 +345,7 @@ node account/cli/list.js -n test
 ```
 
 
-#### Neo-rpc
+#### neo-rpc
 Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
 See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/
 

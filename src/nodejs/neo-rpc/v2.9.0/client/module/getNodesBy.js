@@ -329,7 +329,7 @@ exports.rawmempool = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.version().error: ' + error)
+              print(__filename + ': getNodesBy.rawmempool().error: ' + error)
               if (options.order === 'dsc') rankedList = rankedList.reverse()
               resolve(rankedList)
             })
@@ -339,6 +339,61 @@ exports.rawmempool = (options) => {
     })
     .catch (error => {
       print(__filename + ': getNodesBy.rawmempool()/getNodesBy.ping().error: ' + error)
+    })
+  })
+}
+
+
+// Return an object list of nodes with all stats this module can provide
+// ARGS:
+//  options = {
+//    net: 'TestNet',                                 // default network
+//    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
+//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//  }
+// TODO: add caching with configurable time limit for results
+// This will ALWAYS ping first with getNodesBy.ping()
+// Return Value Format:
+// { 'nodeurl': { 'url': url, 'height': height, 'version': version, 'connections': connectionsCount, 'rawmempool': rawmempoolLength}}
+
+exports.all = (options) => {
+  let list = {}, objCopy, results = {}
+  let getTallest = this.tallest
+  getTallest.keyName = 'height'
+  let getConnections = this.connection
+  getConnections.keyName = 'connections'
+  let getVersion = this.version
+  getVersion.keyName = 'version'
+  let getRawMemPool = this.rawmempool
+  getRawMemPool.keyName = 'rawmempool'
+
+  let operations = [getTallest, getConnections, getVersion, getRawMemPool]
+
+  return new Promise((resolve, reject) => {
+    operations.forEach((op, outerIndex) => {
+      op(options).then(rankedNodes => {
+        list[op.keyName] = rankedNodes
+
+        if (outerIndex === operations.length-1) {
+          operations.forEach(op => {
+            print('retrieving op: ' + op.keyName)
+
+            list[op.keyName].forEach(node => {
+              operations.forEach((op2, innerIndex) => {
+                list[op2.keyName].forEach(node2 => {
+                  if (node.url === node2.url) {
+                    objCopy = Object.assign(node, node2)
+                    results[node.url] = objCopy
+                  }
+                })
+                if (innerIndex === operations.length-1) {
+                  resolve(results)
+                }
+              })
+            })
+          })
+        }
+      })
     })
   })
 }
