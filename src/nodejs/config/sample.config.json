@@ -46,5 +46,84 @@
       { "url": "https://seed9.cityofzion.io:443" },
       { "url": "https://seed0.cityofzion.io:443" }
     ]
+  },
+  "neojs": {
+    "neo": {
+      "network": "testnet",
+      "storageType": "",
+      "endpoints": "",
+      "nodeOptions": "",
+      "meshOptions": "",
+      "storageOptions": {
+        "connectionString": "mongodb://localhost/neo_testnet"
+      },
+      "apiOptions": "",
+      "syncerOptions": "",
+      "loggerOptions": {}
+    },
+    "core": {
+      "api": {
+        "loggerOptions": {}
+      },
+      "mesh": {
+        "startBenchmarkOnInit": true,
+        "toFetchUserAgent": true,
+        "benchmarkIntervalMs": 2000,
+        "fetchMissingUserAgentIntervalMs": 5000,
+        "refreshUserAgentIntervalMs": 300000,
+        "minActiveNodesRequired": 2,
+        "pendingRequestsThreshold": 5,
+        "loggerOptions": {}
+      },
+      "syncer": {
+        "minHeight": 1,
+        "maxHeight": "",
+        "blockRedundancy": 1,
+        "checkRedundancyBeforeStoreBlock": true,
+        "startOnInit": true,
+        "toSyncIncremental": true,
+        "toSyncForMissingBlocks": true,
+        "toPruneRedundantBlocks": false,
+        "storeQueueConcurrency": 30,
+        "enqueueBlockIntervalMs": 5000,
+        "verifyBlocksIntervalMs": 60000,
+        "maxStoreQueueLength": 1000,
+        "retryEnqueueDelayMs": 5000,
+        "standardEnqueueBlockPriority": 5,
+        "retryEnqueueBlockPriority": 3,
+        "missingEnqueueStoreBlockPriority": 1,
+        "enqueuePruneBlockPriority": 2,
+        "maxPruneChunkSize": 1000,
+        "loggerOptions": {}
+      },
+      "node": {
+        "toBenchmark": true,
+        "loggerOptions": {}
+      },
+      "storages": {
+        "memory-storage": {
+          "loggerOptions": {}
+        },
+        "mongodb-storage": {
+          "connectOnInit": true,
+          "userAgent": "Unknown",
+          "collectionNames": {
+            "blocks": "blocks",
+            "transactions": "transactions",
+            "assets": "assets"
+          },
+          "loggerOptions": {}
+        },
+        "logger": {
+          "level": "warn",
+          "displayTimestamp": true,
+          "displayName": true,
+          "displayLevel": true,
+          "useLevelInitial": false,
+          "useLocalTime": false,
+          "timestampFormat": "YYYY-MM-DD HH:mm:ss.SSS"
+        }
+      }
+    }
   }
 }

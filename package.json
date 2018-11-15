@@ -9,6 +9,7 @@
   "scripts": {},
   "_moduleAliases": {
     "nodejs_util": "src/nodejs/util/",
+    "nodejs_neo-js": "src/nodejs/neo-js/",
     "nodejs_crypto": "src/nodejs/crypto/",
     "nodejs_config": "src/nodejs/config/",
     "nodejs_exchange": "src/nodejs/exchange/",
