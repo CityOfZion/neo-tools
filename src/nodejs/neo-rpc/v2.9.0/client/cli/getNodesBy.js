@@ -74,7 +74,7 @@ if (defly) dbg.logDeep('options: ', options)
 
 function command() {
   if (ran) return
-  else ran = 1
+  else ran = true
 
   print('Using network: ' + options.net)
   print('Using method: ' + program.method)
@@ -84,6 +84,7 @@ function command() {
   getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
     if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
     nodes = rankedNodes
+    print(rankedNodes.length + ' of ' + options.nodes.length + ' nodes responded\n')
     dbg.logDeep(' ', JSON.stringify(nodes))
     process.exit()
   })
@@ -96,9 +97,9 @@ function command() {
 if (program.conf) {
   command()
 } else {
-  print('Warning: this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested.')
-  print('This can be disabled with -c or --conf.')
-  print('Press enter to continue...')
+  print('\nWarning: this can produce a lot of traffic to the Neo network. It first pings each node in the list to make sure they are up and within operating parameters and then calls the requested RPC method.')
+  print('\nThis can be disabled with -c or --conf.')
+  print('Press enter to continue or CTRL-C to cancel...')
 
   process.stdin.on('data', () => {
     command()

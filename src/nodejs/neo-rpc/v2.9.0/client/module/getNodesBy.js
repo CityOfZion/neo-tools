@@ -113,7 +113,6 @@ exports.ping = (options) => {
             i++
             if (ms < maxPing) {
               rankedList.push({ "url": n.url, "ping": ms })
-              print('[+] ' + n.url + ' ms: ' + ms )
             } else {
               print('[-] ' + n.url + ' ms: ' + ms + ' is greater than max ping: ' + maxPing)
             }
