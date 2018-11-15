@@ -365,6 +365,7 @@ node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.
 
 #### neo-js
 Implementation of neo-js synchronization features for local chain capabilities.
+
 [neo-js on GitHub](https://github.com/cityofzion/neo-js)
 
 
@@ -376,6 +377,7 @@ Implementation of neo-js synchronization features for local chain capabilities.
 
 #### neon-js
 Uses neon-js 3.11.4
+
 [neon-js on GitHub](https://github.com/cityofzion/neon-js)
 
 Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.
@@ -400,7 +402,9 @@ query -h
 ```
 
 ### Neoscan for TestNet and MainNet
+
 https://neoscan.io/docs/index.html#api-v1-get
+
 [Neoscan on GitHub](https://github.com/cityofzion/neo-scan)
 
 
