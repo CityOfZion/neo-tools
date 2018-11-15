@@ -365,7 +365,9 @@ node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.
 
 #### neo-js
 Implementation of neo-js synchronization features for local chain capabilities.
+
 [neo-js on GitHub](https://github.com/cityofzion/neo-js)
+
 
 ```
 
