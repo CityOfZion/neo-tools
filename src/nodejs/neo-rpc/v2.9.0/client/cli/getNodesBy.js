@@ -19,7 +19,7 @@ const getNodesBy = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
 
 let nodes = []
 let defly = false
-let arg
+let arg, ran = 0
 
 function print(msg) {
   console.log(msg);
@@ -49,20 +49,39 @@ if (program.debug) {
 }
 
 let options = {
-  net: program.Net,
+  net: netUtil.resolveNetworkId(program.Net),
   order: program.order
 }
 
+// provided node argument on command line
 if (program.node) options.nodes = [{ 'url': program.node }]
 
-else if (program.getNodes) {
+else if (program.getNodes) { // get the nodes from neoscan
   neoscan.set_net(program.Net)
    neoscan.get_all_nodes().then(result => {
      if (result) options.nodes = result
+     if (defly) dbg.logDeep('options.nodes: ', options.nodes)
    })
 }
+else { // get nodes from configuration file
+  let net    = netUtil.resolveNetworkId(program.Net)
+  let cfgNodes  = cfg.getNodes(net)
+
+  options.nodes = cfgNodes
+}
+
+if (defly) dbg.logDeep('options: ', options)
+
 
 function command() {
+  if (ran) return
+  else ran = 1
+
+  print('Using network: ' + options.net)
+  print('Using method: ' + program.method)
+  print('Node Count: ' + options.nodes.length)
+  dbg.logDeep(' ', options.nodes)
+
   getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
     if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
     nodes = rankedNodes
@@ -70,7 +89,7 @@ function command() {
     process.exit()
   })
   .catch (error => {
-    print(__filename + ': ' + error.message)
+    print(__filename + ': ' + error)
     process.exit()
   })
 }
@@ -80,9 +99,9 @@ if (program.conf) {
 } else {
   print('Warning: this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested.')
   print('This can be disabled with -c or --conf.')
-  print('Press any key to continue...')
+  print('Press enter to continue...')
 
-  process.stdin.setRawMode(true);
-  process.stdin.resume();
-  process.stdin.on('data', command);
+  process.stdin.on('data', () => {
+    command()
+  })
 }

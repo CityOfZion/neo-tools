@@ -83,17 +83,17 @@ exports.getRpcNodes = (options) => {
 
 exports.ping = (options) => {
   let rankedList = [], i = 0
-  let opts = options ? options : opts = {}
+  // let opts = options ? options : opts = {}
+  //
+  // opts.net ? opts.net : opts.net = 'TestNet'
+  // opts.order ? opts.order : opts.order = 'asc'
+  //
+  // // let net    = netUtil.resolveNetworkId(opts.net)
+  // // let cfgNodes  = cfg.getNodes(net)
+  //
+  // opts.nodes ? opts.nodes : opts.nodes = cfgNodes
 
-  opts.net ? opts.net : opts.net = 'TestNet'
-  opts.order ? opts.order : opts.order = 'asc'
-
-  let net    = netUtil.resolveNetworkId(opts.net)
-  let cfgNodes  = cfg.getNodes(net)
-
-  opts.nodes ? opts.nodes : opts.nodes = cfgNodes
-
-  let nodes = opts.nodes
+  let nodes = options.nodes
 
   if (defly) {
     dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
@@ -105,11 +105,17 @@ exports.ping = (options) => {
     if (_.isArray(nodes)) {
       nodes.forEach((n) => {
         if (n.url) {
+          print('neon-js ping: ' + n.url)
+
           const client = neon.default.create.rpcClient(n.url)
+
           client.ping().then(ms => {
             i++
             if (ms < maxPing) {
               rankedList.push({ "url": n.url, "ping": ms })
+              print('[+] ' + n.url + ' ms: ' + ms )
+            } else {
+              print('[-] ' + n.url + ' ms: ' + ms + ' is greater than max ping: ' + maxPing)
             }
 
             if (i === nodes.length) {
@@ -148,7 +154,7 @@ exports.ping = (options) => {
 
 exports.tallest = (options) => {
   let rankedList = [], i = 0, pingOptions = {}
-  Object.assign(options, pingOptions)
+  Object.assign(pingOptions, options)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
@@ -156,11 +162,13 @@ exports.tallest = (options) => {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
+            print('rpc query getblockcount: ' + n.url)
+
             const client = neon.default.create.rpcClient(n.url)
 
             client.getBlockCount().then(response => {
               i++
-              if (response) rankedList.push({ "url": n.url, "height": response })
+              if (response) rankedList.push({ 'url': n.url, 'height': response, 'ping': n.ping })
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'height')
@@ -201,7 +209,7 @@ exports.tallest = (options) => {
 
 exports.connection = (options) => {
   let rankedList = [], i = 0, pingOptions = {}
-  Object.assign(options, pingOptions)
+  Object.assign(pingOptions, options)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
@@ -209,11 +217,13 @@ exports.connection = (options) => {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
+            print('rpc query getconnections: ' + n.url)
+
             const client = neon.default.create.rpcClient(n.url)
 
             client.getConnectionCount().then(response => {
               i++
-              if (response) rankedList.push({ "url": n.url, "connections": response })
+              if (response) rankedList.push({ 'url': n.url, 'connections': response, 'ping': n.ping })
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'connections')
@@ -254,7 +264,7 @@ exports.connection = (options) => {
 
 exports.version = (options) => {
   let rankedList = [], i = 0, pingOptions = {}
-  Object.assign(options, pingOptions)
+  Object.assign(pingOptions, options)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
@@ -262,11 +272,13 @@ exports.version = (options) => {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
+            print('rpc query getversion: ' + n.url)
+
             const client = neon.default.create.rpcClient(n.url)
 
             client.getVersion().then(response => {
               i++
-              if (response) rankedList.push({ "url": n.url, "version": response })
+              if (response) rankedList.push({ 'url': n.url, 'version': response, 'ping': n.ping })
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'version')
@@ -307,7 +319,7 @@ exports.version = (options) => {
 
 exports.rawmempool = (options) => {
   let rankedList = [], i = 0, pingOptions = {}
-  Object.assign(options, pingOptions)
+  Object.assign(pingOptions, options)
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
@@ -315,11 +327,13 @@ exports.rawmempool = (options) => {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
+            print('rpc query getrawmempool: ' + n.url)
+
             const client = neon.default.create.rpcClient(n.url)
 
             client.getRawMemPool().then(response => {
               i++
-              if (response) rankedList.push({ "url": n.url, "rawmempool": response.length })
+              if (response) rankedList.push({ 'url': n.url, 'rawmempool': response.length, 'ping': n.ping })
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'rawmempool')
@@ -329,7 +343,7 @@ exports.rawmempool = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.rawmempool().error: ' + error)
+              print(__filename + ': getNodesBy.rawmempool(' + n.url + ').error: ' + error)
               if (options.order === 'dsc') rankedList = rankedList.reverse()
               resolve(rankedList)
             })
@@ -376,21 +390,22 @@ exports.all = (options) => {
 
         if (outerIndex === operations.length-1) {
           operations.forEach(op => {
-            print('retrieving op: ' + op.keyName)
 
-            list[op.keyName].forEach(node => {
-              operations.forEach((op2, innerIndex) => {
-                list[op2.keyName].forEach(node2 => {
-                  if (node.url === node2.url) {
-                    objCopy = Object.assign(node, node2)
-                    results[node.url] = objCopy
+            if (op && op.keyName && list[op.keyName]) {
+              list[op.keyName].forEach(node => {
+                operations.forEach((op2, innerIndex) => {
+                  list[op2.keyName].forEach(node2 => {
+                    if (node.url === node2.url) {
+                      objCopy = Object.assign(node, node2)
+                      results[node.url] = objCopy
+                    }
+                  })
+                  if (innerIndex === operations.length-1) {
+                    resolve(results)
                   }
                 })
-                if (innerIndex === operations.length-1) {
-                  resolve(results)
-                }
               })
-            })
+            } else reject('something went wrong: ' + op.keyName)
           })
         }
       })
