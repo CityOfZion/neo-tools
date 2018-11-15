@@ -14,7 +14,6 @@ const neoscan = require('nodejs_neoscan/neoscan')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const json    = require('nodejs_util/json')
 const getNodesBy = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
 
 let nodes = []
