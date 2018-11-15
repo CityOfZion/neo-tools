@@ -6,6 +6,7 @@
 - [Requirements](#requirements)
 - [Operating System Support](#operating-system-support)
 - [Node.js Features](#nodejs-features)
+- [Todo](#todo)
 - [Developer's Note](#developers-note)
 - [Roadmap](#roadmap)
 - [Setup](#setup)
@@ -14,7 +15,8 @@
 - [All-in-One Configuration File Example](#all-in-one-configuration-file-example)
 - [Calling Conventions](#calling-conventions)
 - [Accounts](#accounts)
-- [Neo-rpc](#neo-rpc)
+- [neo-rpc](#neo-rpc)
+- [neo-js](#neo-js)
 - [neon-js](#neon-js)
 - [Neoscan for TestNet and MainNet](#neoscan-for-testnet-and-mainnet)
 - [Exchange and Market APIs](#exchange-and-market-apis)
@@ -38,7 +40,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.56.0
+Version: 0.57.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -102,6 +104,12 @@ See src/nodejs/ for the following:
   * GetNodesByX
     * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [neo-rpc](#neo-rpc) for examples.
 
+* neo-js integration
+  * [neo-js on GitHub](https://github.com/cityofzion/neo-js)
+  * MainNet sync
+  * TestNet sync
+  * mongodb support
+
 
 * Configuration via nodejs/src/config.js
   * get_default_account()
@@ -121,7 +129,9 @@ See src/nodejs/ for the following:
   * NEP-2 and NEP-6 coming soon!
 
 
-* Neoscan API command line is functional (see neoscan calling convention below)
+* Neoscan API
+  - [Neoscan on GitHub](https://github.com/cityofzion/neo-scan)
+  - command line is functional (see neoscan calling convention below)
   - get_address_abstracts, now with JSON and CSV export option
   - get_all_nodes
   - get_balance
@@ -156,18 +166,20 @@ See src/nodejs/ for the following:
   * shacli support added for SHA256 and HMAC SHA256
 
 
-* Neon-js RPC Implementation
-  * neon-js/native/cli/rpc/query.js - dynamic query construction
-  * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
-  * neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
-  * neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
-  * neon-js/native/cli/rpc/getVersion - Gets version information of this node
-  * neon-js/native/cli/rpc/validateAddress - Verify that the address is a correct NEO address
-  * neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
-  * neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
-  * neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
-  * neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
-  * neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
+* neon-js
+  * [neon-js on GitHub](https://github.com/cityofzion/neon-js)
+  * RPC Implementation
+    * neon-js/native/cli/rpc/query.js - dynamic query construction
+    * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
+    * neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
+    * neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
+    * neon-js/native/cli/rpc/getVersion - Gets version information of this node
+    * neon-js/native/cli/rpc/validateAddress - Verify that the address is a correct NEO address
+    * neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
+    * neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
+    * neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
+    * neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
+    * neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
 
 
 * Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
@@ -189,6 +201,10 @@ See src/nodejs/ for the following:
   * network.getNodesByPing()
   * added ping detection to improve RTT
 
+
+## Todo
+
+* Automatically generate documentation from online CLI -h --help feature
 
 ## Developer's Note
 
@@ -283,44 +299,23 @@ The path item of each config entry points to a json config file that adheres to 
   },
   "nodes": {
     "TestNet": [
-      { "url": "https://seed1.neo.org:20331" },
-      { "url": "http://seed2.neo.org:20332" },
-      { "url": "http://seed3.neo.org:20332" },
-      { "url": "http://seed4.neo.org:20332" },
       { "url": "https://test1.cityofzion.io" },
       { "url": "https://test2.cityofzion.io" },
       { "url": "https://test3.cityofzion.io" },
       { "url": "https://test4.cityofzion.io" },
-      { "url": "https://test5.cityofzion.io" },
-      { "url": "http://seed5.neo.org:20332" }
+      { "url": "https://test5.cityofzion.io" }
     ],  
     "MainNet": [
-      { "url": "https://seed1.switcheo.network:10331" },
-      { "url": "https://seed3.switcheo.network:10331" },
-      { "url": "http://seed1.travala.com:10332" },
-      { "url": "https://seed1.neo.org:10331" },
       { "url": "https://seed1.cityofzion.io:443" },
       { "url": "https://seed2.cityofzion.io:443" },
       { "url": "https://seed3.cityofzion.io:443" },
       { "url": "https://seed4.cityofzion.io:443" },
       { "url": "https://seed5.cityofzion.io:443" },
-      { "url": "https://seed1.redpulse.com:443" },
-      { "url": "https://seed2.redpulse.com:443" },
-      { "url": "https://seed.o3node.org:10331" },
-      { "url": "http://seed1.aphelion-neo.com:10332" },
-      { "url": "http://seed2.aphelion-neo.com:10332" },
-      { "url": "http://seed4.aphelion-neo.com:10332" },
-      { "url": "https://seed1.spotcoin.com:10332" },
-      { "url": "http://rustylogic.ddns.net:10332" },
-      { "url": "http://seed1.ngd.network:10332" },
-      { "url": "http://seed2.ngd.network:10332" },
-      { "url": "http://seed3.ngd.network:10332" },
-      { "url": "http://seed4.ngd.network:10332" },
-      { "url": "http://seed5.ngd.network:10332" },
-      { "url": "http://seed6.ngd.network:10332" },
-      { "url": "http://seed7.ngd.network:10332" },
-      { "url": "http://seed8.ngd.network:10332" },
-      { "url": "http://seed9.ngd.network:10332" }
+      { "url": "https://seed6.cityofzion.io:443" },
+      { "url": "https://seed7.cityofzion.io:443" },
+      { "url": "https://seed8.cityofzion.io:443" },
+      { "url": "https://seed9.cityofzion.io:443" },
+      { "url": "https://seed0.cityofzion.io:443" }
     ]   
   }     
 }
@@ -368,16 +363,28 @@ node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.
 ```
 
 
+#### neo-js
+Implementation of neo-js synchronization features for local chain capabilities.
+[neo-js on GitHub](https://github.com/cityofzion/neo-js)
+
+```
+
+
+```
+
+
 #### neon-js
 Uses neon-js 3.11.4
-[neon-js](https://github.com/cityofzion/neon-js)
+[neon-js on GitHub](https://github.com/cityofzion/neon-js)
 
 Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.
 
 ```
-cd src/nodejs/neon-js/
+cd src/nodejs/neon-js/native/cli/rpc/
 
-* neon-js/native/cli/rpc/query.js - dynamic query construction
+query -h
+
+
 * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
 * neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
 * neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
@@ -393,6 +400,8 @@ cd src/nodejs/neon-js/
 
 ### Neoscan for TestNet and MainNet
 https://neoscan.io/docs/index.html#api-v1-get
+[Neoscan on GitHub](https://github.com/cityofzion/neo-scan)
+
 
 ```
 cd src/nodejs/neoscan/cli/
