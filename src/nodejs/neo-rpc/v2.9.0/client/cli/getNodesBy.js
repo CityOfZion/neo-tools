@@ -14,8 +14,8 @@ const neoscan = require('nodejs_neoscan/neoscan')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
+const json    = require('nodejs_util/json')
 const getNodesBy = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
-
 
 let nodes = []
 let defly = false
@@ -85,7 +85,7 @@ function command() {
   getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
     if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
     nodes = rankedNodes
-    dbg.logDeep(' ', nodes)
+    dbg.logDeep(' ', JSON.stringify(nodes))
     process.exit()
   })
   .catch (error => {
