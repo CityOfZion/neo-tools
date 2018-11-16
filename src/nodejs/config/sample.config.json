@@ -47,8 +47,12 @@
       { "url": "https://seed0.cityofzion.io:443" }
     ]
   },
-  "neotoolsDB": {
-
+  "storage": {
+    "mongodb": {
+      "connectionString": "mongodb://localhost/neotools_data",
+      "collectionNames": {
+      }
+    }
   },
   "neojs": {
     "neo": {
@@ -58,7 +62,7 @@
       "nodeOptions": "",
       "meshOptions": "",
       "storageOptions": {
-        "connectionString": "mongodb://localhost/neo_testnet"
+        "connectionString": "mongodb://localhost/neojs_testnet"
       },
       "apiOptions": "",
       "syncerOptions": "",
