@@ -4,15 +4,16 @@
 require('module-alias/register')
 
 
-const program = require('commander')
-const _       = require('underscore')
+const program     = require('commander')
+const _           = require('underscore')
 
-const neon    = require('@cityofzion/neon-js')
-const dbg     = require('nodejs_util/debug')
-const netUtil = require('nodejs_util/network')
+const neon        = require('@cityofzion/neon-js')
+const dbg         = require('nodejs_util/debug')
+const netUtil     = require('nodejs_util/network')
+const getNodesBy  = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
 
-var cfg       = require('nodejs_config/config.js')
-var config    = cfg.load('nodejs_config/nodejs.config.json')
+var cfg           = require('nodejs_config/config.js')
+var config        = cfg.load('nodejs_config/nodejs.config.json')
 
 let nodes  = []
 let defly = false
@@ -43,14 +44,20 @@ if (!program.node) {
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 
-  netUtil.getNodesByTallest(nodes).then(rankedNodes => {
+  let options = {
+    net: net,
+    order: 'asc',
+    nodes: nodes
+  }
+
+  getNodesBy.tallest(options).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
     nodes = rankedNodes
     getBlockCount(nodes)
   })
 
 } else {
-  nodes.push(program.node)
+  nodes.push({ 'url': program.node })
   getBlockCount(nodes)
 }
 

@@ -70,13 +70,23 @@ exports.run = (config) => {
       dbg.logDeep('cfg: ', cfg)
     }
     return new Promise((resolve, reject) => {
-      axios.post(program.node, request, cfg).then(response => {
-        if (defly) dbg.logDeep(__filename + ': response: ', response.data)
-        resolve(response.data)
-      })
-      .catch(error => {
-        if (defly) dbg.logDeep(__filename + ': error: ', error)
-        reject(__filename + ': run().error: ' + error)
+      const options = {
+        network: 'testnet',
+        storageType: 'mongodb',
+        storageOptions: {
+          connectionString: 'mongodb://localhost/neo_testnet',
+        },
+      }
+
+      // Create a neo instance
+      const neo = new Neo(options)
+
+      // Get block count
+      neo.storage.on('ready', () => {
+        neo.storage.getBlockCount()
+          .then((res) => {
+            console.log('Block count:', res)
+          })
       })
     })
   }

@@ -47,6 +47,9 @@
       { "url": "https://seed0.cityofzion.io:443" }
     ]
   },
+  "neotoolsDB": {
+
+  },
   "neojs": {
     "neo": {
       "network": "testnet",
