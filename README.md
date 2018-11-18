@@ -344,6 +344,8 @@ node account/cli/list.js -n test
 Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
 See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/
 
+NOTE: This module can generate a lot of traffic. Please make sure you understand and use with care.
+
 
 ```
 cd src/nodejs/neo-rpc/
@@ -354,7 +356,7 @@ node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m tallest
 
 
 # Use the node returned from getNodesBy to query the version for that RPC node.
-# This is the RECOMMENDED method (query a specific node for repetitious operations)
+# The following example is the RECOMMENDED method (query a specific node for repetitious operations)
 # See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/
 
 node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
@@ -368,8 +370,19 @@ node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.
 
 Implementation of neo-js synchronization features for local chain capabilities.
 
+NOTE: This code is ALPHA. Use with care as it can generate a lot of traffic.
+
+Todo:
+  - Add mongodb database name configuration
+  - Review automation and process control of chainSync.js
+  - Review configuration draft
+
 
 ```
+cd src/nodejs/neo-js/
+
+# Sync blocks from TestNet into a localhost mongodb instance
+node neo-js/cli/chainSync.js
 
 
 ```

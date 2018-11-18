@@ -27,7 +27,7 @@ function print(msg) {
 }
 
 program
-  .version('0.2.0')
+  .version('0.1.0')
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-H, --Human', 'I am human so make outputs easy for human')
@@ -36,6 +36,8 @@ program
   .option('-c, --connection [connection]', 'Specify the connection string for the storage type', 'mongodb://localhost/neo_testnet')
   .on('--help', () => {
     print('Note: see https://github.com/cityofzion/neo-js for more information about the module this uses.')
+    print('This will start a process to pull nodes from the selected Neo network as quickly as possible.')
+    print('Please use with care')
   })
   .parse(process.argv)
 
