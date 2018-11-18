@@ -47,10 +47,19 @@
       { "url": "https://seed0.cityofzion.io:443" }
     ]
   },
-  "storage": {
-    "mongodb": {
-      "connectionString": "mongodb://localhost/neotools_data",
-      "collectionNames": {
+  "metastore": {
+    "testnet": {
+      "mongodb": {
+        "connectionString": "mongodb://localhost/neotools_metastore_testnet",
+        "collectionNames": {
+        }
+      }
+    },
+    "mainnet": {
+      "mongodb": {
+        "connectionString": "mongodb://localhost/neotools_metastore_mainnet",
+        "collectionNames": {
+        }
       }
     }
   },
