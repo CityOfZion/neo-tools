@@ -1,4 +1,4 @@
-// query coinmakertcap.com for price info
+// query CoinMarketCap.com for price info
 require('module-alias/register')
 
 const axios = require('axios')
@@ -14,8 +14,8 @@ var defly = false
 exports.debug = (debug) => {
   if (debug !== undefined) defly = debug
   else defly = !defly
-  if (defly) console.log('coinmarketcap api debugging enabled')
-  else console.log('This is your last debugging message! coinmarketcap api debugging disabled')
+  if (defly) console.log(__filename + ': api debugging enabled')
+  else console.log(__filename + ': This is your last debugging message! Api debugging disabled')
 }
 
 

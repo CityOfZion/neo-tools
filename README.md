@@ -40,7 +40,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.57.0
+Version: 0.58.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -89,6 +89,13 @@ the ability to call it directly from the command line, by itself, and retrieve a
 ## Operating System Support
 1. Linux
 
+
+## General Notes
+
+* Camel Casing
+  - In general, where possible, camelCasing is preferred for functions and CLI modules except where an API or implementation uses a different standard. The objective is to be familiar to API reference.
+
+
 ## Node.js Features
 
 Node.js is the primary implementation platform right now. We are looking for contributions for others.
@@ -104,6 +111,7 @@ See src/nodejs/ for the following:
   * GetNodesByX
     * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [neo-rpc](#neo-rpc) for examples.
 
+
 * neo-js integration
   * [neo-js on GitHub](https://github.com/cityofzion/neo-js)
   * MainNet sync
@@ -112,10 +120,13 @@ See src/nodejs/ for the following:
 
 
 * Configuration via nodejs/src/config.js
-  * get_default_account()
-  * get_exchanges()
-  * get_smtp()
-  * get_nodes()
+  * getDefaultAccount()
+  * getExchanges()
+  * getSmtp()
+  * getNodes()
+  * getNeoJs()
+
+
 * Alerts (Notifications)
   * src/nodejs/email_alert.js
   * src/nodejs/monitor/new_transaction_alert_loop
@@ -146,8 +157,15 @@ See src/nodejs/ for the following:
   - get_unclaimed
 
 
+* Markets
+  * Coinmarketcap.com
+  * Coinpaprika.com
+  * General Capabilities (please see respective folders or documentation section)
+    * getMarketValue
+    * getTicker
+    * getQuotes
+
 * Exchange
-  * Query coinmarketcap.com tickers
   * Binance
     * Binance API module supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
     * Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
@@ -205,6 +223,11 @@ See src/nodejs/ for the following:
 ## Todo
 
 * Automatically generate documentation from online CLI -h --help feature
+* neo-js Implementation Improvements
+  - Add mongodb database name configuration
+  - Review automation and process control of chainSync.js
+  - Review configuration draft
+* Alphabetize and otherwise improve documentation
 
 ## Developer's Note
 
@@ -372,12 +395,6 @@ Implementation of neo-js synchronization features for local chain capabilities.
 
 NOTE: This code is ALPHA. Use with care as it can generate a lot of traffic.
 
-Todo:
-  - Add mongodb database name configuration
-  - Review automation and process control of chainSync.js
-  - Review configuration draft
-
-
 ```
 cd src/nodejs/neo-js/
 
@@ -479,23 +496,23 @@ cd src/nodejs/
 
 # List the price of neo and total net worth for 10 shares by coinmarketcap valuation.
 # Note: in this version you cannot list all symbols for cmc as you can with binance
-node get_worth -s neo -a 10
+node getMarketValue -s neo -a 10
 
 
 # list the price of neousdt and total net worth for 3 shares by binance valuation
 # ticker names found at https://api.binance.com/api/v3/ticker/price
 # weight 1 for binance
 
-node get_worth -s neousdt -a 3 -x binance
+node getMarketValue -s neousdt -a 3 -x binance
 
 
 # list the price of all symbols that have "NEO" in the name and multiply their value by 2
 
-node get_worth.js -a 2 -x binance | grep NEO -A 1
+node getMarketValue.js -a 2 -x binance | grep NEO -A 1
 
 
 # list the price of all symbols on binance times 2 units
-node get_worth.js -a 2 -x binance
+node getMarketValue.js -a 2 -x binance
 
 
 cd src/nodejs/exchange/binance/cli/
@@ -591,15 +608,15 @@ while true;
     node ${loc}exchange/binance/cli/get_asset_detail.js -s neo;
 
     echo -e "\n";
-    node ${loc}get_worth.js -s neo -a 1 -d -x binance;
+    node ${loc}getMarketValue.js -s neo -a 1 -d -x binance;
     echo -e "";
-    node ${loc}get_worth.js -s gas -a 1;
+    node ${loc}getMarketValue.js -s gas -a 1;
     echo -e "\n";
-    node ${loc}get_worth.js -s bitcoin -a 1;
+    node ${loc}getMarketValue.js -s bitcoin -a 1;
     echo -e "\n";
-    node ${loc}get_worth.js -s cardano -a 1;
+    node ${loc}getMarketValue.js -s cardano -a 1;
     echo -e "\n";
-    node ${loc}get_worth.js -a 1 -s bobs-repair;
+    node ${loc}getMarketValue.js -a 1 -s bobs-repair;
     echo -e "\n";
 
     sleep 500;
