@@ -69,7 +69,7 @@ exports.run = (config) => {
     }
 
     if (defly) {
-      dbg.logDeep('url: ', program.node.url)
+      dbg.logDeep('url: ', program.node)
       dbg.logDeep('request: ', request)
       dbg.logDeep('cfg: ', cfg)
     }
