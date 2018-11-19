@@ -18,5 +18,8 @@
   },
   "nodes": {
     "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+  },
+  "neojs": {
+    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "neo-tools",
-  "version": "0.56.0",
+  "version": "0.58.0",
   "description": "Composable command line tools and reference implementations for Neo Smart Economy function primitives",
   "repository": {
     "type": "git",
@@ -9,6 +9,7 @@
   "scripts": {},
   "_moduleAliases": {
     "nodejs_util": "src/nodejs/util/",
+    "nodejs_neo-js": "src/nodejs/neo-js/",
     "nodejs_crypto": "src/nodejs/crypto/",
     "nodejs_config": "src/nodejs/config/",
     "nodejs_exchange": "src/nodejs/exchange/",
@@ -24,7 +25,9 @@
     "enzyme": "3.1.1"
   },
   "dependencies": {
+    "@cityofzion/neo-js": "^0.10.0",
     "@cityofzion/neon-js": "^3.11.4",
+    "@coinpaprika/api-nodejs-client": "^1.0.2",
     "async-request": "^1.2.0",
     "bignumber.js": "5.0.0",
     "bluebird": "^3.3.4",

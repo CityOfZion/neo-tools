@@ -15,7 +15,7 @@ const { URL } = require('url')
 const { logDeep } = require('nodejs_util/debug')
 
 
-// TODO Reintegrate this (neoscanIni bits) with state tree
+// TODO Pull this hardcoded configuration into the neo-tools config file system
 
 let neoscanIni = {}
 

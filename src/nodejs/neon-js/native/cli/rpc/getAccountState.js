@@ -25,17 +25,19 @@
 require('module-alias/register')
 
 
-const program = require('commander')
-const _       = require('underscore')
+const program     = require('commander')
+const _           = require('underscore')
 
-const neon    = require('@cityofzion/neon-js')
-const dbg     = require('nodejs_util/debug')
-const netUtil = require('nodejs_util/network')
+const neon        = require('@cityofzion/neon-js')
+const dbg         = require('nodejs_util/debug')
+const netUtil     = require('nodejs_util/network')
+const getNodesBy  = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
 
-var cfg       = require('nodejs_config/config.js')
-var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const command = require('nodejs_neon-js/native/modules/rpc/getAccountState')
+var cfg           = require('nodejs_config/config.js')
+var config        = cfg.load('nodejs_config/nodejs.config.json')
+
+const command     = require('nodejs_neon-js/native/modules/rpc/getAccountState')
 
 let nodes = []
 let defly = false
@@ -85,9 +87,13 @@ if (!program.node) {
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 
-  // TODO: look at if dynamic node selection should happen here or in the module
+    let options = {
+      net: net,
+      order: 'asc',
+      nodes: nodes
+    }
 
-  netUtil.getNodesByTallest(nodes).then(rankedNodes => {
+  getNodesBy.tallest(options).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
     nodes = rankedNodes
     commandWrapper(nodes)

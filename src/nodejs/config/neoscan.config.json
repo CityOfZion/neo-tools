@@ -10,6 +10,7 @@
   "api": {
     "v1": {
       "get_address_abstracts": {
+        "url": "/v1/get_address_abstracts/",
         "description": "Returns transaction summary of an address from its hash, paginated.",
         "parms": {
           "address": {
@@ -25,6 +26,7 @@
         }
       },
       "get_address_to_address_abstracts": {
+        "url": "/v1/get_address_to_address_abstracts/",
         "description": "Returns transaction summary between two address from their hash, paginated.",
         "parms": {
           "address1": {
@@ -45,9 +47,11 @@
         }
       },
       "get_all_nodes": {
+        "url": "/v1/get_all_nodes/",
         "description": "Returns all working nodes and their respective heights. Information is updated each minute."
       },
       "get_balance": {
+        "url": "/v1/get_balance/",
         "description": "Returns the balance for an address including NEP5 Tokens.",
         "parms": {
           "address": {
@@ -58,6 +62,7 @@
         }
       },
       "get_block": {
+        "url": "/v1/get_block/",
         "description": "Returns the block model from its hash or index.",
         "parms": {
           "hash": {
@@ -67,6 +72,7 @@
           }
       },
       "get_claimable": {
+        "url": "/v1/get_claimable/",
         "description": "Returns the AVAILABLE claimable transactions for an address, from its hash.",
         "parms": {
           "address": {
@@ -77,6 +83,7 @@
         }
       },
       "get_claimed": {
+        "url": "/v1/get_claimed/",
         "description": "Returns the claimed transactions for an address, from its hash.",
         "parms": {
           "address": {
@@ -87,12 +94,14 @@
         }
       },
       "get_height": {
+        "url": "/v1/get_height/",
         "description": "Returns latest block index of the neoscan db.",
         "parms": {
           }
         }
       },
       "get_last_transactions_by_address": {
+        "url": "/v1/get_last_transactions_by_address/",
         "description": "Returns the last 15 transaction models in the chain for the selected address from its hash, paginated.",
         "parms": {
           "address": {
@@ -108,6 +117,7 @@
         }
       },
       "get_transaction": {
+        "url": "/v1/get_transaction/",
         "description": "Returns the transaction model from its hash.",
         "parms": {
           "transaction_hash": {
@@ -118,6 +128,7 @@
         }
       },
       "get_unclaimed": {
+        "url": "/v1/get_unclaimed/",
         "description": "Returns the unclaimed gas for an address from its hash.",
         "parms": {
           "address": {

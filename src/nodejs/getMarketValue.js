@@ -1,5 +1,9 @@
-// Get the price of a symbol at a given amount on either binance or cmc
+// Get the price of a symbol at a given amount on
+// - binance or
+// - coinmarketcap
+// - coinpaprika
 // TODO break these out into binance and cmc respectively also
+// TODO lookup ticker names first
 
 require('module-alias/register')
 
@@ -9,16 +13,17 @@ const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
 const cmc     = require('nodejs_market/coinmarketcap/get_price')
+const coinpap = require('nodejs_market/coinpaprika/api')
 const binance = require('nodejs_exchange/binance/binance-api.js')
 var cfg       = require('nodejs_config/config')
 
 var config    = cfg.load('nodejs_config/neoscan.config.json')
 
 function print(msg) {
-  console.log(msg);
+  console.log(msg)
 }
 
-var address, exchange, get_price, symbol
+var address, symbol
 
 program
   .version('0.1.0')
@@ -27,28 +32,24 @@ program
   .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
   .option('-s, --symbol [symbol]', 'Specify the symbol to look up its value')
   .option('-x, --exchange [exchange]', 'Specify exchange or api to use to query prices - defaults to coinmarketcap', 'cmc')
+  .on('--help', () => {
+    print('Note: valid values for -x --exchange are \'binance\', \'coinpaprika\', or none for coinmarketcap.')
+  })
   .parse(process.argv);
-
 
 if (!program.amount) {
   program.help()
 }
-
-if (program.exchange) {
-  exchange = program.exchange
-  if(exchange === 'binance') get_price = binance.get_price
-  else get_price = cmc.get_price
-}
-
 if (program.debug) {
   print('DEBUGGING');
-  if(exchange === 'binance') binance.debug(true)
-  else cmc.debug(true)
+  binance.debug()
+  cmc.debug()
+  coinpap.debug()
 }
 
-switch(exchange) {
+switch(program.exchange) {
   case "binance":
-    get_price(program.symbol).then(result => {
+    binance.get_price(symbol).then(result => {
       if(result && result.symbol && result.price) {
         print(result.symbol +' usd value: ' + result.price + '\n' + 'net worth for amount: ' + result.price * program.amount)
         print('usd value: ' + result.symbol + '\n' + 'net worth fr amount: ' + result.price * program.amount)
@@ -58,11 +59,18 @@ switch(exchange) {
         })
       }
     })
-    break;
+    break
+  case "coinpaprika":
+  if (!program.symbol) symbol = 'neo-neo'
+  else symbol = program.symbol
+    coinpap.getTicker(symbol).then(result => {
+      dbg.logDeep(' ', result)
+    })
+    break
   default: // coinmarketcap
     if (!program.symbol) symbol = 'NEO'
     else symbol = program.symbol
-    get_price(symbol).then(result => {
+    cmc.get_price(symbol).then(result => {
       if(result) {
         print(symbol + ' usd value: ' + result + '\n' + 'net worth for amount: ' + result * program.amount)
       }
