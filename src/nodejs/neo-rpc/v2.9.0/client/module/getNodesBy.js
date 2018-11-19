@@ -2,6 +2,11 @@
 
 // Module for helping get Neo Smart Economy RPC node servers
 
+// TODO move per instance callback functions out of function scope to make accessible to reuse
+// TODO review ssl issue
+// TODO look at dynamic selection defaults
+// TODO Look at ping toggle for "all" method
+
 require('module-alias/register')
 
 const _       = require('underscore')
@@ -77,7 +82,7 @@ exports.getRpcNodes = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'asc',                                   // asc = lowest value first, dsc = highest first
 //  }
 // TODO: add caching with configurable time limit for results
 
@@ -146,7 +151,8 @@ exports.ping = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'dsc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'dsc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -157,7 +163,18 @@ exports.tallest = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions).then(nodes => {
+        tallestCallback(nodes)
+      })
+      .catch (error => {
+        print(__filename + ': getNodesBy.tallest()/getNodesBy.ping().error: ' + error)
+      })
+    } else {
+      tallestCallback(options.nodes)
+    }
+
+    function tallestCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -177,7 +194,7 @@ exports.tallest = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.tallest().error: ' + error)
+              print(__filename + ': ' + n.url + '.getNodesBy.tallest().error: ' + error)
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'height')
@@ -188,10 +205,7 @@ exports.tallest = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.tallest()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 
@@ -201,7 +215,8 @@ exports.tallest = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'asc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -212,7 +227,19 @@ exports.connection = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions).then(nodes => {
+        connectionCallback(nodes)
+      })
+      .catch (error => {
+        print(__filename + ': getNodesBy.connections()/getNodesBy.ping().error: ' + error)
+      })
+    }
+    else {
+        connectionCallback(options.nodes)
+    }
+
+    function connectionCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -232,7 +259,7 @@ exports.connection = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.connections().error: ' + error)
+              print(__filename + ': ' + n.url + '.getNodesBy.connections().error: ' + error)
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'connections')
@@ -243,10 +270,7 @@ exports.connection = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.connections()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 
@@ -256,7 +280,8 @@ exports.connection = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'dsc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'dsc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -267,7 +292,19 @@ exports.version = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions).then(nodes => {
+        versionCallback(nodes)
+      })
+      .catch (error => {
+        print(__filename + ': getNodesBy.version()/getNodesBy.ping().error: ' + error)
+      })
+    }
+    else {
+      versionCallback(options.nodes)
+    }
+
+    function versionCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -287,7 +324,7 @@ exports.version = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.version().error: ' + error)
+              print(__filename + ': ' + n.url + '.getNodesBy.version().error: ' + error)
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'version')
@@ -298,10 +335,7 @@ exports.version = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.version()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 
@@ -311,7 +345,8 @@ exports.version = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'asc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -322,7 +357,18 @@ exports.rawmempool = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions).then(nodes => {
+        rawmempoolCallback(nodes)
+      })
+      .catch (error => {
+        print(__filename + ': getNodesBy.rawmempool()/getNodesBy.ping().error: ' + error)
+      })
+    } else {
+      rawmempoolCallback(options.nodes)
+    }
+
+    function rawmempoolCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -349,10 +395,7 @@ exports.rawmempool = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.rawmempool()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 

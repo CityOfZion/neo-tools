@@ -34,9 +34,11 @@ program
   .option('-o, --order [order]', 'Order by \'asc\' (ascending <- default) or \'dsc\' (descending)', 'asc')
   .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API. If not, will use config files if -n --node options aren\'t used. ')
   .option('-c, --conf', 'Disable \'press any key to continue\' confirmation prompt')
+  .option('-p, --ping [ping]', 'Enable or disable ping first behavior (default 1 or true).', 1 )
 
   .on('--help', function(){
     print('Note: -m --method options are: "all", "ping", "tallest", "connection", "version", "rawmempool"')
+    print('-m "all" will ALWAYS ping first (for now).')
   })
   .parse(process.argv)
 
@@ -49,7 +51,8 @@ if (program.debug) {
 
 let options = {
   net: netUtil.resolveNetworkId(program.Net),
-  order: program.order
+  order: program.order,
+  ping: program.ping
 }
 
 // provided node argument on command line
@@ -76,6 +79,7 @@ function command() {
   if (ran) return
   else ran = true
 
+  print('Ping First: ' + options.ping)
   print('Using network: ' + options.net)
   print('Using method: ' + program.method)
   print('Node Count: ' + options.nodes.length)
