@@ -25,7 +25,7 @@ function print(msg) {
 }
 
 program
-  .version('0.2.0')
+  .version('0.3.0')
   .usage('')
   .option('-d, --debug', 'Debug')
   .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
