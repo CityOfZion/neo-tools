@@ -40,7 +40,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.58.0
+Version: 0.59.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
