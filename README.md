@@ -22,7 +22,7 @@
 - [Exchange and Market APIs](#exchange-and-market-apis)
 - [crypto](#crypto)
 - [Neo Status](#neo-status)
-- [CLI Chaining examples](#cli-chaining-examples)
+- [CLI Chaining Examples](#cli-chaining-examples)
 - [Shell Script Example](#shell-script-example)
 - [Monitoring, Alerts and Notifications](#monitoring-alerts-and-notifications)
 - [Planned Future Calling Convention](#planned-future-calling-convention)
@@ -40,6 +40,8 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
+V1 project board https://github.com/CityOfZion/neo-tools/projects/1
+
 Version: 0.59.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
@@ -49,8 +51,8 @@ Current Implementation Focus: Node.js
 Next: Database, Wallet, Server, Node
 
 
-
 ## Primary Goals
+
 This project has three major goals:
 
 1. Provide a command line tool for each Neo Smart Economy system function primitive. In example,
@@ -62,6 +64,8 @@ the ability to call it directly from the command line, by itself, and retrieve a
 3. Get up and running quickly and easily.
 
 ## Requirements
+
+These requirements must be met to reach Version 1.0.
 
 1. Source hierarchy *must* be organized by language/implementation/function in adherence with familiar and relevant project naming conventions.
   * In Progress
@@ -110,6 +114,12 @@ See src/nodejs/ for the following:
   * Get nodes by configurable sort factor
   * GetNodesByX
     * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [neo-rpc](#neo-rpc) for examples.
+    * all - return all of the following values for all nodes queried.
+    * ping - list queried nodes by ping
+    * tallest - list queried nodes by block height
+    * connection - list queried nodes by number of connections
+    * version - list queried nodes by Neo version
+    * rawmempool - list queried nodes by the size of raw memory pool
 
 
 * neo-js integration
@@ -213,11 +223,6 @@ See src/nodejs/ for the following:
 
 * Node.js Network Utility
   * network.resolveNetworkId()
-  * network.getNodesByTallest()
-  * network.getNodesByLeastConnections()
-  * network.getNodesByVersion()
-  * network.getNodesByPing()
-  * added ping detection to improve RTT
 
 
 ## Todo
@@ -247,11 +252,14 @@ I apologize if the command-line arguments and capabilities aren't consistent acr
 
 ## Setup
 
+`git clone https://github.com/CityOfZion/neo-tools.git .`
+
 `npm install`
 ,
+
 ## neo-tools APIs
 
-For now there is no official API but features are still available. neo-tools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
+For now there is no official API, but features are still available. neo-tools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
 To leverage any module for a specific language, simple enter the ```src``` folder for that language and locate the folder/folder.js file for the relevant feature. For example, to use the Node.js config module
 require src/nodejs/config/config.js.
 
@@ -365,7 +373,7 @@ node account/cli/list.js -n test
 
 #### neo-rpc
 Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
-See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/
+See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/ API calls (valid -m --method options)
 
 NOTE: This module can generate a lot of traffic. Please make sure you understand and use with care.
 
@@ -380,7 +388,7 @@ node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m tallest
 
 # Use the node returned from getNodesBy to query the version for that RPC node.
 # The following example is the RECOMMENDED method (query a specific node for repetitious operations)
-# See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/
+# See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/ API calls (valid -m --method options)
 
 node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
 
