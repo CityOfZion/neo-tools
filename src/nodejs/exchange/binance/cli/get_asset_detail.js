@@ -25,7 +25,7 @@ var symbol
 program
   .version('0.1.0')
   .usage('-s <symbol>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-s, --symbol [symbol]', 'Specify the symbol to look its value')
   .parse(process.argv);
 
@@ -34,7 +34,7 @@ if (program.symbol) {
   symbol = program.symbol
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   binance.debug(true)
 }

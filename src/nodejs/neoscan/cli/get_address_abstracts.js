@@ -22,7 +22,7 @@ let address
 program
   .version('0.1.0')
   .usage('-a [address] -p [page]')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --address [address]', 'Specify the address for balance inquiry')
   .option('-p, --page [page]', 'Show last transactions for [address] starting at [page]', '0')
@@ -52,7 +52,7 @@ if (program.page)  {
   pageArg = program.page
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING')
   neoscan.debug(true)
 }

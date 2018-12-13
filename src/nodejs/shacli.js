@@ -19,7 +19,7 @@ var address
 program
   .version('0.1.0')
   .usage('-m <message> -b [bits]')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-b, --bits [bits]', 'Select the SHA algorithm to use', '256')
   .option('-m, --message <message>', 'Message to hash with SHA')
   .option('-s, --secret [secret]', 'Use hmac with <secret>')
@@ -33,7 +33,7 @@ if (!program.message) {
  program.help()
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
 }
 

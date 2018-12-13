@@ -18,7 +18,7 @@ let argus = process.argv
 program
   .version('0.1.0')
   .usage('<hash>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-h, --hash <block hash>', 'Specify the block by hash for block inquiry')
   .parse(argus)
@@ -30,7 +30,7 @@ if (!program.hash) {
   program.help()
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING')
   neoscan.debug(true)
 }

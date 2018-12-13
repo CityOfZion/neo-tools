@@ -22,7 +22,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('-n <node>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use')
   .option('-s, --summary', 'summarizes details like getrawmempool and getpeers to integers instead of lists')
   .parse(process.argv);
@@ -31,7 +31,7 @@ if (!program.node) {
   program.help()
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   neoscan.debug(true)
 }

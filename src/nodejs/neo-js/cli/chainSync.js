@@ -29,7 +29,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-H, --Human', 'I am human so make outputs easy for human')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .option('-s, --storage [storage]', 'Select storage type: i.e., mongodb (default)', 'mongodb')
@@ -43,7 +43,7 @@ program
 
 dbg.logDeep('n: ', cfg.getNeoJs())
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
   netUtil.debug()
@@ -51,7 +51,7 @@ if (program.debug) {
 
 let runtime = {
   'net': program.Net,
-  'debug': defly,
+  'Debug': defly,
   'human': program.Human ? program.Human : false,
   'storage': program.storage,
   'connection': program.connection

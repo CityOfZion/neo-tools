@@ -25,7 +25,7 @@ var configData
 program
   .version('0.1.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-c, --config [config]', 'Specify a config file to use')
   .option('-w, --watch', 'Only list watch addresses i.e., marked watch: true in config')
   .option('-n, --name [name]', 'Find account with name')
@@ -36,7 +36,7 @@ if (program.config) {
   configData = cfg.load(path)
 } else configData = config
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
 }
 

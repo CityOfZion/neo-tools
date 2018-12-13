@@ -21,12 +21,12 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('-n <node>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-s, --summary', 'summarizes details like getrawmempool and getpeers to integers instead of lists')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .parse(process.argv);
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   neoscan.debug(true)
 }
