@@ -28,7 +28,7 @@ var address, symbol
 program
   .version('0.1.0')
   .usage('-s [symbol] -a <amount> -x [exchange]')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
   .option('-s, --symbol [symbol]', 'Specify the symbol to look up its value')
   .option('-x, --exchange [exchange]', 'Specify exchange or api to use to query prices - defaults to coinmarketcap', 'cmc')
@@ -40,7 +40,7 @@ program
 if (!program.amount) {
   program.help()
 }
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   binance.debug()
   cmc.debug()

@@ -35,7 +35,7 @@ function print(msg) {
 program
   .version('0.2.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-t, --time', 'Only return time field of last block - this does not work with -T option')
   .option('-T, --Txs', 'Only return an array of transactions for the block')
@@ -50,7 +50,7 @@ program
   })
   .parse(process.argv)
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
   netUtil.debug()
@@ -89,7 +89,7 @@ function commandWrapper(nodelist) {
 
 
   let runtimeArgs = {
-    'debug': defly,
+    'Debug': defly,
     'node': node.url,
     'method': program.method.toLowerCase(),
     'params': program.params.split(','),

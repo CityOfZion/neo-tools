@@ -30,7 +30,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('[address] [page]')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --address [address]', 'Specify the address for transaction inquiry')
   .option('-p, --page [page]', 'Show last transactions for [address] starting at [page]', 1)
@@ -41,7 +41,7 @@ program
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
 }
@@ -58,7 +58,7 @@ if (!program.address) {
 }
 
 let argz = {
-  'debug': defly,
+  'Debug': defly,
   'net': program.net,
   'address': address,
   'page': program.page,

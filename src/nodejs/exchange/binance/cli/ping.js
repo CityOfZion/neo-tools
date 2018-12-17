@@ -19,11 +19,11 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .parse(process.argv);
 
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   binance.debug(true)
 }

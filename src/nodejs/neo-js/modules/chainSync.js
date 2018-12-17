@@ -13,7 +13,7 @@ const dbg     = require('nodejs_util/debug')
 
 
 // Pass an object named config of the following format to control module behavior
-// program.debug    // Toggle debugging
+// program.Debug    // Toggle debugging
 // program.human    // Make dates human-readable
 // program.net      // This is the network to run on
 
@@ -24,7 +24,7 @@ exports.run = (config) => {
 
   if (config) program = config
   else {
-    program.debug = false
+    program.Debug = false
     program.net = 'testnet'
     program.human = false
   }
@@ -33,7 +33,7 @@ exports.run = (config) => {
     console.log(msg);
   }
 
-  if (program.debug) {
+  if (program.Debug) {
     print('DEBUGGING: ' + __filename)
     defly = true
   }

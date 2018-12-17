@@ -34,7 +34,7 @@ program
   .version('0.2.0')
   .usage('')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-h, --hash [hash]', 'specify the hash of the block to fetch, if no hash or index is supplied will get the tallest')
   .option('-i, --index [index]', 'specify the number of the block to fetch, if no hash or index is supplied will get the tallest')
@@ -48,7 +48,7 @@ program
   .parse(process.argv)
 
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
   netUtil.debug()
@@ -86,7 +86,7 @@ if (!program.node) {
 
 function commandWrapper(nodelist) {
   let runtimeArgs = {
-    'debug': defly,
+    'Debug': defly,
     'node': nodelist[0].url,
     'hash': program.hash,
     'index': program.index,

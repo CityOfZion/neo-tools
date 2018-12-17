@@ -34,7 +34,7 @@ function print(msg) {
 program
   .version('0.2.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-h, --hash [hash]', 'Specify the hash of the transaction to fetch, if no hash is provided, will get the most recent')
   .option('-x, --xstr', 'Return hexstring transactoin value instead of default json', 1)
@@ -46,7 +46,7 @@ program
   })
   .parse(process.argv)
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
   netUtil.debug()
@@ -83,7 +83,7 @@ if (!program.node) {
 
 function commandWrapper(nodelist) {
   let runtimeArgs = {
-    'debug': defly,
+    'Debug': defly,
     'node': nodelist[0].url,
     'hash': program.hash,
     'time': program.time ? program.time : false,

@@ -31,7 +31,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('[address] [page]')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-N, --Net [Net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-n, --node [node]', 'set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-a, --address [address]', 'Specify the address for transaction inquiry')
@@ -43,7 +43,7 @@ program
   // TODO summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
 }
@@ -59,7 +59,7 @@ if (!program.address) {
 }
 
 let argz = {
-  'debug': defly,
+  'Debug': defly,
   'net': program.net,
   'address': address,
   'page': program.page,
