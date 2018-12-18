@@ -1,4 +1,4 @@
-// List accounts in the user configuration
+// Get the NEP2 encrypted key for the account specified
 
 require('module-alias/register')
 
@@ -40,7 +40,6 @@ if (program.Debug) {
   print('DEBUGGING');
 }
 
-
 if (program.watch) {
   var accounts = account.get_watch_addresses(configData)
 
@@ -52,17 +51,9 @@ if (program.watch) {
   }
 } else {
   var result
-  var accounts = account.list(configData)
 
-  if (accounts) {
-    if (program.name) {
-      json.findAllKeysWhere(accounts, program.name, (key, val) => {
-        result = val
-      })
-    } else {
-      result = _.findWhere(accounts, {default: true})
-    }
+  if (program.name) result = account.getNep2EncryptedKey(configData, program.name)
+  else result = account.getNep2EncryptedKey(configData)
 
-    print('\n' + json.quoteJSON(JSON.stringify(result)))
-  }
+  print('\n' + result)
 }
