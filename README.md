@@ -42,7 +42,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 V1 project board https://github.com/CityOfZion/neo-tools/projects/1
 
-Version: 0.60.0
+Version: 0.61.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -149,6 +149,7 @@ See src/nodejs/ for the following:
   * get and set watch addresses
   * NEP-2 Decryption Support (encrypted WIF)
     * CLI for getNep2EncryptedKey
+    * CLI for decryptNep2
   * NEP-2 encryption and account creation coming soon!
   * NEP-6 coming soon!
 
@@ -385,6 +386,10 @@ node account/cli/list.js -n test
 
 # Get NEP-2 encrypted key for account with name test
 node account/cli/getNep2EncryptedKey.js -n test
+
+# Get NEP-2 encrypted key for account with name test and return its decrypted value.
+# Currently, the ONLY way to supply the password to this function is by an interactive prompt displayed upon CLI execution.
+node account/cli/decryptNep2.js -n test
 
 ```
 
