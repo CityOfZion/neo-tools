@@ -50,7 +50,7 @@ if (program.Debug) {
   print('DEBUGGING');
 }
 
-var result = account.get_watch_addresses(configData)
+var result = account.getWatchAddresses(configData)
 
 if(result && result.length)
 print('result:')

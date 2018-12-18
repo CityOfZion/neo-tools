@@ -42,7 +42,7 @@ if (program.Debug) {
 
 
 if (program.watch) {
-  var accounts = account.get_watch_addresses(configData)
+  var accounts = account.getWatchAddresses(configData)
 
   if (accounts && accounts.length) {
     print('result:')

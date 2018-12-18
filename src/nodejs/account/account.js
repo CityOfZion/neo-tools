@@ -18,7 +18,7 @@ exports.getDefaultAccount = () => {
 
   var account = _.findWhere(accounts, {default: true})
 
-  if (account && account.path !== null) {
+  if (account && account.path) {
     config = require(account.path) // save global config in memory for right now
 
     var pathAccounts = config.accounts
@@ -27,7 +27,7 @@ exports.getDefaultAccount = () => {
 }
 
 // returns account address where "watch": true
-exports.get_watch_addresses = (configData) => {
+exports.getWatchAddresses = (configData) => {
   var accounts = configData.accounts
   var results = []
 
@@ -54,12 +54,12 @@ exports.get_watch_addresses = (configData) => {
 
 // sets watch: true for an account with address.
 // if not address exists this should add a watch address with a default account object
-exports.set_watch_address = (address) => {
+exports.setWatchAddresses = (address) => {
   var accounts = config.accounts
 
   var account = _.findWhere(accounts, {address: address})
 
-  if (account && account.path !== null) {
+  if (account && account.path) {
     config = require(account.path) // save global config in memory for right now
 
     var pathAccounts = config.accounts
@@ -75,11 +75,11 @@ exports.list = (configData, accountName) => {
 
   var account
 
-  if (accountName && accounts.length) account = accounts[accountName]
+  if (accountName && accounts && accounts[accountName]) account = accounts[accountName]
 
   else account = accounts.default
 
-  if (account && account.path !== null) {  // we're loading accounts from another file
+  if (account && account.path) {  // we're loading accounts from another file
     config = require(account.path) // save global config in memory for right now
 
     return config.accounts
@@ -97,7 +97,7 @@ exports.getNep2EncryptedKey = (configData, accountName) => {
   var accounts = this.list(configData)
   var account
 
-  if (accountName) account = accounts[accountName]
+  if (accountName && accounts && accounts[accountName]) account = accounts[accountName]
   else account = _.findWhere(accounts, {default: true})
 
   if (account && account.nep2EncryptedKey) return account.nep2EncryptedKey
