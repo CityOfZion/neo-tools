@@ -1,16 +1,28 @@
 {
   "accounts": {
     "one": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": true
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     },
     "two": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": false
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     },
     "three": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": false
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     }
   },
   "exchanges": {

@@ -42,7 +42,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 V1 project board https://github.com/CityOfZion/neo-tools/projects/1
 
-Version: 0.59.0
+Version: 0.60.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -147,7 +147,10 @@ See src/nodejs/ for the following:
   * default account
   * list addresses
   * get and set watch addresses
-  * NEP-2 and NEP-6 coming soon!
+  * NEP-2 Decryption Support (encrypted WIF)
+    * CLI for getNep2EncryptedKey
+  * NEP-2 encryption and account creation coming soon!
+  * NEP-6 coming soon!
 
 
 * Neoscan API
@@ -303,16 +306,28 @@ The path item of each config entry points to a json config file that adheres to 
 {
   "accounts": {
     "one": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": true
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     },
     "two": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": false
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     },
     "three": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": false
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     }
   },
   "exchanges": {
@@ -367,6 +382,9 @@ cd src/nodejs/account/CLI
 
 # List account with name test
 node account/cli/list.js -n test
+
+# Get NEP-2 encrypted key for account with name test
+node account/cli/getNep2EncryptedKey.js -n test
 
 ```
 
