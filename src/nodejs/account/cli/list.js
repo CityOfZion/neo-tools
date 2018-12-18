@@ -2,13 +2,10 @@
 
 require('module-alias/register')
 
-
 const program = require('commander')
 const _       = require('underscore')
 
 const dbg     = require('nodejs_util/debug')
-const cmc     = require('nodejs_market/coinmarketcap/get_price')
-const binance = require('nodejs_exchange/binance/binance-api.js')
 var cfg       = require('nodejs_config/config')
 var account   = require('nodejs_account/account')
 
@@ -37,9 +34,9 @@ if (program.config) {
 } else configData = config
 
 if (program.Debug) {
-  print('DEBUGGING');
+  print('DEBUGGING: ' + __filename)
+  defly = true
 }
-
 
 if (program.watch) {
   var accounts = account.getWatchAddresses(configData)
