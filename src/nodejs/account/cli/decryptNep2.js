@@ -75,7 +75,7 @@ if (program.watch) {
         print('\n' + wif)
       })
       .catch(e => {
-        console.log('error: ' + e)
+        print('error: ' + e)
       })
   })
 }
