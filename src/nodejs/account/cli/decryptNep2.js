@@ -36,6 +36,7 @@ program
   .option('-c, --config [config]', 'Specify a config file to use')
   .option('-w, --watch', 'Only list watch addresses i.e., marked watch: true in config')
   .option('-n, --name [name]', 'Find account with name', '')
+  .option('-e, --encryptedKey [ewencryptedKeyf]', 'Rather than get the text to decrypt from config, supply it with this option', '')
   .on('--help', function(){
     print('If no account name is supplied the account marked default: true in the configuration file is used.')
   })
@@ -62,7 +63,10 @@ if (program.watch) {
 } else {
   var result
 
+
+
   if (program.name) result = account.getNep2EncryptedKey(configData, program.name)
+  else if (program.encryptedKey) result = program.encryptedKey
   else result = account.getNep2EncryptedKey(configData)
 
   prompt('password: ', { method: 'hide' }).then(password => {
