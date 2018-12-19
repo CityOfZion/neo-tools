@@ -42,7 +42,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 V1 project board https://github.com/CityOfZion/neo-tools/projects/1
 
-Version: 0.62.0
+Version: 0.63.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 

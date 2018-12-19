@@ -27,13 +27,6 @@ let maxPing = 2000
 function print(msg) {
   console.log(msg);
 }
-
-
-exports.configure = (cfgObj) => {
-  ({ maxPing } = cfgObj)
-}
-
-
 exports.debug = (debug) => {
   if (debug !== undefined) defly = debug
   else defly = !defly
@@ -41,6 +34,10 @@ exports.debug = (debug) => {
   else print(__filename + ': This is your last debugging message! API debugging disabled')
 }
 
+exports.configure = (cfgObj) => {
+  ({ maxPing } = cfgObj)
+  if (defly) print('max ping timeout set to: ' + maxPing)
+}
 
 // Select RPC nodes on options.net by options.byFunc
 // TODO: redesign
@@ -101,9 +98,9 @@ exports.ping = (options) => {
   let nodes = options.nodes
 
   if (defly) {
-    dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
-    dbg.logDeep(__filename + ': getNodesByPing().net: ', net)
-    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', cfgNodes)
+    // dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
+    // dbg.logDeep(__filename + ': getNodesByPing().net: ', net)
+    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', nodes)
   }
 
   return new Promise((resolve, reject) => {
@@ -358,12 +355,13 @@ exports.rawmempool = (options) => {
 
   return new Promise((resolve, reject) => {
     if (parseInt(options.ping)) {
-      this.ping(pingOptions).then(nodes => {
-        rawmempoolCallback(nodes)
-      })
-      .catch (error => {
-        print(__filename + ': getNodesBy.rawmempool()/getNodesBy.ping().error: ' + error)
-      })
+      this.ping(pingOptions)
+        .then(nodes => {
+          rawmempoolCallback(nodes)
+        })
+        .catch (error => {
+          print(__filename + ': getNodesBy.rawmempool()/getNodesBy.ping().error: ' + error)
+        })
     } else {
       rawmempoolCallback(options.nodes)
     }
@@ -400,7 +398,9 @@ exports.rawmempool = (options) => {
 }
 
 
-// Return an object list of nodes with all stats this module can provide
+// Return an object list of nodes with all stats this module can provide by default
+// or according to an array of method names as strings, i.e.: ["height", "tallest"]
+//
 // ARGS:
 //  options = {
 //    net: 'TestNet',                                 // default network
@@ -412,14 +412,88 @@ exports.rawmempool = (options) => {
 // Return Value Format:
 // { 'nodeurl': { 'url': url, 'height': height, 'version': version, 'connections': connectionsCount, 'rawmempool': rawmempoolLength}}
 
-exports.all = (options) => {
+exports.run = (options, methods) => {
   let list = {}, objCopy, results = {}
+
   let getTallest = this.tallest
   getTallest.keyName = 'height'
+
   let getConnections = this.connection
   getConnections.keyName = 'connections'
+
   let getVersion = this.version
   getVersion.keyName = 'version'
+
+  let getRawMemPool = this.rawmempool
+  getRawMemPool.keyName = 'rawmempool'
+
+  let operations = []
+
+  if (methods && methods.length) {
+    methods.forEach(method => {
+      if (method === "height") operations.push(getTallest)
+      else if (method === "connections") operations.push(getConnections)
+      else if (method === "version") operations.push(getVersion)
+      else if (method === "rawmempool") operations.push(getRawMemPool)
+    })
+  }
+  else operations = [getTallest, getConnections, getVersion, getRawMemPool]
+
+  return new Promise((resolve, reject) => {
+    operations.forEach((op, outerIndex) => {
+      op(options).then(rankedNodes => {
+        list[op.keyName] = rankedNodes
+
+        if (outerIndex === operations.length-1) {
+          operations.forEach(op => {
+
+            if (op && op.keyName && list[op.keyName]) {
+              list[op.keyName].forEach(node => {
+                operations.forEach((op2, innerIndex) => {
+                  list[op2.keyName].forEach(node2 => {
+                    if (node.url === node2.url) {
+                      objCopy = Object.assign(node, node2)
+                      results[node.url] = objCopy
+                    }
+                  })
+                  if (innerIndex === operations.length-1) {
+                    resolve(results)
+                  }
+                })
+              })
+            } else reject('something went wrong: ' + op.keyName)
+          })
+        }
+      })
+    })
+  })
+}
+
+// Return an object list of nodes with all stats this module can provide by default
+//
+// ARGS:
+//  options = {
+//    net: 'TestNet',                                 // default network
+//    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
+//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//  }
+// TODO: add caching with configurable time limit for results
+// This will ALWAYS ping first with getNodesBy.ping()
+// Return Value Format:
+// { 'nodeurl': { 'url': url, 'height': height, 'version': version, 'connections': connectionsCount, 'rawmempool': rawmempoolLength}}
+
+exports.all = (options, methods) => {
+  let list = {}, objCopy, results = {}
+
+  let getTallest = this.tallest
+  getTallest.keyName = 'height'
+
+  let getConnections = this.connection
+  getConnections.keyName = 'connections'
+
+  let getVersion = this.version
+  getVersion.keyName = 'version'
+
   let getRawMemPool = this.rawmempool
   getRawMemPool.keyName = 'rawmempool'
 

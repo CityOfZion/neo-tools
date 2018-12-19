@@ -1,6 +1,6 @@
 // query.js
 // RPC module
-// This is called by native/cli/rpc/neo-rpc/v2.9.0/cli/query.js CLI wrapper
+// This is called by native/cli/rpc/rpc-over-https/v2.9.0/cli/query.js CLI wrapper
 
 // Invoke an RPC method from CLI
 // See http://docs.neo.org/en-us/node/cli/2.9.0/api.html for a list of method names.

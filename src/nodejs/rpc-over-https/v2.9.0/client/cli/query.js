@@ -1,6 +1,6 @@
 // query.js
 // CLI module interface to remote Neo RPC systems
-// This uses neo-rpc/v2.9.0/module/query.js
+// This uses rpc-over-https/v2.9.0/module/query.js
 
 // Invoke an RPC method from CLI
 
@@ -14,14 +14,14 @@ const _           = require('underscore')
 
 const dbg         = require('nodejs_util/debug')
 const netUtil     = require('nodejs_util/network')
-const getNodesBy  = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
+const getNodesBy  = require('nodejs_rpc-over-https/v2.9.0/client/module/getNodesBy')
 
 var cfg           = require('nodejs_config/config.js')
 var config        = cfg.load('nodejs_config/nodejs.config.json')
 
 
 
-const command = require('nodejs_neo-rpc/v2.9.0/client/module/query')
+const command = require('nodejs_rpc-over-https/v2.9.0/client/module/query')
 
 
 let nodes = []
@@ -45,7 +45,7 @@ program
   .option('-p, --params [params]', 'Call RPC method with these params, default is blank', '')
   .on('--help', function(){
     print('Note: Currently, arguments that modify the results of an RPC call are NOT IMPLEMENTED.')
-    print('      It Is highly recommended to use neo-rpc/client/cli/getNodesByX to find a node to use and then use this programs --node or -n option')
+    print('      It Is highly recommended to use rpc-over-https/client/cli/getNodesByX to find a node to use and then use this programs --node or -n option')
     print('\nFor API /NEO:2.9.0/ See http://docs.neo.org/en-us/node/cli/2.9.0/api.html for a list of method names.')
   })
   .parse(process.argv)
