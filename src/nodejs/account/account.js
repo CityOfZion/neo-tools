@@ -89,7 +89,6 @@ exports.list = (configData, accountName) => {
   return accounts
 }
 
-
 // Return NEP-2 encrypted key from account config data.
 // This searches the data for the account with accountName and plucks that key.
 
