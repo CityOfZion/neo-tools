@@ -31,7 +31,7 @@ const _           = require('underscore')
 const neon        = require('@cityofzion/neon-js')
 const dbg         = require('nodejs_util/debug')
 const netUtil     = require('nodejs_util/network')
-const getNodesBy  = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
+const getNodesBy  = require('nodejs_rpc-over-https/v2.9.0/client/module/getNodesBy')
 
 
 var cfg           = require('nodejs_config/config.js')

@@ -15,7 +15,7 @@
 - [All-in-One Configuration File Example](#all-in-one-configuration-file-example)
 - [Calling Conventions](#calling-conventions)
 - [Accounts](#accounts)
-- [neo-rpc](#neo-rpc)
+- [rpc-over-https](#rpc-over-https)
 - [neo-js](#neo-js)
 - [neon-js](#neon-js)
 - [Neoscan for TestNet and MainNet](#neoscan-for-testnet-and-mainnet)
@@ -42,7 +42,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 V1 project board https://github.com/CityOfZion/neo-tools/projects/1
 
-Version: 0.62.0
+Version: 0.63.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -109,11 +109,11 @@ See src/nodejs/ for the following:
 * Default address support via accounts config in src/nodejs/nodejs.config.json
 
 
-* Dynamic RPC invocation from CLI with nodejs/neo-rpc/NEO_v2.9.0/client/cli/query.js
+* Dynamic RPC invocation from CLI with nodejs/rpc-over-https/NEO_v2.9.0/client/cli/query.js
   * Automatically select nodes
   * Get nodes by configurable sort factor
   * GetNodesByX
-    * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [neo-rpc](#neo-rpc) for examples.
+    * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [rpc-over-https](#rpc-over-https) for examples.
     * all - return all of the following values for all nodes queried.
     * ping - list queried nodes by ping
     * tallest - list queried nodes by block height
@@ -394,7 +394,7 @@ node account/cli/decryptNep2.js -n test
 ```
 
 
-#### neo-rpc
+#### rpc-over-https
 Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
 See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/ API calls (valid -m --method options)
 
@@ -402,18 +402,18 @@ NOTE: This module can generate a lot of traffic. Please make sure you understand
 
 
 ```
-cd src/nodejs/neo-rpc/
+cd src/nodejs/rpc-over-https/
 
 # Get a list of nodes by tallest
 # See --help for -m --method options
-node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m tallest
+node rpc-over-https/v2.9.0/client/cli/getNodesBy.js -m tallest
 
 
 # Use the node returned from getNodesBy to query the version for that RPC node.
 # The following example is the RECOMMENDED method (query a specific node for repetitious operations)
 # See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/ API calls (valid -m --method options)
 
-node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
+node rpc-over-https/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
 
 
 ```

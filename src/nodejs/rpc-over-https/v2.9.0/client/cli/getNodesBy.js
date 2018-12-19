@@ -14,7 +14,7 @@ const neoscan = require('nodejs_neoscan/neoscan')
 var cfg       = require('nodejs_config/config.js')
 var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const getNodesBy = require('nodejs_neo-rpc/v2.9.0/client/module/getNodesBy')
+const getNodesBy = require('nodejs_rpc-over-https/v2.9.0/client/module/getNodesBy')
 
 let nodes = []
 let defly = false
@@ -31,14 +31,17 @@ program
   .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-N, --Net [Net]', 'Select network [net]: i.e., TestNet or MainNet', 'TestNet')
   .option('-m, --method [method]', 'Get nodes by the given criteria, default is ping', 'ping')
+  .option('-l, --list [list]', 'Get nodes by the given criteria in a list')
   .option('-o, --order [order]', 'Order by \'asc\' (ascending <- default) or \'dsc\' (descending)', 'asc')
   .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API. If not, will use config files if -n --node options aren\'t used. ')
   .option('-c, --conf', 'Disable \'press any key to continue\' confirmation prompt')
   .option('-p, --ping [ping]', 'Enable or disable ping first behavior (default 1 or true).', 1 )
+  .option('-P, --Ping [Ping]', 'Set max ping time in milliseconds', 2000 )
 
   .on('--help', function(){
     print('Note: -m --method options are: "all", "ping", "tallest", "connection", "version", "rawmempool"')
     print('-m "all" will ALWAYS ping first (for now).')
+    print('-l --list is of the form "ping, tallest", for example')
   })
   .parse(process.argv)
 
@@ -47,7 +50,10 @@ if (program.Debug) {
   defly = true
   netUtil.debug()
   neoscan.debug()
+  getNodesBy.debug()
 }
+
+getNodesBy.configure({'maxPing': program.Ping})
 
 let options = {
   net: netUtil.resolveNetworkId(program.Net),
@@ -75,7 +81,7 @@ else { // get nodes from configuration file
 if (defly) dbg.logDeep('options: ', options)
 
 
-function command() {
+function command(methods) {
   if (ran) return
   else ran = true
 
@@ -85,17 +91,41 @@ function command() {
   print('Node Count: ' + options.nodes.length)
   dbg.logDeep(' ', options.nodes)
 
-  getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
-    if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
-    nodes = rankedNodes
-    print(rankedNodes.length + ' of ' + options.nodes.length + ' nodes responded\n')
-    dbg.logDeep(' ', JSON.stringify(nodes))
-    process.exit()
-  })
-  .catch (error => {
-    print(__filename + ': ' + error)
-    process.exit()
-  })
+  if (program.list) {
+    methods = program.list.split(',')
+  }
+
+  if (methods && methods.length) { // specify a list of methods as string parameters
+    getNodesBy.run(options, methods).then(rankedNodes => {
+      if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
+      nodes = rankedNodes
+
+      const objs = Object.keys(rankedNodes)
+
+      print(objs.length + ' of ' + options.nodes.length + ' nodes responded\n')
+
+      dbg.logDeep(' ', JSON.stringify(nodes))
+      process.exit()
+    })
+    .catch (error => {
+      print(__filename + ': ' + error)
+      process.exit()
+    })
+  }
+  else { // get the method prescribed on the CLI
+    getNodesBy[program.method.toLowerCase()](options).then(rankedNodes => {
+      if (defly) dbg.logDeep(__filename + ': getNodesByPing().rankedNodes: ', rankedNodes)
+      nodes = rankedNodes
+      const objs = Object.keys(rankedNodes)
+      print(objs.length + ' of ' + options.nodes.length + ' nodes responded\n')
+      dbg.logDeep(' ', JSON.stringify(nodes))
+      process.exit()
+    })
+    .catch (error => {
+      print(__filename + ': ' + error)
+      process.exit()
+    })
+  }
 }
 
 if (program.conf) {
