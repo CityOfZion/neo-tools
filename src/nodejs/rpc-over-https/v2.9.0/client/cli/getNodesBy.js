@@ -36,7 +36,7 @@ program
   .option('-g, --getNodes', 'Get nodes from Neoscan ../v1/get_all_nodes REST API. If not, will use config files if -n --node options aren\'t used. ')
   .option('-c, --conf', 'Disable \'press any key to continue\' confirmation prompt')
   .option('-p, --ping [ping]', 'Enable or disable ping first behavior (default 1 or true).', 1 )
-  .option('-P, --Ping [Ping]', 'Enable or disable ping first behavior (default 1 or true).', 2000 )
+  .option('-P, --Ping [Ping]', 'Set max ping time in milliseconds', 2000 )
 
   .on('--help', function(){
     print('Note: -m --method options are: "all", "ping", "tallest", "connection", "version", "rawmempool"')
