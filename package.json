@@ -1,10 +1,10 @@
 {
-  "name": "neo-tools",
+  "name": "ferrite",
   "version": "0.63.0",
   "description": "Composable command line tools and reference implementations for Neo Smart Economy function primitives",
   "repository": {
     "type": "git",
-    "url": "https://github.com/phetter/neotools.git"
+    "url": "https://github.com/phetter/ferrite.git"
   },
   "scripts": {},
   "_moduleAliases": {
@@ -44,5 +44,5 @@
     "underscore": "^1.9.1"
   },
   "author": "https://github.com/phetter",
-  "license": "MIT"
+  "license": ""
 }
