@@ -2,7 +2,7 @@
   "accounts": {
     "default": {
       "default": true,
-      "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+      "path": "/home/uv/fwd//configs/neotools.config.json"
     },
     "account_name2": {
       "address": "",
@@ -11,15 +11,15 @@
     }
   },
   "exchanges": {
-    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+    "path": "/home/uv/fwd//configs/neotools.config.json"
   },
   "smtp": {
-    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+    "path": "/home/uv/fwd//configs/neotools.config.json"
   },
   "nodes": {
-    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+    "path": "/home/uv/fwd//configs/neotools.config.json"
   },
   "neojs": {
-    "path": "/home/fet/nwd/phetter/configs/neotools.config.json"
+    "path": "/home/uv/fwd//configs/neotools.config.json"
   }
 }

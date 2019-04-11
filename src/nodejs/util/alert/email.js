@@ -29,6 +29,7 @@ exports.debug = (debug) => {
 // config.smtp.port
 // config.smtp.user
 // config.smtp.pass
+// config.smtp.secure: false
 
 exports.init = (config) => {
   // create reusable transporter object using the default SMTP transport
@@ -37,7 +38,7 @@ exports.init = (config) => {
     transporter = nodemailer.createTransport({
         host: config.smtp.host,
         port: config.smtp.port,
-        secure: false, // true for 465, false for other ports
+        secure: config.smtp.secure, // true for 465, false for other ports
         auth: {
             user: config.smtp.user,
             pass: config.smtp.pass
@@ -53,7 +54,7 @@ exports.init = (config) => {
     transporter = nodemailer.createTransport({
         host: smtpcfg.host,
         port: smtpcfg.port,
-        secure: false, // true for 465, false for other ports
+        secure: smtpcfg.secure, // true for 465, false for other ports
         auth: {
             user: smtpcfg.user,
             pass: smtpcfg.pass

@@ -34,6 +34,7 @@
   "smtp": {
     "host": "mail.com",
     "port": 25,
+    "secuire": false,
     "user": "user@user.user",
     "pass": "password",
     "from": "user@user.user"

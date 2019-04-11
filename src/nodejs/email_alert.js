@@ -27,6 +27,7 @@ program
   .option('-r, --readstdin', 'Tell the program to read message body from stdin')
   .parse(process.argv);
 
+// TODO Override port option
 
 if (!program.to) {
   program.help()
