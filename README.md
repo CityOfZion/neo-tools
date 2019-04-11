@@ -42,7 +42,7 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 V1 project board https://github.com/CityOfZion/neo-tools/projects/1
 
-Version: 0.63.0
+Version: 0.64.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -340,6 +340,7 @@ The path item of each config entry points to a json config file that adheres to 
   "smtp": {
     "host": "mail.com",
     "port": 25,
+    "secure": false,
     "user": "user@user.user",
     "pass": "password",
     "from": "user@user.user"

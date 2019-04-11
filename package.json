@@ -1,6 +1,6 @@
 {
   "name": "ferrite",
-  "version": "0.63.0",
+  "version": "0.64.0",
   "description": "Composable command line tools and reference implementations for Neo Smart Economy function primitives",
   "repository": {
     "type": "git",
