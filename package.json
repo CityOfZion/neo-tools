@@ -22,14 +22,13 @@
     "nodejs_rpc-over-https": "src/nodejs/rpc-over-https/"
   },
   "devDependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "enzyme": "3.1.1"
   },
   "dependencies": {
-    "@cityofzion/neo-js": "^0.10.0",
-    "@cityofzion/neon-js": "^3.11.4",
+    "@cityofzion/neo-js": "^0.14.0",
+    "@cityofzion/neon-js": "^4.6.0",
     "@coinpaprika/api-nodejs-client": "^1.0.2",
-    "async-request": "^1.2.0",
     "bignumber.js": "5.0.0",
     "bluebird": "^3.3.4",
     "bs58": "^4.0.1",
