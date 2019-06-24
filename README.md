@@ -439,7 +439,7 @@ node neo-js/cli/chainSync.js
 
 #### neon-js
 [neon-js on GitHub](https://github.com/cityofzion/neon-js)
-Uses neon-js 3.11.4
+Uses neon-js 4.6.0
 
 Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.
 
