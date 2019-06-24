@@ -1,6 +1,7 @@
-// rpc getconnection count in neon-js
-// Gets the current number of connections for the node
-//
+// RPC validateAddress in neon-js
+// Verify that the address is a correct NEO address
+// boolean return
+
 require('module-alias/register')
 
 
@@ -8,9 +9,9 @@ const program = require('commander')
 const _       = require('underscore')
 
 var neon      = require('@cityofzion/neon-js')
-
-const neoscan = require('nodejs_neoscan/neoscan')
 const dbg     = require('nodejs_util/debug')
+
+let defly = false
 
 function print(msg) {
   console.log(msg);
@@ -19,20 +20,23 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('-n <node>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
+  .option('-a, --address <address>', 'address to validate')
+
   .parse(process.argv);
 
-if (!program.node) {
+if (!program.node || !program.address) {
   program.help()
 }
 
-if (program.debug) {
-  print('DEBUGGING');
+if (program.Debug) {
+  print('DEBUGGING: ' + __filename)
+  defly = true
 }
 
 const client = neon.default.create.rpcClient(program.node)
 
-client.getConnectionCount().then(response => {
-  dbg.logDeep('result\n:', response)
+client.validateAddress(program.address).then(response => {
+  dbg.logDeep(' ', response)
 })

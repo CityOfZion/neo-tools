@@ -1,4 +1,6 @@
-const _ = require('underscore')
+
+const _   = require('underscore')
+const dbg = require('nodejs_util/debug')
 
 var cfg
 
@@ -9,30 +11,73 @@ exports.load = path => {
 }
 
 exports.save = path => {
-
   return cfg
 }
 
 // returns account in user config that has "default:" true"
-exports.get_default_account = () => {
+
+exports.getDefaultAccount = () => {
   var accounts = cfg.accounts
 
   var account = _.findWhere(accounts, {default: true})
 
-  if(account && account.path !== null) {
-    cfg = require(account.path)
+  if (account && account.path !== null && account.path !== '') {
+    var defcfg = require(account.path)
 
-    var pathAccounts = cfg.accounts
+    var pathAccounts = defcfg.accounts
     return _.findWhere(pathAccounts, {default: true})
   }
 }
 
 // Load neotools config file outside of the repo path
-exports.get_exchanges = () => {
+
+exports.getExchanges = () => {
   var exchanges = cfg.exchanges
 
   if(exchanges && exchanges.path !== null) {
     var extCfg = require(exchanges.path)
     return extCfg
+  }
+}
+
+// Load neotools config file outside of the repo path and get smtp details
+
+exports.getSmtp = () => {
+  var smtp = cfg.smtp
+
+  if(smtp && smtp.path !== null) {
+    var smtpCfg = require(smtp.path)
+    return smtpCfg.smtp
+  } else {
+    return smtp
+  }
+}
+
+// Load a list of nodes from configuration file
+// Net can be any name  you provide as they sub key under "nodes" in the config
+
+exports.getNodes = (net) => {
+  var nodes = cfg.nodes
+  if(nodes && nodes.path !== null) {
+    var nodesCfg = require(nodes.path)
+    if (nodesCfg.nodes && nodesCfg.nodes[net]) return nodesCfg.nodes[net]
+    else return null
+  } else {
+    if (nodes && nodes[net]) return nodes[net]
+    else return null
+  }
+}
+
+
+// Load neo-js default configuration from filename
+
+exports.getNeoJs = () => {
+  var neojs = cfg.neojs
+
+  if(neojs && neojs.path !== null) {
+    var neojsCfg = require(neojs.path)
+    return neojsCfg.neojs
+  } else {
+    return neojs
   }
 }

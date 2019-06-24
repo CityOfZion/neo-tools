@@ -21,13 +21,14 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('-n <node>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-s, --summary', 'summarizes details like getrawmempool and getpeers to integers instead of lists')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .parse(process.argv);
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
+  neoscan.debug(true)
 }
 
 print(program.net)
@@ -48,7 +49,7 @@ function get_node_health(node) {
 
   client.getVersion().then(response => {
     print('node: ' + node)
-    dbg.logDeep('getVersion:\nresult:\n', response)
+    dbg.logDeep('getVersion: ', response)
     print('\n\n')
   }).catch(e =>{
     print('node: ' + node)
@@ -58,29 +59,29 @@ function get_node_health(node) {
   client.getPeers().then(response => {
     print('node: q' + node)
     if (program.summary) {
-      print('getPeers connected\nresult:\n' + response.connected.length)
-      print('getPeers unconnected\nresult:\n' + response.unconnected.length)
-      print('getPeers bad\nresult:\n' + response.bad.length)
-    } else dbg.logDeep('getPeers\nresult:\n', response)
+      print('getPeers connected ' + response.connected.length)
+      print('getPeers unconnected ' + response.unconnected.length)
+      print('getPeers bad ' + response.bad.length)
+    } else dbg.logDeep('getPeers ', response)
     print('\n\n')
   })
 
   client.getConnectionCount().then(response => {
     print('node: ' + node)
-    dbg.logDeep('getConnectionCount:\nresult:\n', response)
+    dbg.logDeep('getConnectionCount: ', response)
     print('\n\n')
   })
 
   client.getBlockCount().then(response => {
     print('node: ' + node)
-    dbg.logDeep('getBlockCount\nresult:\n', response)
+    dbg.logDeep('getBlockCount ', response)
     print('\n\n')
   })
 
   client.getRawMemPool().then(response => {
     print('node: ' + node)
     if (program.summary) {
-      print('getRawMemPool\nresult:\n' + response.length)
+      print('getRawMemPool ' + response.length)
     } else dbg.logDeep('getRawMemPool\nresult\n', response)
     print('\n\n')
   })

@@ -20,23 +20,22 @@ function print(msg) {
   console.log(msg);
 }
 
-var address, exchange, get_price
+var address, get_price
 
 program
   .version('0.1.0')
-  .usage('-s <symbol> -a <amount> -x [exchange]')
-  .option('-d, --debug', 'Debug')
+  .usage('-s <symbol> -v <value>')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
-  .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
-  .option('-s, --symbol <symbol>', 'Specify the symbol to look its value')
-  .option('-x, --exchange [exchange]', 'Specify exchange or api to use to query prices - defaults to coinmarketcap', 'cmc')
+  .option('-v, --value <value>', 'Specify the amount of symbol to send')
+  .option('-s, --symbol <symbol>', 'Specify the symbol of the currency to send')
   .parse(process.argv);
 
 if (!program.net) {
   // print('network: ' + program.net);
 }
 
-if (!program.symbol || !program.amount) {
+if (!program.symbol || !program.value) {
   program.help()
 }
 
@@ -46,7 +45,7 @@ if (program.exchange) {
   else get_price = cmc.get_price
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
 }
 
