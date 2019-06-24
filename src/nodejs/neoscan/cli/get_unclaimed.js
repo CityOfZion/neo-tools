@@ -29,14 +29,14 @@ function collect(val) {
 program
   .version('0.1.0')
   .usage('-a [address] -n [net]')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-a, --address [address]', 'Specify the address for for unclaimed gas inquiry.Multiple -a arguments result in multiple iterations of the command.', collect, [])
   .option('-r, --readstdin', 'Tell the program to read addresses as JSON from stdin. By default, matches json key "address"')
   // TODO add option to modifiy the pattern used for the key to match addresses when using -r for json
   .parse(argus)
 
-  if (program.debug) {
+  if (program.Debug) {
     print('DEBUGGING')
     neoscan.debug(true)
   }

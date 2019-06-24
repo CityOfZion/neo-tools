@@ -20,7 +20,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('Show last block creation time in milliseconds since Jan 1, 1970')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --net [net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test_net')
   .option('-H, --Human', 'I am human so make outputs easy for human. If you do this with the delta option it will not make sense.')
   .option('-h, --height', 'Include height field in output.')
@@ -29,7 +29,7 @@ program
   .option('-m, --minutes', 'Convert time to minutes. These are mutually exclusive, supplying both -s and -m does not give both values.')
   .parse(process.argv);
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   neoscan.debug(true)
 }
@@ -55,7 +55,7 @@ neoscan.get_height().then(result => {
 
           else if (program.minutes) result.time = new Date(result.time).getMinutes()
 
-          if (program.debug) {
+          if (program.Debug) {
             print('now: ' + now)
             print('res: ' + blc)
             print('new: ' + result.time )

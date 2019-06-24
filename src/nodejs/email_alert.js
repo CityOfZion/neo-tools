@@ -19,7 +19,7 @@ var from, to, subject, text
 program
   .version('0.1.0')
   .usage('-t <to>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-f, --from [from]', 'Set From: address; optional, will use config file default if not present as argument')
   .option('-t, --to <to>', 'Set To: address', 'to address')
   .option('-s, --subject [subject]', 'Subject of the email', 'subject test')
@@ -27,12 +27,13 @@ program
   .option('-r, --readstdin', 'Tell the program to read message body from stdin')
   .parse(process.argv);
 
+// TODO Override port option
 
 if (!program.to) {
   program.help()
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   email.debug() // toggle on debugging
 }

@@ -28,7 +28,7 @@ const dbg     = require('nodejs_util/debug')
 
 // TODO: automatic standard option picker abstraction and template
 // Pass an object named config of the following format to control module behavior
-// program.debug    // Toggle debugging
+// program.Debug    // Toggle debugging
 // program.node     // Set RPC node to use (be sure to preface with https://)
 // program.address  // Set address or array of addresses to query
 
@@ -39,7 +39,7 @@ exports.run = (config) => {
 
   if (config) program = config
   else {
-    program.debug = false
+    program.Debug = false
     program.node = ''
     program.address = null
   }
@@ -48,7 +48,7 @@ exports.run = (config) => {
     console.log(msg);
   }
 
-  if (program.debug) {
+  if (program.Debug) {
     print('DEBUGGING: ' + __filename)
     defly = true
   }

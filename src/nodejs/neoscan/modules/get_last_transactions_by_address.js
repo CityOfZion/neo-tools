@@ -12,7 +12,7 @@ const neoscan = require('nodejs_neoscan/neoscan')
 var cfg       = require('nodejs_config/config.js')
 
 // Pass an object named config of the following format to control module behavior
-// program.debug    // Toggle debugging
+// program.Debug    // Toggle debugging
 // program.net      // Set Neo network, usually TestNet or MainNet
 // program.address  // Set address or array of addresses to query
 // program.page     // Get this page of a multipage transaction result
@@ -25,7 +25,7 @@ exports.run = (config) => {
 
   if (config) program = config
   else {
-    program.debug = false
+    program.Debug = false
     program.net = 'TestNet'
     program.address = null
     program.page = 1
@@ -34,7 +34,7 @@ exports.run = (config) => {
     program.index = 0
   }
 
-  if (program.debug) dbg.logDeep('config: ', config)
+  if (program.Debug) dbg.logDeep('config: ', config)
 
   return new Promise((resolve, reject) => {
     var config    = cfg.load('nodejs_config/nodejs.config.json')
@@ -48,7 +48,7 @@ exports.run = (config) => {
       console.log(msg)
     }
 
-    if (program.debug) {
+    if (program.Debug) {
       print('DEBUGGING: ' + __filename)
       defly = true
       neoscan.debug(true)

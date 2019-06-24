@@ -2,6 +2,11 @@
 
 // Module for helping get Neo Smart Economy RPC node servers
 
+// TODO move per instance callback functions out of function scope to make accessible to reuse
+// TODO review ssl issue
+// TODO look at dynamic selection defaults
+// TODO Look at ping toggle for "all" method
+
 require('module-alias/register')
 
 const _       = require('underscore')
@@ -22,13 +27,6 @@ let maxPing = 2000
 function print(msg) {
   console.log(msg);
 }
-
-
-exports.configure = (cfgObj) => {
-  ({ maxPing } = cfgObj)
-}
-
-
 exports.debug = (debug) => {
   if (debug !== undefined) defly = debug
   else defly = !defly
@@ -36,6 +34,10 @@ exports.debug = (debug) => {
   else print(__filename + ': This is your last debugging message! API debugging disabled')
 }
 
+exports.configure = (cfgObj) => {
+  ({ maxPing } = cfgObj)
+  if (defly) print('max ping timeout set to: ' + maxPing)
+}
 
 // Select RPC nodes on options.net by options.byFunc
 // TODO: redesign
@@ -77,7 +79,7 @@ exports.getRpcNodes = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'asc',                                   // asc = lowest value first, dsc = highest first
 //  }
 // TODO: add caching with configurable time limit for results
 
@@ -96,9 +98,9 @@ exports.ping = (options) => {
   let nodes = options.nodes
 
   if (defly) {
-    dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
-    dbg.logDeep(__filename + ': getNodesByPing().net: ', net)
-    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', cfgNodes)
+    // dbg.logDeep(__filename + ': getNodesByPing().options: ', opts)
+    // dbg.logDeep(__filename + ': getNodesByPing().net: ', net)
+    dbg.logDeep(__filename + ': getNodesByPing().cfg.GetNodes(): ', nodes)
   }
 
   return new Promise((resolve, reject) => {
@@ -146,7 +148,8 @@ exports.ping = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'dsc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'dsc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -157,7 +160,18 @@ exports.tallest = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions).then(nodes => {
+        tallestCallback(nodes)
+      })
+      .catch (error => {
+        print(__filename + ': getNodesBy.tallest()/getNodesBy.ping().error: ' + error)
+      })
+    } else {
+      tallestCallback(options.nodes)
+    }
+
+    function tallestCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -177,7 +191,7 @@ exports.tallest = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.tallest().error: ' + error)
+              print(__filename + ': ' + n.url + '.getNodesBy.tallest().error: ' + error)
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'height')
@@ -188,10 +202,7 @@ exports.tallest = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.tallest()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 
@@ -201,7 +212,8 @@ exports.tallest = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'asc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -212,7 +224,19 @@ exports.connection = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions).then(nodes => {
+        connectionCallback(nodes)
+      })
+      .catch (error => {
+        print(__filename + ': getNodesBy.connections()/getNodesBy.ping().error: ' + error)
+      })
+    }
+    else {
+        connectionCallback(options.nodes)
+    }
+
+    function connectionCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -232,7 +256,7 @@ exports.connection = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.connections().error: ' + error)
+              print(__filename + ': ' + n.url + '.getNodesBy.connections().error: ' + error)
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'connections')
@@ -243,10 +267,7 @@ exports.connection = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.connections()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 
@@ -256,7 +277,8 @@ exports.connection = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'dsc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'dsc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -267,7 +289,19 @@ exports.version = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions).then(nodes => {
+        versionCallback(nodes)
+      })
+      .catch (error => {
+        print(__filename + ': getNodesBy.version()/getNodesBy.ping().error: ' + error)
+      })
+    }
+    else {
+      versionCallback(options.nodes)
+    }
+
+    function versionCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -287,7 +321,7 @@ exports.version = (options) => {
             })
             .catch(error => {
               i++
-              print(__filename + ': getNodesBy.version().error: ' + error)
+              print(__filename + ': ' + n.url + '.getNodesBy.version().error: ' + error)
 
               if (i === nodes.length) {
                 rankedList = _.sortBy(rankedList, 'version')
@@ -298,10 +332,7 @@ exports.version = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.version()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 
@@ -311,7 +342,8 @@ exports.version = (options) => {
 //  options = {
 //    net: 'TestNet',                                 // default network
 //    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
-//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//    order: 'asc',                                   // asc = lowest value first, dsc = highest first
+//    ping: 1                                         // ping first, default true
 //  }
 // TODO: add caching with configurable time limit for results
 // This will ALWAYS ping first with getNodesBy.ping()
@@ -322,7 +354,19 @@ exports.rawmempool = (options) => {
   pingOptions.order = 'asc'
 
   return new Promise((resolve, reject) => {
-    this.ping(pingOptions).then(nodes => {
+    if (parseInt(options.ping)) {
+      this.ping(pingOptions)
+        .then(nodes => {
+          rawmempoolCallback(nodes)
+        })
+        .catch (error => {
+          print(__filename + ': getNodesBy.rawmempool()/getNodesBy.ping().error: ' + error)
+        })
+    } else {
+      rawmempoolCallback(options.nodes)
+    }
+
+    function rawmempoolCallback(nodes) {
       if (_.isArray(nodes)) {
         nodes.forEach((n) => {
           if (n.url) {
@@ -349,15 +393,14 @@ exports.rawmempool = (options) => {
           }
         })
       }
-    })
-    .catch (error => {
-      print(__filename + ': getNodesBy.rawmempool()/getNodesBy.ping().error: ' + error)
-    })
+    }
   })
 }
 
 
-// Return an object list of nodes with all stats this module can provide
+// Return an object list of nodes with all stats this module can provide by default
+// or according to an array of method names as strings, i.e.: ["height", "tallest"]
+//
 // ARGS:
 //  options = {
 //    net: 'TestNet',                                 // default network
@@ -369,14 +412,88 @@ exports.rawmempool = (options) => {
 // Return Value Format:
 // { 'nodeurl': { 'url': url, 'height': height, 'version': version, 'connections': connectionsCount, 'rawmempool': rawmempoolLength}}
 
-exports.all = (options) => {
+exports.run = (options, methods) => {
   let list = {}, objCopy, results = {}
+
   let getTallest = this.tallest
   getTallest.keyName = 'height'
+
   let getConnections = this.connection
   getConnections.keyName = 'connections'
+
   let getVersion = this.version
   getVersion.keyName = 'version'
+
+  let getRawMemPool = this.rawmempool
+  getRawMemPool.keyName = 'rawmempool'
+
+  let operations = []
+
+  if (methods && methods.length) {
+    methods.forEach(method => {
+      if (method === "height") operations.push(getTallest)
+      else if (method === "connections") operations.push(getConnections)
+      else if (method === "version") operations.push(getVersion)
+      else if (method === "rawmempool") operations.push(getRawMemPool)
+    })
+  }
+  else operations = [getTallest, getConnections, getVersion, getRawMemPool]
+
+  return new Promise((resolve, reject) => {
+    operations.forEach((op, outerIndex) => {
+      op(options).then(rankedNodes => {
+        list[op.keyName] = rankedNodes
+
+        if (outerIndex === operations.length-1) {
+          operations.forEach(op => {
+
+            if (op && op.keyName && list[op.keyName]) {
+              list[op.keyName].forEach(node => {
+                operations.forEach((op2, innerIndex) => {
+                  list[op2.keyName].forEach(node2 => {
+                    if (node.url === node2.url) {
+                      objCopy = Object.assign(node, node2)
+                      results[node.url] = objCopy
+                    }
+                  })
+                  if (innerIndex === operations.length-1) {
+                    resolve(results)
+                  }
+                })
+              })
+            } else reject('something went wrong: ' + op.keyName)
+          })
+        }
+      })
+    })
+  })
+}
+
+// Return an object list of nodes with all stats this module can provide by default
+//
+// ARGS:
+//  options = {
+//    net: 'TestNet',                                 // default network
+//    nodes: [{ 'url': 'https://host.domain:port' }], // defaults to empty
+//    order: 'asc'                                    // asc = lowest value first, dsc = highest first
+//  }
+// TODO: add caching with configurable time limit for results
+// This will ALWAYS ping first with getNodesBy.ping()
+// Return Value Format:
+// { 'nodeurl': { 'url': url, 'height': height, 'version': version, 'connections': connectionsCount, 'rawmempool': rawmempoolLength}}
+
+exports.all = (options, methods) => {
+  let list = {}, objCopy, results = {}
+
+  let getTallest = this.tallest
+  getTallest.keyName = 'height'
+
+  let getConnections = this.connection
+  getConnections.keyName = 'connections'
+
+  let getVersion = this.version
+  getVersion.keyName = 'version'
+
   let getRawMemPool = this.rawmempool
   getRawMemPool.keyName = 'rawmempool'
 

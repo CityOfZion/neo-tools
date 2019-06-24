@@ -25,17 +25,19 @@
 require('module-alias/register')
 
 
-const program = require('commander')
-const _       = require('underscore')
+const program     = require('commander')
+const _           = require('underscore')
 
-const neon    = require('@cityofzion/neon-js')
-const dbg     = require('nodejs_util/debug')
-const netUtil = require('nodejs_util/network')
+const neon        = require('@cityofzion/neon-js')
+const dbg         = require('nodejs_util/debug')
+const netUtil     = require('nodejs_util/network')
+const getNodesBy  = require('nodejs_rpc-over-https/v2.9.0/client/module/getNodesBy')
 
-var cfg       = require('nodejs_config/config.js')
-var config    = cfg.load('nodejs_config/nodejs.config.json')
 
-const command = require('nodejs_neon-js/native/modules/rpc/getAccountState')
+var cfg           = require('nodejs_config/config.js')
+var config        = cfg.load('nodejs_config/nodejs.config.json')
+
+const command     = require('nodejs_neon-js/native/modules/rpc/getAccountState')
 
 let nodes = []
 let defly = false
@@ -47,7 +49,7 @@ function print(msg) {
 program
   .version('0.2.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-a, --address [address]', 'Specify the address for the inquiry')
   .option('-n, --node [node]', 'Set RPC node to use (be sure to preface with https://), if not provided will try to use node with tallest block')
   .option('-x, --xstr', 'Return hexstring transactoin value instead of default json', 1)
@@ -58,7 +60,7 @@ program
   })
   .parse(process.argv)
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
   netUtil.debug()
@@ -85,9 +87,13 @@ if (!program.node) {
 
   if (defly) dbg.logDeep('config nodes: ', nodes)
 
-  // TODO: look at if dynamic node selection should happen here or in the module
+    let options = {
+      net: net,
+      order: 'asc',
+      nodes: nodes
+    }
 
-  netUtil.getNodesByTallest(nodes).then(rankedNodes => {
+  getNodesBy.tallest(options).then(rankedNodes => {
     if (defly) dbg.logDeep('sorted nodes: ', rankedNodes)
     nodes = rankedNodes
     commandWrapper(nodes)
@@ -102,7 +108,7 @@ if (!program.node) {
 
 function commandWrapper(nodelist) {
   let runtimeArgs = {
-    'debug': defly,
+    'Debug': defly,
     'node': nodelist[0].url,
     'address': address,
   }

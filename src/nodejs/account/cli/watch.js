@@ -26,7 +26,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-c, --config [config]', 'Specify a config file to use')
   .option('-w, --watch', 'Only watch addresses marked watch: true in config')
   .option('-i, --interval', 'Set watch interval in seconds', 300) // default 5 mins
@@ -46,11 +46,11 @@ if (program.config) {
   configData = cfg.load(path)
 } else configData = config
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
 }
 
-var result = account.get_watch_addresses(configData)
+var result = account.getWatchAddresses(configData)
 
 if(result && result.length)
 print('result:')

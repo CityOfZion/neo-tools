@@ -1,6 +1,6 @@
 // query.js
 // RPC module
-// This is called by native/cli/rpc/neo-rpc/v2.9.0/cli/query.js CLI wrapper
+// This is called by native/cli/rpc/rpc-over-https/v2.9.0/cli/query.js CLI wrapper
 
 // Invoke an RPC method from CLI
 // See http://docs.neo.org/en-us/node/cli/2.9.0/api.html for a list of method names.
@@ -11,12 +11,11 @@ require('module-alias/register')
 const axios   = require('axios')
 const _       = require('underscore')
 
-const netUtil = require('nodejs_util/network')
 const dbg     = require('nodejs_util/debug')
 
 
 // Pass an object named config of the following format to control module behavior
-// program.debug    // Toggle debugging
+// program.Debug    // Toggle debugging
 // program.node     // Set RPC node to use (be sure to preface with https://)
 // program.time     // Only return the time field of the last block
 // program.human    // Make dates human-readable
@@ -32,7 +31,7 @@ exports.run = (config) => {
 
   if (config) program = config
   else {
-    program.debug = false
+    program.Debug = false
     program.node = ''
     program.time = false
     program.human = false
@@ -45,7 +44,7 @@ exports.run = (config) => {
     console.log(msg);
   }
 
-  if (program.debug) {
+  if (program.Debug) {
     print('DEBUGGING: ' + __filename)
     defly = true
   }
@@ -69,7 +68,7 @@ exports.run = (config) => {
     }
 
     if (defly) {
-      dbg.logDeep('url: ', program.node.url)
+      dbg.logDeep('url: ', program.node)
       dbg.logDeep('request: ', request)
       dbg.logDeep('cfg: ', cfg)
     }

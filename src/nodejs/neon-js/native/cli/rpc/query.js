@@ -18,7 +18,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('-n <node>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
   .option('-m, --method <method>', 'set RPC method to use')
   .option('-p, --parms [parms]', 'set string of arguments rpc method parms (comma-separated, no spaces "arg0,..,argN")')
@@ -34,7 +34,7 @@ if (program.parms) {
   dbg.logDeep('args: ', args)
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
   print('program.node: '+program.node+'\nprogram.method: '+'\nprogram.args: '+program.args)

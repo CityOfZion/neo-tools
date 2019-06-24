@@ -19,7 +19,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('-n <node>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
   .parse(process.argv);
 
@@ -27,7 +27,7 @@ if (!program.node) {
   program.help()
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
 }

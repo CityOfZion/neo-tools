@@ -6,6 +6,7 @@
 - [Requirements](#requirements)
 - [Operating System Support](#operating-system-support)
 - [Node.js Features](#nodejs-features)
+- [Todo](#todo)
 - [Developer's Note](#developers-note)
 - [Roadmap](#roadmap)
 - [Setup](#setup)
@@ -14,13 +15,14 @@
 - [All-in-One Configuration File Example](#all-in-one-configuration-file-example)
 - [Calling Conventions](#calling-conventions)
 - [Accounts](#accounts)
-- [Neo-rpc](#neo-rpc)
+- [rpc-over-https](#rpc-over-https)
+- [neo-js](#neo-js)
 - [neon-js](#neon-js)
 - [Neoscan for TestNet and MainNet](#neoscan-for-testnet-and-mainnet)
 - [Exchange and Market APIs](#exchange-and-market-apis)
 - [crypto](#crypto)
 - [Neo Status](#neo-status)
-- [CLI Chaining examples](#cli-chaining-examples)
+- [CLI Chaining Examples](#cli-chaining-examples)
 - [Shell Script Example](#shell-script-example)
 - [Monitoring, Alerts and Notifications](#monitoring-alerts-and-notifications)
 - [Planned Future Calling Convention](#planned-future-calling-convention)
@@ -38,7 +40,9 @@ With neo-tools in place, one has easy lookup of various operations and functions
 
 ## Project Version and Status
 
-Version: 0.56.0
+V1 project board https://github.com/CityOfZion/neo-tools/projects/1
+
+Version: 0.64.0
 
 Status: Writing alpha code (see section Features below), documenting goals, and defining standards.
 
@@ -47,8 +51,8 @@ Current Implementation Focus: Node.js
 Next: Database, Wallet, Server, Node
 
 
-
 ## Primary Goals
+
 This project has three major goals:
 
 1. Provide a command line tool for each Neo Smart Economy system function primitive. In example,
@@ -60,6 +64,8 @@ the ability to call it directly from the command line, by itself, and retrieve a
 3. Get up and running quickly and easily.
 
 ## Requirements
+
+These requirements must be met to reach Version 1.0.
 
 1. Source hierarchy *must* be organized by language/implementation/function in adherence with familiar and relevant project naming conventions.
   * In Progress
@@ -87,6 +93,13 @@ the ability to call it directly from the command line, by itself, and retrieve a
 ## Operating System Support
 1. Linux
 
+
+## General Notes
+
+* Camel Casing
+  - In general, where possible, camelCasing is preferred for functions and CLI modules except where an API or implementation uses a different standard. The objective is to be familiar to API reference.
+
+
 ## Node.js Features
 
 Node.js is the primary implementation platform right now. We are looking for contributions for others.
@@ -96,18 +109,34 @@ See src/nodejs/ for the following:
 * Default address support via accounts config in src/nodejs/nodejs.config.json
 
 
-* Dynamic RPC invocation from CLI with nodejs/neo-rpc/NEO_v2.9.0/client/cli/query.js
+* Dynamic RPC invocation from CLI with nodejs/rpc-over-https/NEO_v2.9.0/client/cli/query.js
   * Automatically select nodes
   * Get nodes by configurable sort factor
   * GetNodesByX
-    * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [neo-rpc](#neo-rpc) for examples.
+    * Be careful, this can produce a lot of node traffic. It first pings each node in the list generated or provided to make sure they are up and within operating parameters and then calls the respective method requested. See [rpc-over-https](#rpc-over-https) for examples.
+    * all - return all of the following values for all nodes queried.
+    * ping - list queried nodes by ping
+    * tallest - list queried nodes by block height
+    * connection - list queried nodes by number of connections
+    * version - list queried nodes by Neo version
+    * rawmempool - list queried nodes by the size of raw memory pool
+
+
+* neo-js integration
+  * [neo-js on GitHub](https://github.com/cityofzion/neo-js)
+  * MainNet sync
+  * TestNet sync
+  * mongodb support
 
 
 * Configuration via nodejs/src/config.js
-  * get_default_account()
-  * get_exchanges()
-  * get_smtp()
-  * get_nodes()
+  * getDefaultAccount()
+  * getExchanges()
+  * getSmtp()
+  * getNodes()
+  * getNeoJs()
+
+
 * Alerts (Notifications)
   * src/nodejs/email_alert.js
   * src/nodejs/monitor/new_transaction_alert_loop
@@ -118,10 +147,16 @@ See src/nodejs/ for the following:
   * default account
   * list addresses
   * get and set watch addresses
-  * NEP-2 and NEP-6 coming soon!
+  * NEP-2 Decryption Support (encrypted WIF)
+    * CLI for getNep2EncryptedKey
+    * CLI for decryptNep2
+  * NEP-2 encryption and account creation coming soon!
+  * NEP-6 coming soon!
 
 
-* Neoscan API command line is functional (see neoscan calling convention below)
+* Neoscan API
+  - [Neoscan on GitHub](https://github.com/cityofzion/neo-scan)
+  - command line is functional (see neoscan calling convention below)
   - get_address_abstracts, now with JSON and CSV export option
   - get_all_nodes
   - get_balance
@@ -136,8 +171,15 @@ See src/nodejs/ for the following:
   - get_unclaimed
 
 
+* Markets
+  * Coinmarketcap.com
+  * Coinpaprika.com
+  * General Capabilities (please see respective folders or documentation section)
+    * getMarketValue
+    * getTicker
+    * getQuotes
+
 * Exchange
-  * Query coinmarketcap.com tickers
   * Binance
     * Binance API module supports signed endpoint security (USER_DATA)  https://github.com/binance-exchange/binance-official-api-docs/blob/master/rest-api.md
     * Binance API module supports wAPI for Asset Detail - Check for Suspend, Withdraw, and Deposit Status from CLI! https://github.com/binance-exchange/binance-official-api-docs/blob/master/wapi-api.md
@@ -156,18 +198,20 @@ See src/nodejs/ for the following:
   * shacli support added for SHA256 and HMAC SHA256
 
 
-* Neon-js RPC Implementation
-  * neon-js/native/cli/rpc/query.js - dynamic query construction
-  * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
-  * neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
-  * neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
-  * neon-js/native/cli/rpc/getVersion - Gets version information of this node
-  * neon-js/native/cli/rpc/validateAddress - Verify that the address is a correct NEO address
-  * neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
-  * neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
-  * neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
-  * neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
-  * neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
+* neon-js
+  * [neon-js on GitHub](https://github.com/cityofzion/neon-js)
+  * RPC Implementation
+    * neon-js/native/cli/rpc/query.js - dynamic query construction
+    * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
+    * neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
+    * neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
+    * neon-js/native/cli/rpc/getVersion - Gets version information of this node
+    * neon-js/native/cli/rpc/validateAddress - Verify that the address is a correct NEO address
+    * neon-js/native/cli/rpc/getBestBlockHash - Get the hash of the tallest block
+    * neon-js/native/cli/rpc/getBlockCount - Get the number of blocks in the chain
+    * neon-js/native/cli/rpc/getBlock - Get the block by number or hash or most recent
+    * neon-js/native/cli/rpc/getAccountState - Get the account stat for an address
+    * neon-js/native/cli/rpc/getRawTransaction - Get a transaction by hash or block
 
 
 * Neo Status - Performs health checks on Neo Network - See sectoin "Neo Status" Below
@@ -183,12 +227,16 @@ See src/nodejs/ for the following:
 
 * Node.js Network Utility
   * network.resolveNetworkId()
-  * network.getNodesByTallest()
-  * network.getNodesByLeastConnections()
-  * network.getNodesByVersion()
-  * network.getNodesByPing()
-  * added ping detection to improve RTT
 
+
+## Todo
+
+* Automatically generate documentation from online CLI -h --help feature
+* neo-js Implementation Improvements
+  - Add mongodb database name configuration
+  - Review automation and process control of chainSync.js
+  - Review configuration draft
+* Alphabetize and otherwise improve documentation
 
 ## Developer's Note
 
@@ -208,11 +256,14 @@ I apologize if the command-line arguments and capabilities aren't consistent acr
 
 ## Setup
 
+`git clone https://github.com/CityOfZion/neo-tools.git .`
+
 `npm install`
 ,
+
 ## neo-tools APIs
 
-For now there is no official API but features are still available. neo-tools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
+For now there is no official API, but features are still available. neo-tools has been designed to make the modules reusable, generally with the CLI versions demonstrating use on each feature of the model.
 To leverage any module for a specific language, simple enter the ```src``` folder for that language and locate the folder/folder.js file for the relevant feature. For example, to use the Node.js config module
 require src/nodejs/config/config.js.
 
@@ -256,16 +307,28 @@ The path item of each config entry points to a json config file that adheres to 
 {
   "accounts": {
     "one": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": true
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     },
     "two": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": false
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     },
     "three": {
+      "type": "neo",
+      "name": "",
       "address": "",
-      "default": false
+      "default": true,
+      "nep2EncryptedKey": "",
+      "watch": false
     }
   },
   "exchanges": {
@@ -277,50 +340,30 @@ The path item of each config entry points to a json config file that adheres to 
   "smtp": {
     "host": "mail.com",
     "port": 25,
+    "secure": false,
     "user": "user@user.user",
     "pass": "password",
     "from": "user@user.user"
   },
   "nodes": {
     "TestNet": [
-      { "url": "https://seed1.neo.org:20331" },
-      { "url": "http://seed2.neo.org:20332" },
-      { "url": "http://seed3.neo.org:20332" },
-      { "url": "http://seed4.neo.org:20332" },
       { "url": "https://test1.cityofzion.io" },
       { "url": "https://test2.cityofzion.io" },
       { "url": "https://test3.cityofzion.io" },
       { "url": "https://test4.cityofzion.io" },
-      { "url": "https://test5.cityofzion.io" },
-      { "url": "http://seed5.neo.org:20332" }
+      { "url": "https://test5.cityofzion.io" }
     ],  
     "MainNet": [
-      { "url": "https://seed1.switcheo.network:10331" },
-      { "url": "https://seed3.switcheo.network:10331" },
-      { "url": "http://seed1.travala.com:10332" },
-      { "url": "https://seed1.neo.org:10331" },
       { "url": "https://seed1.cityofzion.io:443" },
       { "url": "https://seed2.cityofzion.io:443" },
       { "url": "https://seed3.cityofzion.io:443" },
       { "url": "https://seed4.cityofzion.io:443" },
       { "url": "https://seed5.cityofzion.io:443" },
-      { "url": "https://seed1.redpulse.com:443" },
-      { "url": "https://seed2.redpulse.com:443" },
-      { "url": "https://seed.o3node.org:10331" },
-      { "url": "http://seed1.aphelion-neo.com:10332" },
-      { "url": "http://seed2.aphelion-neo.com:10332" },
-      { "url": "http://seed4.aphelion-neo.com:10332" },
-      { "url": "https://seed1.spotcoin.com:10332" },
-      { "url": "http://rustylogic.ddns.net:10332" },
-      { "url": "http://seed1.ngd.network:10332" },
-      { "url": "http://seed2.ngd.network:10332" },
-      { "url": "http://seed3.ngd.network:10332" },
-      { "url": "http://seed4.ngd.network:10332" },
-      { "url": "http://seed5.ngd.network:10332" },
-      { "url": "http://seed6.ngd.network:10332" },
-      { "url": "http://seed7.ngd.network:10332" },
-      { "url": "http://seed8.ngd.network:10332" },
-      { "url": "http://seed9.ngd.network:10332" }
+      { "url": "https://seed6.cityofzion.io:443" },
+      { "url": "https://seed7.cityofzion.io:443" },
+      { "url": "https://seed8.cityofzion.io:443" },
+      { "url": "https://seed9.cityofzion.io:443" },
+      { "url": "https://seed0.cityofzion.io:443" }
     ]   
   }     
 }
@@ -342,42 +385,70 @@ cd src/nodejs/account/CLI
 # List account with name test
 node account/cli/list.js -n test
 
+# Get NEP-2 encrypted key for account with name test
+node account/cli/getNep2EncryptedKey.js -n test
+
+# Get NEP-2 encrypted key for account with name test and return its decrypted value.
+# Currently, the ONLY way to supply the password to this function is by an interactive prompt displayed upon CLI execution.
+node account/cli/decryptNep2.js -n test
+
 ```
 
 
-#### neo-rpc
+#### rpc-over-https
 Implementation of various Neo: v2.9.0 RPC utilities, some running against neon-js.
-See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/
+See: [Neo: v2.9.0](http://docs.neo.org/en-us/node/cli/2.9.0/api.html) for /Neo:v2.9.0/ API calls (valid -m --method options)
+
+NOTE: This module can generate a lot of traffic. Please make sure you understand and use with care.
 
 
 ```
-cd src/nodejs/neo-rpc/
+cd src/nodejs/rpc-over-https/
 
 # Get a list of nodes by tallest
 # See --help for -m --method options
-node neo-rpc/v2.9.0/client/cli/getNodesBy.js -m tallest
+node rpc-over-https/v2.9.0/client/cli/getNodesBy.js -m tallest
 
 
 # Use the node returned from getNodesBy to query the version for that RPC node.
-# This is the RECOMMENDED method (query a specific node for repetitious operations)
-# See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/
+# The following example is the RECOMMENDED method (query a specific node for repetitious operations)
+# See: http://docs.neo.org/en-us/node/cli/2.9.0/api.html for /Neo:v2.9.0/ API calls (valid -m --method options)
 
-node neo-rpc/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
+node rpc-over-https/v2.9.0/client/cli/query -m getversion -n 'https://test1.cityofzion.io'
+
+
+```
+
+
+#### neo-js
+[neo-js on GitHub](https://github.com/cityofzion/neo-js)
+
+Implementation of neo-js synchronization features for local chain capabilities.
+
+NOTE: This code is ALPHA. Use with care as it can generate a lot of traffic.
+
+```
+cd src/nodejs/neo-js/
+
+# Sync blocks from TestNet into a localhost mongodb instance
+node neo-js/cli/chainSync.js
 
 
 ```
 
 
 #### neon-js
+[neon-js on GitHub](https://github.com/cityofzion/neon-js)
 Uses neon-js 3.11.4
-[neon-js](https://github.com/cityofzion/neon-js)
 
 Here you'll find a CLI frontend for every RPC query method implemented by neon-js. Documentation is still in progress. When in doubt, run the command with --help argument.
 
 ```
-cd src/nodejs/neon-js/
+cd src/nodejs/neon-js/native/cli/rpc/
 
-* neon-js/native/cli/rpc/query.js - dynamic query construction
+query -h
+
+
 * neon-js/native/cli/rpc/getConnectionCount.js - Gets the current number of connections for the node
 * neon-js/native/cli/rpc/getPeers.js - Gets a list of nodes that are currently connected/disconnected/bad by this node
 * neon-js/native/cli/rpc/getRawMemPool - Gets a list of unconfirmed transactions in memory
@@ -392,7 +463,10 @@ cd src/nodejs/neon-js/
 ```
 
 ### Neoscan for TestNet and MainNet
+[Neoscan on GitHub](https://github.com/cityofzion/neo-scan)
+
 https://neoscan.io/docs/index.html#api-v1-get
+
 
 ```
 cd src/nodejs/neoscan/cli/
@@ -454,23 +528,23 @@ cd src/nodejs/
 
 # List the price of neo and total net worth for 10 shares by coinmarketcap valuation.
 # Note: in this version you cannot list all symbols for cmc as you can with binance
-node get_worth -s neo -a 10
+node getMarketValue -s neo -a 10
 
 
 # list the price of neousdt and total net worth for 3 shares by binance valuation
 # ticker names found at https://api.binance.com/api/v3/ticker/price
 # weight 1 for binance
 
-node get_worth -s neousdt -a 3 -x binance
+node getMarketValue -s neousdt -a 3 -x binance
 
 
 # list the price of all symbols that have "NEO" in the name and multiply their value by 2
 
-node get_worth.js -a 2 -x binance | grep NEO -A 1
+node getMarketValue.js -a 2 -x binance | grep NEO -A 1
 
 
 # list the price of all symbols on binance times 2 units
-node get_worth.js -a 2 -x binance
+node getMarketValue.js -a 2 -x binance
 
 
 cd src/nodejs/exchange/binance/cli/
@@ -566,15 +640,15 @@ while true;
     node ${loc}exchange/binance/cli/get_asset_detail.js -s neo;
 
     echo -e "\n";
-    node ${loc}get_worth.js -s neo -a 1 -d -x binance;
+    node ${loc}getMarketValue.js -s neo -a 1 -d -x binance;
     echo -e "";
-    node ${loc}get_worth.js -s gas -a 1;
+    node ${loc}getMarketValue.js -s gas -a 1;
     echo -e "\n";
-    node ${loc}get_worth.js -s bitcoin -a 1;
+    node ${loc}getMarketValue.js -s bitcoin -a 1;
     echo -e "\n";
-    node ${loc}get_worth.js -s cardano -a 1;
+    node ${loc}getMarketValue.js -s cardano -a 1;
     echo -e "\n";
-    node ${loc}get_worth.js -a 1 -s bobs-repair;
+    node ${loc}getMarketValue.js -a 1 -s bobs-repair;
     echo -e "\n";
 
     sleep 500;

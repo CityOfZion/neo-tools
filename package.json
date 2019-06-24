@@ -1,31 +1,34 @@
 {
-  "name": "neo-tools",
-  "version": "0.56.0",
+  "name": "ferrite",
+  "version": "0.64.0",
   "description": "Composable command line tools and reference implementations for Neo Smart Economy function primitives",
   "repository": {
     "type": "git",
-    "url": "https://github.com/phetter/neotools.git"
+    "url": "https://github.com/phetter/ferrite.git"
   },
   "scripts": {},
   "_moduleAliases": {
     "nodejs_util": "src/nodejs/util/",
+    "nodejs_neo-js": "src/nodejs/neo-js/",
     "nodejs_crypto": "src/nodejs/crypto/",
     "nodejs_config": "src/nodejs/config/",
     "nodejs_exchange": "src/nodejs/exchange/",
     "nodejs_market": "src/nodejs/market/",
     "nodejs_neoscan": "src/nodejs/neoscan/",
     "nodejs_account": "src/nodejs/account/",
+    "nodejs_transactions": "src/nodejs/transactions/",
     "nodejs_alert": "src/nodejs/util/alert/",
     "nodejs_neon-js": "src/nodejs/neon-js/",
-    "nodejs_neo-rpc": "src/nodejs/neo-rpc/"
+    "nodejs_rpc-over-https": "src/nodejs/rpc-over-https/"
   },
   "devDependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.18.1",
     "enzyme": "3.1.1"
   },
   "dependencies": {
-    "@cityofzion/neon-js": "^3.11.4",
-    "async-request": "^1.2.0",
+    "@cityofzion/neo-js": "^0.14.0",
+    "@cityofzion/neon-js": "^4.6.0",
+    "@coinpaprika/api-nodejs-client": "^1.0.2",
     "bignumber.js": "5.0.0",
     "bluebird": "^3.3.4",
     "bs58": "^4.0.1",
@@ -36,8 +39,9 @@
     "jsonexport": "^2.3.0",
     "module-alias": "^2.1.0",
     "nodemailer": "^4.6.8",
+    "password-prompt": "^1.0.7",
     "underscore": "^1.9.1"
   },
   "author": "https://github.com/phetter",
-  "license": "MIT"
+  "license": ""
 }

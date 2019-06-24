@@ -67,3 +67,17 @@ exports.getNodes = (net) => {
     else return null
   }
 }
+
+
+// Load neo-js default configuration from filename
+
+exports.getNeoJs = () => {
+  var neojs = cfg.neojs
+
+  if(neojs && neojs.path !== null) {
+    var neojsCfg = require(neojs.path)
+    return neojsCfg.neojs
+  } else {
+    return neojs
+  }
+}

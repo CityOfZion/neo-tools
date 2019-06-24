@@ -30,7 +30,7 @@ function print(msg) {
 program
   .version('0.3.0')
   .usage('')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-N, --Net [Net]', 'Select Neoscan network [net]: i.e., test_net or main_net (will use correct neoscan host and path respectively - defaults to test_net)', 'test')
   .option('-a, --address [address]', 'Specify the address for transaction inquiry')
   .option('-H, --Human', 'I am human so make outputs easy for human')
@@ -44,7 +44,7 @@ program
   // summarize transaction - show amount of last n txs or similar
   .parse(process.argv)
 
-if (program.debug) {
+if (program.Debug) {
     print('DEBUGGING: ' + __filename)
     defly = true
     email.debug(true)
@@ -79,7 +79,7 @@ if (defly) dbg.logDeep('to: ', to)
 
 let result
 let argz = {
-  'debug': defly,
+  'Debug': defly,
   'net': program.Net,
   'address': address,
   'time': program.time ? program.time : false,

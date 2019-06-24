@@ -13,7 +13,7 @@ const neon    = require('@cityofzion/neon-js')
 const dbg     = require('nodejs_util/debug')
 
 // Pass an object named config of the following format to control module behavior
-// program.debug    // Toggle debugging
+// program.Debug    // Toggle debugging
 // program.node     // Set RPC node to use (be sure to preface with https://)
 // program.hash     // Specify the hash of the block to fetch, if no hash or index is supplied will get the tallest
 // program.time     // Only return the time field of the last block
@@ -29,7 +29,7 @@ exports.run = (config) => {
 
   if (config) program = config
   else {
-    program.debug = false
+    program.Debug = false
     program.node = ''
     program.hash = null
     program.time = false
@@ -41,7 +41,7 @@ exports.run = (config) => {
     console.log(msg);
   }
 
-  if (program.debug) {
+  if (program.Debug) {
     print('DEBUGGING: ' + __filename)
     defly = true
   }

@@ -19,7 +19,7 @@ function print(msg) {
 program
   .version('0.1.0')
   .usage('-n <node>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-n, --node <node>', 'set RPC node to use (be sure to preface with https://)')
   .option('-s, --summary', 'summarizes details to integer count of items in the list usually returned')
 
@@ -29,7 +29,7 @@ if (!program.node) {
   program.help()
 }
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING: ' + __filename)
   defly = true
 }

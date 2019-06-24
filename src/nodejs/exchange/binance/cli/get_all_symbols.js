@@ -21,7 +21,7 @@ var address, exchange, get_price, symbol
 program
   .version('0.1.0')
   .usage('-s [symbol] -a <amount>')
-  .option('-d, --debug', 'Debug')
+  .option('-D, --Debug', 'Debug')
   .option('-a, --amount <amount>', 'Specify the amount of symbol for which to find value')
   .option('-s, --symbol [symbol]', 'Specify the symbol to look its value')
   .parse(process.argv);
@@ -32,7 +32,7 @@ if (!program.amount) {
 
 get_price = binance.get_price
 
-if (program.debug) {
+if (program.Debug) {
   print('DEBUGGING');
   binance.debug(true)
 }
